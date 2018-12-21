@@ -1,3 +1,4 @@
+---
 - name: Check if {{ project }} project exists
   uri:
     url: http://gerrit:8080/projects/{{ project }}
@@ -7,7 +8,7 @@
   when: project_check.status==404
   block:
     - name: Create temp dir for {{ project }} creation
-      shell: mktemp -d
+      command: mktemp -d
       register: project_tmp
     - name: Create {{ project }} project in Gerrit
       uri:
@@ -17,7 +18,7 @@
         password: secret
         status_code: 201
     - name: Create initial commit in {{ project }}
-      shell:
+      command:
         executable: /bin/sh
         chdir: "{{ project_tmp.stdout }}"
         cmd: |
