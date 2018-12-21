@@ -9,11 +9,12 @@
 
 - name: Install pbrx
   pip:
-    name: [ "pbrx", "configparser" ]
+    name: ["pbrx", "configparser"]
     state: present
     extra_args: --user
 
 - name: Build containers for {{ project.name }}
-  shell: pbrx --debug build-images --prefix={{ project.name }}
+  command: pbrx --debug build-images --prefix={{ project.name }}
   args:
     chdir: "{{ install_path }}/{{ project.name }}"
+  changed_when: false
