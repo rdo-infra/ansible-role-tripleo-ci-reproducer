@@ -1,0 +1,8 @@
+---
+- hosts: localhost
+  tasks:
+  - Name: Stoping tripleo CI reproducer
+    vars:
+      state: absent
+    import_role:
+      name: tripleo-ci-reproducer
