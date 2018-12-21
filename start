@@ -1,0 +1,5 @@
+#!/bin/env ansible-playbook
+- hosts: localhost
+  tasks:
+  - import_role:
+      name: tripleo-ci-reproducer
