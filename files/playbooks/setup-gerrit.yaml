@@ -1,3 +1,4 @@
+---
 - hosts: localhost
   gather_facts: false
   tasks:
@@ -30,8 +31,9 @@
         headers:
           Content-Type: "application/octet-stream"
     - name: Create temp dir for Gerrit config update
-      shell: mktemp -d
+      command: mktemp -d
       register: gerrit_tmp
+      changed_when: true
     - name: Set All-Project repo location
       set_fact:
         all_projects_repo: "{{ gerrit_tmp.stdout }}/All-Projects"
@@ -50,10 +52,12 @@
       shell: |
         git config user.email 'admin@example.com'
         git commit -a -m 'update config'
-        git push http://admin:secret@gerrit:8080/All-Projects +HEAD:refs/meta/config
+        git push http://admin:secret@gerrit:8080/All-Projects \
+          +HEAD:refs/meta/config
       args:
         chdir: "{{ all_projects_repo }}"
         warn: false
+      changed_when: true
 
     - name: Create zuul-config project
       include_role:
