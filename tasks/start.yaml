@@ -11,7 +11,7 @@
     build: true
     pull: "{{ pull | default(false) | bool }}"
 
-- name: Wait for zuul upstream tenant
+- name: Wait for zuul tenant
   uri:
     url: "http://localhost:9000/api/tenant/tripleo-ci-reproducer/status"
     method: GET
