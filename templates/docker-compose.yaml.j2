@@ -74,7 +74,7 @@ services:
       - "./etc_zuul/:/etc/zuul/:z"
       - "./playbooks/:/var/playbooks/:z"
       - "~/.ssh/:/var/ssh/:z"
-      - "logs:/srv/static/logs:z"
+      - "{{ logs_path }}:/srv/static/logs:z"
       - "./projects:/projects/:z"
 
   launcher:
@@ -96,7 +96,7 @@ services:
     ports:
       - "8000:80"
     volumes:
-      - "logs:/usr/local/apache2/htdocs:z"
+      - "{{ logs_path }}:/usr/local/apache2/htdocs:z"
 
 {% for i in range(mergers) %}
   merger{{ i }}:
@@ -109,9 +109,6 @@ services:
     volumes:
       - "./etc_zuul/:/etc/zuul/:z"
       - "~/.ssh/:/var/ssh/:z"
-      - "logs:/srv/static/logs:z"
+      - "{{ logs_path }}:/srv/static/logs:z"
 
 {% endfor %}
-
-volumes:
-  logs:
