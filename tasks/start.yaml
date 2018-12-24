@@ -23,6 +23,7 @@
   delay: 10
   until: result.status == 200 and result.json["zuul_version"] is defined
   changed_when: false
+  when: wait_for_tenant|bool
 
 - name: Show banner
   vars:
