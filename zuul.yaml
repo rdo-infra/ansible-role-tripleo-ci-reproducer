@@ -1,0 +1,8 @@
+- project:
+    name: ansible-role-tripleo-ci-reproducer
+    check:
+      jobs:
+        - tox-linters
+    gate:
+      jobs:
+        - tox-linters
