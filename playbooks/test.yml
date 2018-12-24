@@ -1,0 +1,25 @@
+---
+- name: Start reproducer
+  hosts: virthost
+  tasks:
+
+    - name: Set up environment
+      shell: pip install -Ur requirements.txt -r test-requirements.txt
+
+    - name: Start reproducer
+      include_role:
+        - name: ci-reproducer
+      vars:
+        state: present
+
+    - name: Start tests
+      shell: echo
+
+    - name: Stop reproducer
+      include_role:
+        - name: ci-reproducer
+      vars:
+        state: present
+
+    - name: Finish tests
+      shell: echo
