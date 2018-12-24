@@ -48,10 +48,12 @@
   with_items:
     - 19885
     - 22
+  when: prepare_tenant|bool
 
 - name: Get installed images names
   os_image_facts:
     cloud: "{{ os_cloud_name }}"
+  when: prepare_tenant|bool
 
 - name: Check image are uploaded
   fail:
@@ -59,7 +61,9 @@
       Cannot find {{ item }} at the openstack cloud, you can upload one from
       https://nb02.openstack.org/images/ and add your ssh pub key with
       virt-edit and upload it to your openstack cloud.
-  when: openstack_image | selectattr( 'name', 'equalto', item ) | list | length == 0
+  when:
+    - openstack_image|selectattr( 'name', 'equalto', item )|list|length == 0
+    - prepare_tenant|bool
   with_items:
     - "{{ os_centos7_image }}"
     - "{{ os_fedora28_image }}"
