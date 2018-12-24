@@ -1,9 +1,16 @@
 ---
+- job:
+    name: reproducer-test
+    # pre-run:
+    run: test.yml
+    # post-run:
+
 - project:
     name: rdo-infra/ansible-role-tripleo-ci-reproducer
     check:
       jobs:
         - tox-linters
+        - reproducer-test
     gate:
       jobs:
         - tox-linters
