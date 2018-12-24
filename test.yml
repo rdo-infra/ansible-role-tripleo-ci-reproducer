@@ -1,0 +1,31 @@
+---
+- name: Start reproducer
+  hosts: localhost
+  vars:
+    prepare_tenant: false
+    wait_for_tenant: false
+  tasks:
+
+    - name: Set up environment
+      shell: pip install -r requirements.txt
+      become: true
+
+    - name: Start reproducer
+      include_role:
+        name: tripleo-ci-reproducer
+      vars:
+        state: present
+
+    - name: Start tests
+      command: echo
+      changed_when: false
+
+    - name: Stop reproducer
+      include_role:
+        name: tripleo-ci-reproducer
+      vars:
+        state: absent
+
+    - name: Finish tests
+      command: echo
+      changed_when: false
