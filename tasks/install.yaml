@@ -7,7 +7,6 @@
     - playbooks
     - projects
     - httpd.conf
-    - logs-Dockerfile
 
 - name: Generate docker compose config
   template:

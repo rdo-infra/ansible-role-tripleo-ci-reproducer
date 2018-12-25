@@ -97,6 +97,7 @@ services:
       - "8000:80"
     volumes:
       - "{{ logs_path }}:/usr/local/apache2/htdocs:z"
+      - "./httpd.conf:/usr/local/apache2/conf/httpd.conf:z"
 
 {% for i in range(mergers) %}
   merger{{ i }}:
