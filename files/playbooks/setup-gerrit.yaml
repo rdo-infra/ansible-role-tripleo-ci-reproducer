@@ -31,12 +31,12 @@
         headers:
           Content-Type: "application/octet-stream"
     - name: Create temp dir for Gerrit config update
-      command: mktemp -d
+      tempfile:
+        state: directory
       register: gerrit_tmp
-      changed_when: true
     - name: Set All-Project repo location
       set_fact:
-        all_projects_repo: "{{ gerrit_tmp.stdout }}/All-Projects"
+        all_projects_repo: "{{ gerrit_tmp.path }}/All-Projects"
     - name: Checkout All-Projects config
       git:
         repo: ssh://gerrit:29418/All-Projects/

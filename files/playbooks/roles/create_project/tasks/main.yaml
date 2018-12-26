@@ -8,7 +8,8 @@
   when: project_check.status==404
   block:
     - name: Create temp dir for {{ project }} creation
-      command: mktemp -d
+      tempfile:
+        state: directory
       register: project_tmp
     - name: Create {{ project }} project in Gerrit
       uri:
@@ -19,7 +20,8 @@
         status_code: 201
     - name: Create initial commit in {{ project }}
       shell:
-        chdir: "{{ project_tmp.stdout }}"
+        executable: /bin/sh
+        chdir: "{{ project_tmp.path}}"
         cmd: |
           git init .
           git config user.name "Admin"
