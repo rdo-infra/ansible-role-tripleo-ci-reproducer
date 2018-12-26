@@ -62,7 +62,7 @@ services:
     privileged: true
     environment:
       no_proxy: "${no_proxy},gerrit"
-    command: "sh -c \"sed -i 's/makedirs(path)/makedirs(path, exist_ok=True)/g' /usr/local/lib/python3.7/site-packages/zuul/merger/merger.py && zuul-executor -d\""
+    command: "zuul-executor -d"
     depends_on:
       - scheduler
     image: "{{ zuul_executor_image }}"
