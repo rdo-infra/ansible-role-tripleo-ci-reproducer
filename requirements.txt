@@ -1,4 +1,3 @@
-ansible
 openstacksdk
 docker
 docker-compose
