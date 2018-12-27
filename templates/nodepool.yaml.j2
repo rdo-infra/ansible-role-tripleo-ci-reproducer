@@ -28,7 +28,9 @@ providers:
       - name: main
         max-servers: 5
         networks:
-          - private
+          {% for net in cloud_networks|default(['private']) -%}
+          - {{ net }}
+          {% endfor %}
         labels:
           - name: centos-7
             min-ram: 8192

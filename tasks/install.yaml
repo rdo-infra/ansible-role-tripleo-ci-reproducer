@@ -58,7 +58,17 @@
       Cannot find {{ item }} at the openstack cloud, you can upload one from
       https://nb02.openstack.org/images/ and add your ssh pub key with
       virt-edit and upload it to your openstack cloud.
-  when: openstack_image|selectattr( 'name', 'equalto', item )|list|length == 0
+  when: openstack_image|selectattr('name', 'equalto', item)|list|length == 0
   with_items:
     - "{{ os_centos7_image }}"
     - "{{ os_fedora28_image }}"
+
+- name: Gather facts about a previously created network by name
+  os_networks_facts:
+    cloud: "{{ os_cloud_name }}"
+
+- name: Check if networks present in the tenant
+  fail:
+    msg: 'Network "{{ item }} is not found!'
+  when: "item not in openstack_networks|map(attribute='name')|list"
+  loop: "{{ cloud_networks }}"

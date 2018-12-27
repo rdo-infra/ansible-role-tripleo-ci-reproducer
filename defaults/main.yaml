@@ -15,6 +15,13 @@ state: present
 
 mergers: "{{ ansible_processor_vcpus }}"
 
+os_cloud_networks:
+  rdo-cloud:
+    - private
+  upshift:
+    - private
+    - provider_net_lab
+cloud_networks: "{{ os_cloud_networks[os_cloud_name] }}"
 ##############
 # Docker images
 ###############
