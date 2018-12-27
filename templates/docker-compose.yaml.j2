@@ -49,7 +49,7 @@ services:
       - /var/lib/zuul
       - "./projects:/var/projects/:z"
   web:
-    command: "zuul-web -d"
+    command: "sh -c 'ansible-playbook /var/playbooks/wait-mysql.yaml; zuul-web -d'"
     depends_on:
       - scheduler
       - mysql
