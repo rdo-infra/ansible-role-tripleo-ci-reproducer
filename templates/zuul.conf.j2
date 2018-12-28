@@ -30,7 +30,6 @@ port=29418
 baseurl=https://review.rdoproject.org/r
 user={{ rdo_gerrit_user }}
 sshkey=/var/ssh/id_rsa
-
 [connection "gerrit"]
 name=gerrit
 driver=gerrit
@@ -48,6 +47,7 @@ dburi=mysql+pymysql://zuul:secret@mysql/zuul
 
 [web]
 listen_address=0.0.0.0
+log_config=/etc/zuul/web-logging.yaml
 
 [executor]
 private_key_file=/var/ssh/id_rsa
@@ -58,3 +58,4 @@ log_config=/etc/zuul/executor-logging.yaml
 [merger]
 git_user_email="os-tripleo-ci@redhat.com"
 git_user_name="Openstack Triple CI"
+log_config=/etc/zuul/merger-logging.yaml

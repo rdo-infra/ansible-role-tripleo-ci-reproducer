@@ -1,4 +1,6 @@
 ---
+log_level: DEBUG
+
 ##############
 # Configuration for openstack nodepool
 ###############
@@ -10,7 +12,7 @@ upstream_gerrit_user: "{{ ansible_user }}"
 rdo_gerrit_user: "{{ ansible_user }}"
 
 install_path: "{{ ansible_user_dir }}/tripleo-ci-reproducer/"
-logs_path: "{{ install_path }}/logs"
+logs_path: "./logs"
 state: present
 
 mergers: "{{ ansible_processor_vcpus }}"

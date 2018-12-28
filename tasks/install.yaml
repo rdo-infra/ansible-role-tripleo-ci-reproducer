@@ -13,18 +13,22 @@
     src: docker-compose.yaml.j2
     dest: "{{ install_path }}/docker-compose.yaml"
 
-- name: Create configuration directories
+- name: Create directories
   file:
     name: "{{ install_path }}/{{ item }}"
     state: directory
   with_items:
     - etc_nodepool
     - etc_zuul
+    - logs
 
 - name: Generate nodepool configuration
   template:
-    src: nodepool.yaml.j2
-    dest: "{{ install_path }}/etc_nodepool/nodepool.yaml"
+    src: "{{ item }}.j2"
+    dest: "{{ install_path }}/etc_nodepool/{{ item }}"
+  with_items:
+    - nodepool.yaml
+    - launcher-logging.yaml
 
 - name: Generate zuul configuration
   template:
@@ -35,6 +39,8 @@
     - main.yaml
     - scheduler-logging.yaml
     - executor-logging.yaml
+    - web-logging.yaml
+    - merger-logging.yaml
 
 - name: Open needed ports at default security group
   os_security_group_rule:
