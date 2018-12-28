@@ -21,7 +21,7 @@ os_cloud_networks:
   upshift:
     - private
     - provider_net_lab
-cloud_networks: "{{ os_cloud_networks[os_cloud_name] }}"
+cloud_networks: "{{ os_cloud_networks[os_cloud_name]|default(['private']) }}"
 ##############
 # Docker images
 ###############
