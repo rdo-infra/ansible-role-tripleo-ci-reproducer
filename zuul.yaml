@@ -1,9 +1,28 @@
 ---
+- job:
+    name: tripleo-ci-reproducer-fedora-28
+    parent: tripleo-ci-reproducer-base
+    description: |
+      To test reproducer
+    pre-run:
+      - playbooks/tripleo-ci-reproducer/pre.yaml
+    run: playbooks/tripleo-ci-reproducer/run.yaml
+    nodeset: single-fedora-28-node
+    roles:
+      - zuul: rdo-infra/ansible-role-tripleo-ci-reproducer
+        name: tripleo-ci-reproducer
+    vars:
+      upstream_gerrit_user: tripleo.ci
+      upstream_gerrit_key: id_rsa_tripleo_gerrit
+      rdo_gerrit_user: os-tripleo-ci
+      rdo_gerrit_key: id_rsa_tripleo_gerrit
+
 - project:
     name: rdo-infra/ansible-role-tripleo-ci-reproducer
     check:
       jobs:
         - tox-linters
+        - tripleo-ci-reproducer-fedora-28
     gate:
       jobs:
         - tox-linters

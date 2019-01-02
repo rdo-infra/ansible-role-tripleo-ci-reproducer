@@ -1,0 +1,8 @@
+---
+- hosts: primary
+  tasks:
+    - name: Run reproducer
+      vars:
+        name: tripleo-ci-reproducer
+      include_role:
+        name: tripleo_ci_reproducer
