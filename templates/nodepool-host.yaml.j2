@@ -1,0 +1,22 @@
+---
+zookeeper-servers:
+  - host: zk
+
+labels:
+  - name: centos-7
+  - name: fedora-28
+  - name: tripleo-ovb-centos-7
+
+providers:
+  - name: static-host
+    driver: static
+    pools:
+      - name: main
+        nodes:
+          - name: {{ ansible_default_ipv4.address }}
+            labels:
+                - fedora-28
+                - centos-7
+                - tripleo-ovb-centos-7
+            username: {{ ansible_user }}
+            host-key: {{ lookup('pipe', 'ssh-keyscan -t ed25519 ' + ansible_default_ipv4.address).split(" ", 1)[1] }}
