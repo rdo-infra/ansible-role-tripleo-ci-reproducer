@@ -19,6 +19,13 @@ mergers: "{{ ansible_processor_vcpus }}"
 
 nodepool_type: openstack
 
+os_cloud_networks:
+  rdo-cloud:
+    - private
+  upshift:
+    - private
+    - provider_net_lab
+cloud_networks: "{{ os_cloud_networks[os_cloud_name]|default(['private']) }}"
 ##############
 # Docker images
 ###############
