@@ -1,0 +1,62 @@
+---
+- hosts: primary
+  vars:
+    repro_role_path: >-
+      {{ ansible_user_dir }}/{{ zuul.projects[
+        'review.rdoproject.org/rdo-infra/ansible-role-tripleo-ci-reproducer'
+        ].src_dir }}
+  tasks:
+    - name: Gather needed facts
+      setup:
+        gather_subset: "!min,user_dir"
+      when: ansible_user_dir is not defined
+    - name: Install ansible
+      become: true
+      package:
+        name: ansible-2.4.7-1
+    - name: Install dependencies
+      pip:
+        requirements: "{{ repro_role_path }}/requirements.txt"
+        extra_args: --user
+    - name: Create openstack config dir
+      file:
+        path: "{{ ansible_user_dir }}/.config/openstack/"
+        state: directory
+        mode: 0755
+    - name: Create install docker playbook
+      vars:
+        docker_playbook:
+          - hosts: localhost
+            tasks:
+              - name: Install docker
+                vars:
+                  ansible_become: true
+                  docker_users:
+                    - "{{ ansible_user }}"
+                include_role:
+                  name: geerlingguy.docker
+      copy:
+        content: "{{ docker_playbook | to_nice_yaml }}"
+        dest: "{{ ansible_user_dir }}/install-docker.yaml"
+
+    - name: Create roles directory
+      file:
+        path: "{{ ansible_user_dir }}/roles"
+        state: directory
+
+    - name: Link role
+      file:
+        src: "{{ repro_role_path }}"
+        dest: "{{ ansible_user_dir }}/roles/tripleo-ci-reproducer"
+        state: link
+
+    - name: Install docker role
+      command: ansible-galaxy install geerlingguy.docker
+      changed_when: true
+
+    - name: Install docker
+      command: ansible-playbook {{ ansible_user_dir }}/install-docker.yaml
+      changed_when: true
+
+    - name: reset ssh connection to allow user changes to affect
+      meta: reset_connection
