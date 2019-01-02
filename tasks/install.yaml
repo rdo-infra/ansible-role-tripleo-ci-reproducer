@@ -20,7 +20,6 @@
   with_items:
     - etc_nodepool
     - etc_zuul
-    - logs
 
 - name: Generate nodepool configuration
   template:
