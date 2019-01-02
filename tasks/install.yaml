@@ -21,13 +21,15 @@
     - etc_nodepool
     - etc_zuul
 
-- name: Generate nodepool configuration
+- name: Generate nodepool main configuration
   template:
-    src: "{{ item }}.j2"
-    dest: "{{ install_path }}/etc_nodepool/{{ item }}"
-  with_items:
-    - nodepool.yaml
-    - launcher-logging.yaml
+    src: "nodepool-{{ nodepool_type }}.yaml.j2"
+    dest: "{{ install_path }}/etc_nodepool/nodepool.yaml"
+
+- name: Generate nodepool logs configuration
+  template:
+    src: "launcher-logging.yaml.yaml.j2"
+    dest: "{{ install_path }}/etc_nodepool/launcher-logging.yaml.yaml"
 
 - name: Generate zuul configuration
   template:
