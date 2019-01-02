@@ -17,6 +17,8 @@ state: present
 
 mergers: "{{ ansible_processor_vcpus }}"
 
+nodepool_type: openstack
+
 ##############
 # Docker images
 ###############
