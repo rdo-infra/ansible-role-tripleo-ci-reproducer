@@ -1,0 +1,21 @@
+---
+- hosts: primary
+  tasks:
+
+    - name: Create reproducer playbook
+      vars:
+        reproducer_playbook:
+          - hosts: localhost
+            tasks:
+              - name: Start a host nodepool reproducer
+                vars:
+                  nodepool_type: host
+                include_role:
+                  name: tripleo-ci-reproducer
+      copy:
+        content: "{{ reproducer_playbook | to_nice_yaml }}"
+        dest: "{{ ansible_user_dir }}/start.yaml"
+
+    - name: Run reproducer
+      command: ansible-playbook {{ ansible_user_dir }}/start.yaml
+      changed_when: true
