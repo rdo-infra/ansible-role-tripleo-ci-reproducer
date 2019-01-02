@@ -1,0 +1,22 @@
+---
+- hosts: primary
+  tasks:
+    - name: Get docker-compose logs
+      command: docker-compose logs --no-color
+      args:
+        chdir: "{{ ansible_user_dir }}/tripleo-ci-reproducer"
+      changed_when: false
+      register: docker_compose_log
+
+    - name: Dump docker-compose log to a file
+      copy:
+        content: "{{ docker_compose_log.stdout }}"
+        dest: "{{ ansible_user_dir }}/tripleo-ci-reproducer/docker-compose.log"
+
+    - name: Copy files from {{ ansible_user_dir }} on node to log
+      synchronize:
+        src: '{{ ansible_user_dir }}/tripleo-ci-reproducer/'
+        dest: '{{ zuul.executor.log_root }}/tripleo-ci-reproducer/'
+        mode: pull
+        copy_links: true
+        verify_host: true
