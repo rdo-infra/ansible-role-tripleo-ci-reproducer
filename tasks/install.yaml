@@ -72,4 +72,4 @@
       with_items:
         - "{{ os_centos7_image }}"
         - "{{ os_fedora28_image }}"
-  when: nodepool_type == openstack
+  when: nodepool_type == "openstack"
