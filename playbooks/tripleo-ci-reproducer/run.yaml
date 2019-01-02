@@ -1,0 +1,8 @@
+---
+- hosts: primary
+  tasks:
+    - name: Run reproducer
+      vars:
+        nodepool_type: host
+      include_role:
+        name: tripleo-ci-reproducer
