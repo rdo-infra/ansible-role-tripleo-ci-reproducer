@@ -20,7 +20,7 @@ state: present
 
 mergers: "{{ ansible_processor_vcpus }}"
 
-nodepool_type: openstack
+nodepool_provider: openstack
 
 os_cloud_networks:
   rdo-cloud:

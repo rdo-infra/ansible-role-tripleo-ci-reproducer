@@ -1,0 +1,25 @@
+---
+- hosts: primary
+  tasks:
+
+    - name: Create reproducer playbook
+      vars:
+        reproducer_playbook:
+          - hosts: localhost
+            tasks:
+              - name: Start reproducer using host as the nodepool provider
+                vars:
+                  nodepool_provider: host
+                  upstream_gerrit_user: "{{ upstream_gerrit_user }}"
+                  upstream_gerrit_key: "{{ tripleo_gerrit_key_name }}"
+                  rdo_gerrit_user: "{{ rdo_gerrit_user }}"
+                  rdo_gerrit_key: "{{ tripleo_gerrit_key_name }}"
+                include_role:
+                  name: tripleo-ci-reproducer
+      copy:
+        content: "{{ reproducer_playbook | to_nice_yaml }}"
+        dest: "{{ ansible_user_dir }}/start.yaml"
+
+    - name: Run reproducer
+      command: ansible-playbook -vv {{ ansible_user_dir }}/start.yaml
+      changed_when: true

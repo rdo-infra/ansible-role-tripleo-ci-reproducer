@@ -23,7 +23,7 @@
 
 - name: Generate nodepool main configuration
   template:
-    src: "nodepool-{{ nodepool_type }}.yaml.j2"
+    src: "nodepool-{{ nodepool_provider }}.yaml.j2"
     dest: "{{ install_path }}/etc_nodepool/nodepool.yaml"
 
 - name: Generate nodepool logs configuration
@@ -82,4 +82,4 @@
         msg: 'Network "{{ item }} is not found!'
       when: "item not in openstack_networks|map(attribute='name')|list"
       loop: "{{ cloud_networks }}"
-  when: nodepool_type == "openstack"
+  when: nodepool_provider == "openstack"
