@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ad0253b_9e864112",
+        "filename": "playbooks/tripleo-ci-reproducer/pre.yaml",
+        "patchSetId": 15
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 155
+      },
+      "writtenOn": "2019-01-03T13:00:07Z",
+      "side": 1,
+      "message": "maybe better to control ansible version (as it may change between different CI systems like upstream, rdo, local devs ansible, etc). Maybe we can have jobs with different ansible versions to check that we\u0027re compatible - just for thinking for future.",
+      "range": {
+        "startLine": 13,
+        "startChar": 5,
+        "endLine": 16,
+        "endChar": 21
+      },
+      "revId": "3ccdba762af78029327d02adf4b79c5ebc50185c",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ad0253b_7e7c8520",
+        "filename": "playbooks/tripleo-ci-reproducer/pre.yaml",
+        "patchSetId": 15
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 155
+      },
+      "writtenOn": "2019-01-03T13:00:07Z",
+      "side": 1,
+      "message": "I\u0027m not sure it\u0027s good idea to use external role. It brings not controlled dependency that can break us and we saw it a lot already. Why just not to use docker install like we had in ci-config/infra-setup/.. roles? It\u0027s 3-4 tasks at all.",
+      "range": {
+        "startLine": 26,
+        "startChar": 1,
+        "endLine": 37,
+        "endChar": 42
+      },
+      "revId": "3ccdba762af78029327d02adf4b79c5ebc50185c",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ad0253b_3e760d3f",
+        "filename": "playbooks/tripleo-ci-reproducer/pre.yaml",
+        "patchSetId": 15
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 155
+      },
+      "writtenOn": "2019-01-03T13:00:07Z",
+      "side": 1,
+      "message": "just using 3 tasks we already have will be better: https://github.com/rdo-infra/ci-config/blob/master/ci-scripts/infra-setup/roles/setup_docker_compose/tasks/main.yaml#L2-L35\n\njust w/o docker-compose",
+      "range": {
+        "startLine": 53,
+        "startChar": 3,
+        "endLine": 62,
+        "endChar": 28
+      },
+      "revId": "3ccdba762af78029327d02adf4b79c5ebc50185c",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ad0253b_1e73514f",
+        "filename": "playbooks/tripleo-ci-reproducer/run.yaml",
+        "patchSetId": 15
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 155
+      },
+      "writtenOn": "2019-01-03T13:00:07Z",
+      "side": 1,
+      "message": "I think -vv would be useful",
+      "range": {
+        "startLine": 24,
+        "startChar": 29,
+        "endLine": 24,
+        "endChar": 33
+      },
+      "revId": "3ccdba762af78029327d02adf4b79c5ebc50185c",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ad0253b_de93994e",
+        "filename": "zuul.yaml",
+        "patchSetId": 15
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 155
+      },
+      "writtenOn": "2019-01-03T13:00:07Z",
+      "side": 1,
+      "message": "isn\u0027t it in parent job already?",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 8,
+        "endChar": 48
+      },
+      "revId": "3ccdba762af78029327d02adf4b79c5ebc50185c",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
