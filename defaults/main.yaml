@@ -9,7 +9,10 @@ os_centos7_image: openstack-infra-centos-7
 os_fedora28_image: openstack-infra-fedora-28
 
 upstream_gerrit_user: "{{ ansible_user }}"
+upstream_gerrit_key: "id_rsa"
+
 rdo_gerrit_user: "{{ ansible_user }}"
+rdo_gerrit_key: "id_rsa"
 
 install_path: "{{ ansible_user_dir }}/tripleo-ci-reproducer/"
 logs_path: "./logs"
