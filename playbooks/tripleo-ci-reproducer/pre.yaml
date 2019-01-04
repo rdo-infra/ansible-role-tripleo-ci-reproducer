@@ -1,11 +1,19 @@
 ---
-- hosts: primary
+- name: run these tasks on the localhost
+  hosts: 127.0.0.1
+  connection: local
   vars:
     repro_role_path: >-
       {{ ansible_user_dir }}/{{ zuul.projects[
         'review.rdoproject.org/rdo-infra/ansible-role-tripleo-ci-reproducer'
         ].src_dir }}
   tasks:
+    - name: set selinux to permissive
+      selinux:
+        policy: targeted
+        state: permissive
+      become: true
+
     - name: Gather needed facts
       setup:
         gather_subset: "!min,user_dir"
@@ -17,6 +25,19 @@
         name:
           - ansible
           - docker
+          - python2-libselinux
+
+    # https://bugzilla.redhat.com/show_bug.cgi?id=1448384
+    # https://stackoverflow.com/questions/45335316/unable-to-configure-the-docker-daemon-with-file-etc-docker-daemon-json-eof
+    - name: stat /etc/docker/daemon.json
+      stat:
+        path: /etc/docker/daemon.json
+      register: daemon_stat
+
+    - name: move docker daemon.json
+      command: mv /etc/docker/daemon.json /etc/docker/daemon.json.bak
+      become: true 
+      when: daemon_stat.stat.exists
 
     - name: Install python dependencies
       pip:
@@ -29,28 +50,29 @@
         state: directory
         mode: 0755
 
-    - name: Find out docker group name
-      shell: grep docker /etc/group | cut -d":" -f1 | head -1
-      register: docker_group
-      changed_when: false
+    - name: Ensure docker group is present
+      group:
+        name: docker
+        state: present
+      become: true
 
     - name: Check if user is in docker group
       command: "groups {{ ansible_user }}"
       register: user_groups
       changed_when: false
 
-    - when: "docker_group.stdout not in user_groups.stdout"
+    - when: "'docker' not in user_groups.stdout"
       block:
         - name: Add user to docker group
           become: true
           user:
             name: '{{ ansible_user }}'
-            groups: '{{ docker_group.stdout }}'
+            groups: docker
             append: true
           register: groupadd
 
-    - name: reset ssh connection to allow user changes to affect
-      meta: reset_connection
+    - name: update user group manually w/o logging out
+      shell: id -g && newgrp docker && id -g
 
     - name: Create docker configuration file
       become: true
@@ -58,7 +80,7 @@
         content: |
           {
           "live-restore": true,
-          "group": "{{ docker_group.stdout }}",
+          "group": "docker",
           }
         dest: /etc/docker/daemon.json
       register: docker_config

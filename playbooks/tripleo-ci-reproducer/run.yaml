@@ -1,5 +1,5 @@
 ---
-- hosts: primary
+- hosts: primary 
   tasks:
 
     - name: Create reproducer playbook
