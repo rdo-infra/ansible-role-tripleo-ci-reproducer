@@ -37,3 +37,7 @@
       command: |
        ~/.local/bin/ansible-playbook -vv {{ ansible_user_dir }}/start.yaml
       changed_when: true
+
+    - name: Put back the selinux labels
+      command: chcon -RFvv ~/.ssh/
+      changed_when: true
