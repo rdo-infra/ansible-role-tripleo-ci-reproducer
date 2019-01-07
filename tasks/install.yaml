@@ -81,5 +81,5 @@
       fail:
         msg: 'Network "{{ item }} is not found!'
       when: "item not in openstack_networks|map(attribute='name')|list"
-      loop: "{{ cloud_networks }}"
+      with_items: "{{ cloud_networks }}"
   when: nodepool_provider == "openstack"

@@ -35,5 +35,6 @@
 
     - name: Run reproducer
       command: |
-       ~/.local/bin/ansible-playbook -vv {{ ansible_user_dir }}/start.yaml
+        #~/.local/bin/ansible-playbook -vv {{ ansible_user_dir }}/start.yaml
+        true
       changed_when: true
