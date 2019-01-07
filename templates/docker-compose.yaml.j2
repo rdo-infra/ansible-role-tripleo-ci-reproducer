@@ -8,6 +8,7 @@ services:
       - "29418:29418"
     command: |
       /bin/sh -c '\
+        restorecon -r /var/ssh/ || true; \
         git config -f /var/gerrit/etc/gerrit.config gerrit.canonicalWebUrl http://localhost:8080/ && \
         git config -f /var/gerrit/etc/gerrit.config gerrit.ui POLYGERRIT && \
         git config -f /var/gerrit/etc/gerrit.config sendemail.enable false && \
@@ -20,7 +21,7 @@ services:
     depends_on:
       - gerrit
     volumes:
-      - "~/.ssh/:/var/ssh/:z"
+      - "~/.ssh/:/var/ssh/:ro,z"
       - "./playbooks/:/var/playbooks/:z"
       - "./projects/:/var/projects/:z"
     command: "ansible-playbook /var/playbooks/setup-gerrit.yaml"
@@ -40,12 +41,12 @@ services:
       - mysql
     environment:
       no_proxy: "${no_proxy},gerrit"
-    command: "sh -c 'ansible-playbook /var/playbooks/wait-gerrit.yaml; zuul-scheduler -d'"
+    command: "sh -c 'restorecon -r /var/ssh/ || true; ansible-playbook /var/playbooks/wait-gerrit.yaml; zuul-scheduler -d'"
     image: "{{ zuul_scheduler_image }}"
     volumes:
       - "./etc_zuul/:/etc/zuul/:z"
       - "./playbooks/:/var/playbooks/:z"
-      - "~/.ssh/:/var/ssh/:z"
+      - "~/.ssh/:/var/ssh/:ro,z"
       - /var/lib/zuul
       - "./projects:/var/projects/:z"
   web:
@@ -63,7 +64,7 @@ services:
     privileged: true
     environment:
       no_proxy: "${no_proxy},gerrit"
-    command: "zuul-executor -d"
+    command: "restorecon -r /var/ssh/ || true; zuul-executor -d"
     depends_on:
       - scheduler
     image: "{{ zuul_executor_image }}"
@@ -74,7 +75,7 @@ services:
     volumes:
       - "./etc_zuul/:/etc/zuul/:z"
       - "./playbooks/:/var/playbooks/:z"
-      - "~/.ssh/:/var/ssh/:z"
+      - "~/.ssh/:/var/ssh/:ro,z"
       - "{{ logs_path }}:/srv/static/logs:z"
       - "./projects:/projects/:z"
 
@@ -104,13 +105,13 @@ services:
   merger{{ i }}:
     environment:
       no_proxy: "${no_proxy},gerrit"
-    command: "zuul-merger -d"
+    command: "restorecon -r /var/ssh/ || true; zuul-merger -d"
     depends_on:
       - scheduler
     image: "{{ zuul_merger_image }}"
     volumes:
       - "./etc_zuul/:/etc/zuul/:z"
-      - "~/.ssh/:/var/ssh/:z"
+      - "~/.ssh/:/var/ssh/:ro,z"
       - "{{ logs_path }}:/srv/static/logs:z"
 
 {% endfor %}
