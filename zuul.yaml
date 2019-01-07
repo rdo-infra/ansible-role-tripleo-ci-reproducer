@@ -14,12 +14,28 @@
       upstream_gerrit_user: tripleo.ci
       rdo_gerrit_user: os-tripleo-ci
 
+- job:
+    name: tripleo-ci-reproducer-centos-7
+    parent: tripleo-ci-reproducer-base
+    description: |
+      To test reproducer
+    pre-run:
+      - playbooks/tripleo-ci-reproducer/pre.yaml
+    run: playbooks/tripleo-ci-reproducer/run.yaml
+    post-run:
+      - playbooks/tripleo-ci-reproducer/post.yaml
+    nodeset: tripleo-ovb-centos-7-primary
+    vars:
+      upstream_gerrit_user: tripleo.ci
+      rdo_gerrit_user: os-tripleo-ci
+
 - project:
     name: rdo-infra/ansible-role-tripleo-ci-reproducer
     check:
       jobs:
         - tox-linters
         - tripleo-ci-reproducer-fedora-28
+        - tripleo-ci-reproducer-centos-7
     gate:
       jobs:
         - tox-linters
