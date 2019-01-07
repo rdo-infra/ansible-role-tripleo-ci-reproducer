@@ -36,4 +36,5 @@
     - name: Run reproducer
       command: |
        ~/.local/bin/ansible-playbook -vv {{ ansible_user_dir }}/start.yaml
+       sudo setenforce 0
       changed_when: true
