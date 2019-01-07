@@ -20,9 +20,9 @@ services:
     depends_on:
       - gerrit
     volumes:
-      - "~/.ssh/:/var/ssh/:z"
-      - "./playbooks/:/var/playbooks/:z"
-      - "./projects/:/var/projects/:z"
+      - "~/.ssh/:/var/ssh/"
+      - "./playbooks/:/var/playbooks/"
+      - "./projects/:/var/projects/"
     command: "ansible-playbook /var/playbooks/setup-gerrit.yaml"
   zk:
     image: "{{ zk_image }}"
@@ -43,11 +43,11 @@ services:
     command: "sh -c 'ansible-playbook /var/playbooks/wait-gerrit.yaml; zuul-scheduler -d'"
     image: "{{ zuul_scheduler_image }}"
     volumes:
-      - "./etc_zuul/:/etc/zuul/:z"
-      - "./playbooks/:/var/playbooks/:z"
-      - "~/.ssh/:/var/ssh/:z"
+      - "./etc_zuul/:/etc/zuul/"
+      - "./playbooks/:/var/playbooks/"
+      - "~/.ssh/:/var/ssh/"
       - /var/lib/zuul
-      - "./projects:/var/projects/:z"
+      - "./projects:/var/projects/"
   web:
     command: "sh -c 'ansible-playbook /var/playbooks/wait-mysql.yaml; zuul-web -d'"
     depends_on:
@@ -57,8 +57,8 @@ services:
       - "9000:9000"
     image: "{{ zuul_web_image }}"
     volumes:
-      - "./etc_zuul/:/etc/zuul/:z"
-      - "./playbooks/:/var/playbooks/:z"
+      - "./etc_zuul/:/etc/zuul/"
+      - "./playbooks/:/var/playbooks/"
   executor:
     privileged: true
     environment:
@@ -72,11 +72,11 @@ services:
       net.ipv4.tcp_keepalive_intvl: 75
       net.ipv4.tcp_keepalive_probes: 9
     volumes:
-      - "./etc_zuul/:/etc/zuul/:z"
-      - "./playbooks/:/var/playbooks/:z"
-      - "~/.ssh/:/var/ssh/:z"
-      - "{{ logs_path }}:/srv/static/logs:z"
-      - "./projects:/projects/:z"
+      - "./etc_zuul/:/etc/zuul/"
+      - "./playbooks/:/var/playbooks/"
+      - "~/.ssh/:/var/ssh/"
+      - "{{ logs_path }}:/srv/static/logs"
+      - "./projects:/projects/"
 
   launcher:
     command: "nodepool-launcher -d -l /etc/nodepool/launcher-logging.yaml"
@@ -84,9 +84,9 @@ services:
       - zk
     image: "{{ nodepool_launcher_image }}"
     volumes:
-      - "./etc_nodepool/:/etc/nodepool/:z"
-      - "~/.config/openstack/:/etc/openstack/:z"
-      - "/etc/pki/:/etc/pki/:z"
+      - "./etc_nodepool/:/etc/nodepool/"
+      - "~/.config/openstack/:/etc/openstack/"
+      - "/etc/pki/:/etc/pki/"
     ports:
       - "8022:8022"
     environment:
@@ -97,8 +97,8 @@ services:
     ports:
       - "8000:80"
     volumes:
-      - "{{ logs_path }}:/usr/local/apache2/htdocs:z"
-      - "./httpd.conf:/usr/local/apache2/conf/httpd.conf:z"
+      - "{{ logs_path }}:/usr/local/apache2/htdocs"
+      - "./httpd.conf:/usr/local/apache2/conf/httpd.conf"
 
 {% for i in range(mergers) %}
   merger{{ i }}:
@@ -109,8 +109,8 @@ services:
       - scheduler
     image: "{{ zuul_merger_image }}"
     volumes:
-      - "./etc_zuul/:/etc/zuul/:z"
-      - "~/.ssh/:/var/ssh/:z"
-      - "{{ logs_path }}:/srv/static/logs:z"
+      - "./etc_zuul/:/etc/zuul/"
+      - "~/.ssh/:/var/ssh/"
+      - "{{ logs_path }}:/srv/static/logs"
 
 {% endfor %}
