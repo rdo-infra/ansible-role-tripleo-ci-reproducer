@@ -20,7 +20,7 @@ services:
     depends_on:
       - gerrit
     volumes:
-      - "~/.ssh/:/var/ssh/:z"
+      - "~/.ssh/:/var/ssh/"
       - "./playbooks/:/var/playbooks/:z"
       - "./projects/:/var/projects/:z"
     command: "ansible-playbook /var/playbooks/setup-gerrit.yaml"
@@ -45,7 +45,7 @@ services:
     volumes:
       - "./etc_zuul/:/etc/zuul/:z"
       - "./playbooks/:/var/playbooks/:z"
-      - "~/.ssh/:/var/ssh/:z"
+      - "~/.ssh/:/var/ssh/"
       - /var/lib/zuul
       - "./projects:/var/projects/:z"
   web:
@@ -74,7 +74,7 @@ services:
     volumes:
       - "./etc_zuul/:/etc/zuul/:z"
       - "./playbooks/:/var/playbooks/:z"
-      - "~/.ssh/:/var/ssh/:z"
+      - "~/.ssh/:/var/ssh/"
       - "{{ logs_path }}:/srv/static/logs:z"
       - "./projects:/projects/:z"
 
@@ -110,7 +110,7 @@ services:
     image: "{{ zuul_merger_image }}"
     volumes:
       - "./etc_zuul/:/etc/zuul/:z"
-      - "~/.ssh/:/var/ssh/:z"
+      - "~/.ssh/:/var/ssh/"
       - "{{ logs_path }}:/srv/static/logs:z"
 
 {% endfor %}
