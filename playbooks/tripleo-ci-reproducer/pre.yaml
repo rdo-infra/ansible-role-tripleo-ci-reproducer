@@ -15,8 +15,8 @@
       become: true
       package:
         name:
-          - ansible-2.7.5
-          - docker-1.13.1
+          - ansible
+          - docker
 
     - name: Install python dependencies
       pip:
