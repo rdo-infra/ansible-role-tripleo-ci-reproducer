@@ -1,0 +1,6 @@
+#!/bin/bash -e
+
+export ANSIBLE_LIBRARY="{{ ansible_user_dir }}/{{ zuul.projects['git.openstack.org/openstack/tripleo-quickstart'].src_dir }}/library"
+export ANSIBLE_ROLES_PATH="{{ ansible_user_dir }}/{{ zuul.projects['git.openstack.org/openstack/tripleo-quickstart'].src_dir }}/roles/:{{ ansible_user_dir }}/{{ zuul.projects['git.openstack.org/openstack/tripleo-quickstart-extras'].src_dir }}/roles"
+
+~/.local/bin/ansible-playbook -vv {{ ansible_user_dir }}/start.yaml
