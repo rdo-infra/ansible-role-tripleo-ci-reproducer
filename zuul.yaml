@@ -1,6 +1,7 @@
 ---
 - job:
-    name: tripleo-ci-reproducer-fedora-28
+    abstract: true
+    name: tripleo-ci-reproducer
     parent: tripleo-ci-reproducer-base
     description: |
       To test reproducer
@@ -9,18 +10,40 @@
     run: playbooks/tripleo-ci-reproducer/run.yaml
     post-run:
       - playbooks/tripleo-ci-reproducer/post.yaml
-    nodeset: single-fedora-28-node
     vars:
       upstream_gerrit_user: tripleo.ci
       rdo_gerrit_user: os-tripleo-ci
+
+- job:
+    name: tripleo-ci-reproducer-fedora-28-host
+    parent: tripleo-ci-reproducer
+    description: |
+      To test reproducer
+    nodeset: single-fedora-28-node
+    vars:
+      nodepool_provider: host
+
+- job:
+    name: tripleo-ci-reproducer-fedora-28-libvirt
+    parent: tripleo-ci-reproducer
+    description: |
+      To test reproducer
+    nodeset: single-fedora-28-node
+    vars:
+      nodepool_provider: libvirt
+    required-projects:
+      - openstack/tripleo-quickstart
+      - openstack/tripleo-quickstart-extras
 
 - project:
     name: rdo-infra/ansible-role-tripleo-ci-reproducer
     check:
       jobs:
         - tox-linters
-        - tripleo-ci-reproducer-fedora-28
+        - tripleo-ci-reproducer-fedora-28-host
+        - tripleo-ci-reproducer-fedora-28-libvirt
     gate:
       jobs:
         - tox-linters
-        - tripleo-ci-reproducer-fedora-28
+        - tripleo-ci-reproducer-fedora-28-host
+        - tripleo-ci-reproducer-fedora-28-libvirt
