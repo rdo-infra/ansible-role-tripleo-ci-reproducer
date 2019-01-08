@@ -8,7 +8,6 @@
   git:
     repo: ssh://admin@localhost:29418/zuul-config
     dest: "{{ zuul_config.path }}"
-    ssh_opts: -o StrictHostKeyChecking=no
 
 - name: Check if we already have the secret
   stat:
@@ -41,7 +40,7 @@
       shell:
         chdir: "{{ zuul_config.path }}"
         cmd: |
-          pwd
+          set -e
           git remote add gerrit ssh://admin@localhost:29418/zuul-config
           git add zuul.d/tripleo_gerrit_key_secret.yaml
           git commit -m "Add secrets"

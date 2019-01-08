@@ -1,0 +1,12 @@
+#!/bin/bash -ex
+
+# FIXME: Delete it
+ls -la ~/
+
+# To be able to use stuff installed with pip --user
+source ~/.bashrc
+
+export ANSIBLE_LIBRARY="{{ ansible_user_dir }}/{{ zuul.projects['git.openstack.org/openstack/tripleo-quickstart'].src_dir }}/library"
+export ANSIBLE_ROLES_PATH="{{ ansible_user_dir }}/{{ zuul.projects['git.openstack.org/openstack/tripleo-quickstart'].src_dir }}/roles/:{{ ansible_user_dir }}/{{ zuul.projects['git.openstack.org/openstack/tripleo-quickstart-extras'].src_dir }}/roles"
+
+ansible-playbook -vv ~/start.yaml

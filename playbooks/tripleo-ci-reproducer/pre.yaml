@@ -21,7 +21,7 @@
           become: true
           package:
             name: epel-release
-        - name: Install package dependencies
+        - name: Install pip
           become: true
           package:
             name:
