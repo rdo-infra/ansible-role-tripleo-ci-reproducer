@@ -13,10 +13,13 @@ providers:
     pools:
       - name: main
         nodes:
-          - name: {{ ansible_default_ipv4.address }}
+        nodes:
+{% for subnode in groups['subnodes'] %}
+          - name: {{ subnode }}
             labels:
                 - fedora-28
                 - centos-7
                 - tripleo-ovb-centos-7
+            host-key: {{ lookup('pipe', 'ssh-keyscan -t ed25519 ' + hostvars[subnode].ansible_host ).split(" ", 1)[1] }}
             username: {{ ansible_user }}
-            host-key: {{ lookup('pipe', 'ssh-keyscan -t ed25519 ' + ansible_default_ipv4.address).split(" ", 1)[1] }}
+{% endfor %}
