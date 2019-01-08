@@ -30,6 +30,7 @@
 
     - name: Start it
       include_tasks: start.yaml
+
     - name: Add gerrit localhost to known_hosts
       known_hosts:
         name: "[localhost]:29418"
