@@ -1,5 +1,6 @@
 ---
 - job:
+    abstract: true
     name: tripleo-ci-reproducer
     parent: tripleo-ci-reproducer-base
     abstract: true
@@ -15,24 +16,55 @@
       rdo_gerrit_user: os-tripleo-ci
 
 - job:
-    name: tripleo-ci-reproducer-fedora-28
+    name: tripleo-ci-reproducer-fedora-28-host
     parent: tripleo-ci-reproducer
     nodeset: single-fedora-28-node
+    vars:
+      nodepool_provider: host
 
 - job:
-    name: tripleo-ci-reproducer-centos-7
+    name: tripleo-ci-reproducer-centos-7-host
     parent: tripleo-ci-reproducer
     nodeset: single-centos-7-node
+    vars:
+      nodepool_provider: host
+
+- job:
+    name: tripleo-ci-reproducer-fedora-28-libvirt
+    parent: tripleo-ci-reproducer
+    description: |
+      To test reproducer
+    nodeset: single-fedora-28-node
+    vars:
+      nodepool_provider: libvirt
+    required-projects:
+      - openstack/tripleo-quickstart
+
+- job:
+    name: tripleo-ci-reproducer-centos-7-libvirt
+    parent: tripleo-ci-reproducer
+    description: |
+      To test reproducer
+    nodeset: single-centos-7-node
+    vars:
+      nodepool_provider: libvirt
+    required-projects:
+      - openstack/tripleo-quickstart
+
 
 - project:
     name: rdo-infra/ansible-role-tripleo-ci-reproducer
     check:
       jobs:
         - tox-linters
-        - tripleo-ci-reproducer-fedora-28
-        - tripleo-ci-reproducer-centos-7
+        - tripleo-ci-reproducer-fedora-28-host
+        - tripleo-ci-reproducer-centos-7-host
+        - tripleo-ci-reproducer-fedora-28-libvirt
+        - tripleo-ci-reproducer-centos-7-libvirt
     gate:
       jobs:
         - tox-linters
-        - tripleo-ci-reproducer-fedora-28
-        - tripleo-ci-reproducer-centos-7
+        - tripleo-ci-reproducer-fedora-28-host
+        - tripleo-ci-reproducer-centos-7-host
+        - tripleo-ci-reproducer-fedora-28-libvirt
+        - tripleo-ci-reproducer-centos-7-libvirt
