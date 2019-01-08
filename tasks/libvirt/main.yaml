@@ -1,0 +1,62 @@
+---
+- name: Install libvirt packages
+  include_role:
+    name: parts/libvirt
+
+- name: Add user to libvirt group
+  become: true
+  user:
+    name: "{{ ansible_user }}"
+    groups:
+      - libvirt
+      - wheel
+    append: true
+- name: reset ssh connection to allow user changes to affect
+  meta: reset_connection
+- name: Restore a libvirt snapshot
+  when: restore_snapshot
+  vars:
+    ansible_become: true
+    snapshot_restore: true
+  include_role:
+    name: snapshot-libvirt
+
+- name: Setup libvirt nodes
+  when: not restore_snapshot
+  vars:
+    libvirt_nodepool: true
+    local_working_dir: "{{ install_path }}"
+    working_dir: "{{ install_path }}"
+    non_root_user: "{{ ansible_user }}"
+    non_root_group: "{{ ansible_user }}"
+
+  block:
+    - name: Start nodes
+      block:
+        - name: Tear down nodes
+          include_role:
+            name: libvirt/teardown/nodes
+
+        - name: Set up nodes
+          include_role:
+            name: libvirt/setup/overcloud
+
+        - name: Set up tripleo inventory
+          include_role:
+            name: tripleo-inventory
+
+    - name: prepare nodes
+      # We call playbook to parallelize
+      shell: |
+        set -e
+        PATH=$PATH:$HOME/.local/bin
+        ANSIBLE_STDOUT_CALLBACK=debug
+        ansible-playbook -i {{ install_path }}/hosts -vv \
+          {{ role_path }}/tasks/libvirt/prepare.yaml
+    - name: Create libvirt snapshot
+      when: create_snapshot
+      vars:
+        ansible_become: true
+        snapshot_create: true
+      include_role:
+        name: snapshot-libvirt
