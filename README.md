@@ -40,6 +40,12 @@ Role Variables
        build_nodepool:
           version: HEAD
           refspec: refs/for/master
+* `nodepool_provider` -- Type of nodepool provider to use, it has three
+  possible values:
+  - openstack: Use an openstack tenant
+  - host: Use the host where docker-compose runs
+  - libvirt: Start up a pair of libvirt nodes at install and connects nodepool
+    to it
 
 
 Example Playbook
