@@ -1,0 +1,10 @@
+#!/bin/bash -ex
+
+export ANSIBLE_LIBRARY="{{ ansible_user_dir }}/{{ zuul.projects['git.openstack.org/openstack/tripleo-quickstart'].src_dir }}/library"
+export ANSIBLE_ROLES_PATH="{{ ansible_user_dir }}/{{ zuul.projects['git.openstack.org/openstack/tripleo-quickstart'].src_dir }}/roles/:{{ ansible_user_dir }}/{{ zuul.projects['git.openstack.org/openstack/tripleo-quickstart-extras'].src_dir }}/roles"
+
+# To be able to use stuff installed with pip --user
+# At zuul images we don't have any .bash_profile or .profile
+PATH=$PATH:$HOME/.local/bin
+
+ansible-playbook -vv ~/start.yaml
