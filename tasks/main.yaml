@@ -27,8 +27,10 @@
   block:
     - name: Install it
       include_tasks: install.yaml
+      register: install_task
 
-    - name: Start it
+    - when: install_task.changed
+      name: Start it
       include_tasks: start.yaml
     - name: Add gerrit localhost to known_hosts
       known_hosts:
