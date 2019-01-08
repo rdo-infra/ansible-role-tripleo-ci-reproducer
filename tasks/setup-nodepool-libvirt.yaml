@@ -1,0 +1,68 @@
+---
+- name: Restore a libvirt snapshot
+  when: restore_snapshot
+  vars:
+    ansible_become: true
+    snapshot_restore: true
+    libvirt_volume_path: /opt/vm_images
+    libvirt_uri: qemu:///system
+    overcloud_nodes:
+      - name: subnode-0
+      - name: subnode-1
+  include_role:
+    name: snapshot-libvirt
+- name: Setup libvirt nodes
+  when: not restore_snapshot
+  vars:
+    libvirt_nodepool: true
+    local_working_dir: "{{ install_path }}"
+    working_dir: "{{ install_path }}"
+    non_root_user: "{{ ansible_user }}"
+    non_root_group: "{{ ansible_user }}"
+  environment:
+    SUPERMIN_KERNEL_VERSION: "{{ lookup('env', 'SUPERMIN_KERNEL_VERSION') }}"
+    SUPERMIN_KERNEL: "{{ lookup('env', 'SUPERMIN_KERNEL') }}"
+    SUPERMIN_MODULES: "{{ lookup('env', 'SUPERMIN_MODULES') }}"
+    LIBGUESTFS_BACKEND: "{{ lookup('env', 'LIBGUESTFS_BACKEND') }}"
+    LIBGUESTFS_BACKEND_SETTINGS: |
+      {{ lookup('env', 'LIBGUESTFS_BACKEND_SETTINGS') }}
+  block:
+    - name: Add virthost entry
+      add_host:
+        hostname: 127.0.0.2
+        ansible_connection: local
+        groups:
+          - virthost
+    - name: Tear down nodes
+      include_role:
+        name: libvirt/teardown/nodes
+    - name: Set up nodes
+      include_role:
+        name: libvirt/setup/overcloud
+    - name: Set up tripleo inventory
+      include_role:
+        name: tripleo-inventory
+    - name: Prepare node for nodepool
+      vars:
+        subnode_private_ip: "{{ hostvars[subnode].subnode_private_ip }}"
+        subnode_public_ip: "{{ hostvars[subnode].subnode_public_ip }}"
+      include_role:
+        name: nodepool-setup
+        apply:
+          delegate_to: "{{ subnode }}"
+      with_items:
+        - "{{ groups['subnodes'] }}"
+      loop_control:
+        loop_var: subnode
+    - name: Create libvirt snapshot
+      when: create_snapshot
+      vars:
+        ansible_become: true
+        snapshot_create: true
+        libvirt_volume_path: /opt/vm_images
+        libvirt_uri: qemu:///system
+        overcloud_nodes:
+          - name: subnode-0
+          - name: subnode-1
+      include_role:
+        name: snapshot-libvirt
