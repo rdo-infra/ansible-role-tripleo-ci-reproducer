@@ -21,16 +21,6 @@
     - etc_nodepool
     - etc_zuul
 
-- name: Generate nodepool main configuration
-  template:
-    src: "nodepool-{{ nodepool_provider }}.yaml.j2"
-    dest: "{{ install_path }}/etc_nodepool/nodepool.yaml"
-
-- name: Generate nodepool logs configuration
-  template:
-    src: "launcher-logging.yaml.j2"
-    dest: "{{ install_path }}/etc_nodepool/launcher-logging.yaml"
-
 - name: Generate zuul configuration
   template:
     src: "{{ item }}.j2"
@@ -43,43 +33,16 @@
     - web-logging.yaml
     - merger-logging.yaml
 
-- name: Do openstack setup
-  block:
-    - name: Open needed ports at default security group
-      os_security_group_rule:
-        cloud: "{{ os_cloud_name }}"
-        security_group: default
-        protocol: tcp
-        port_range_min: "{{ item }}"
-        port_range_max: "{{ item }}"
-        remote_ip_prefix: 0.0.0.0/0
-      with_items:
-        - 19885
-        - 22
+- name: Setup nodepool provider
+  include_tasks: setup-nodepool-{{ nodepool_provider }}.yaml
+  when: nodepool_provider != "host" and setup_nodepool
 
-    - name: Get installed images names
-      os_image_facts:
-        cloud: "{{ os_cloud_name }}"
+- name: Generate nodepool main configuration
+  template:
+    src: "nodepool-{{ nodepool_provider }}.yaml.j2"
+    dest: "{{ install_path }}/etc_nodepool/nodepool.yaml"
 
-    - name: Check image are uploaded
-      fail:
-        msg: |
-          Cannot find {{ item }} at the openstack cloud, you can upload one from
-          https://nb02.openstack.org/images/ and add your ssh pub key with
-          virt-edit and upload it to your openstack cloud.
-      when: |
-        openstack_image|selectattr( 'name', 'equalto', item )|list|length == 0
-      with_items:
-        - "{{ os_centos7_image }}"
-        - "{{ os_fedora28_image }}"
-
-    - name: Gather facts about a previously created network by name
-      os_networks_facts:
-        cloud: "{{ os_cloud_name }}"
-
-    - name: Check if networks present in the tenant
-      fail:
-        msg: 'Network "{{ item }} is not found!'
-      when: "item not in openstack_networks|map(attribute='name')|list"
-      loop: "{{ cloud_networks }}"
-  when: nodepool_provider == "openstack"
+- name: Generate nodepool logs configuration
+  template:
+    src: "launcher-logging.yaml.j2"
+    dest: "{{ install_path }}/etc_nodepool/launcher-logging.yaml"
