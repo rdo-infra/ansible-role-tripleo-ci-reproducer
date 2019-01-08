@@ -1,0 +1,30 @@
+---
+- name: Setup libvirt nodes
+  vars:
+    libvirt_nodepool: true
+    local_working_dir: "{{ install_path }}"
+    working_dir: "{{ install_path }}"
+    non_root_user: "{{ ansible_user }}"
+    non_root_group: "{{ ansible_user }}"
+  environment:
+    SUPERMIN_KERNEL_VERSION: "{{ lookup('env', 'SUPERMIN_KERNEL_VERSION') }}"
+    SUPERMIN_KERNEL: "{{ lookup('env', 'SUPERMIN_KERNEL') }}"
+    SUPERMIN_MODULES: "{{ lookup('env', 'SUPERMIN_MODULES') }}"
+    LIBGUESTFS_BACKEND: "{{ lookup('env', 'LIBGUESTFS_BACKEND') }}"
+    LIBGUESTFS_BACKEND_SETTINGS: |
+      {{ lookup('env', 'LIBGUESTFS_BACKEND_SETTINGS') }}
+  block:
+    - name: Add virthost entry
+      add_host:
+        hostname: "127.0.0.2"
+        ansible_connection: local
+        groups:
+          - virthost
+    - include_role:
+        name: libvirt/teardown/nodes
+    - include_role:
+        name: libvirt/setup/overcloud
+    - include_role:
+        name: tripleo-inventory
+    - include_role:
+        name: nodepool-setup
