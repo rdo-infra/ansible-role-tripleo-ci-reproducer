@@ -1,0 +1,6 @@
+#!/bin/bash -e
+
+export ANSIBLE_LIBRARY="{{ ansible_user_dir }}/{{ zuul.projects[tq].src_dir }}/library"
+export ANSIBLE_ROLES_PATH="{{ ansible_user_dir }}/{{ zuul.projects[tq].src_dir }}/roles/:{{ ansible_user_dir }}/{{ zuul.projects[tqe].src_dir }}/roles"
+
+ansible-playbook -vv {{ ansible_user_dir }}/start.yaml
