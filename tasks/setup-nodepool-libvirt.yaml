@@ -1,0 +1,32 @@
+---
+- name: Setup libvirt nodes
+  vars:
+    libvirt_nodepool: true
+    local_working_dir: "{{ install_path }}"
+    working_dir: "{{ install_path }}"
+    non_root_user: "{{ ansible_user }}"
+    non_root_group: "{{ ansible_user }}"
+  environment:
+    SUPERMIN_KERNEL_VERSION: "{{ lookup('env', 'SUPERMIN_KERNEL_VERSION') }}"
+    SUPERMIN_KERNEL: "{{ lookup('env', 'SUPERMIN_KERNEL') }}"
+    SUPERMIN_MODULES: "{{ lookup('env', 'SUPERMIN_MODULES') }}"
+    LIBGUESTFS_BACKEND: "{{ lookup('env', 'LIBGUESTFS_BACKEND') }}"
+    LIBGUESTFS_BACKEND_SETTINGS: |
+      {{ lookup('env', 'LIBGUESTFS_BACKEND_SETTINGS') }}
+  block:
+    - name: Tear down nodes
+      include_role:
+        name: libvirt/teardown/nodes
+    - name: Set up nodes
+      include_role:
+        name: libvirt/setup/overcloud
+    - name: Set up tripleo inventory
+      include_role:
+        name: tripleo-inventory
+    - name: Prepare nodes for nodepool
+      include_role:
+        name: nodepool-setup
+        apply:
+          delegate_to: "{{ item }}"
+      with_items:
+        - "{{ groups['subnodes'] }}"
