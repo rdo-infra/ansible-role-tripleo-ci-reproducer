@@ -1,33 +1,45 @@
 ---
 - hosts: primary
-  vars:
-    repro_role_path: >-
-      {{ ansible_user_dir }}/{{ zuul.projects[
-        'review.rdoproject.org/rdo-infra/ansible-role-tripleo-ci-reproducer'
-        ].src_dir }}
   tasks:
     - name: Gather needed facts
       setup:
-        gather_subset: "!min,user_dir"
-      when: ansible_user_dir is not defined
+        gather_subset: "!min,user_dir,distribution"
+      when:
+        - ansible_user_dir is not defined
+        - ansible_distribution is not defined
+    - name: Check if pip is installed
+      shell: command -v pip > /dev/null 2>&1
+      ignore_errors: true
+      changed_when: false
+      register: pip_exists
 
+    - when: pip_exists.rc != 0
+      name: Install pip
+      block:
+        - when: ansible_distribution == "CentOS"
+          name: Install EPEL
+          become: true
+          package:
+            name: epel-release
+        - name: Install package dependencies
+          become: true
+          package:
+            name:
+              - python-pip
     - name: Install package dependencies
       become: true
       package:
         name:
-          - ansible-2.7.5
-          - docker-1.13.1
+          - "{{ docker_package | default('docker-1.13.1') }}"
 
     - name: Install python dependencies
       pip:
-        requirements: "{{ repro_role_path }}/requirements.txt"
+        name:
+          - ansible==2.7.5
+          - openstacksdk==0.13.0
+          - docker==3.6.0
+          - docker-compose==1.23.2
         extra_args: --user
-
-    - name: Create openstack config dir
-      file:
-        path: "{{ ansible_user_dir }}/.config/openstack/"
-        state: directory
-        mode: 0755
 
     - name: Find out docker group name
       shell: grep docker /etc/group | cut -d":" -f1 | head -1
@@ -87,14 +99,3 @@
         name: docker
         state: started
         enabled: true
-
-    - name: Create roles directory
-      file:
-        path: "{{ ansible_user_dir }}/roles"
-        state: directory
-
-    - name: Link role
-      file:
-        src: "{{ repro_role_path }}"
-        dest: "{{ ansible_user_dir }}/roles/tripleo-ci-reproducer"
-        state: link
