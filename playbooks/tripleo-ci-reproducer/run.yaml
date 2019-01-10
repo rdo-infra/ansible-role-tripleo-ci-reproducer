@@ -1,7 +1,20 @@
 ---
 - hosts: primary
+  vars:
+    repro_role_path: >-
+      {{ ansible_user_dir }}/{{ zuul.projects[
+        'review.rdoproject.org/rdo-infra/ansible-role-tripleo-ci-reproducer'
+        ].src_dir }}
   tasks:
-
+    - name: Create roles directory
+      file:
+        path: "{{ ansible_user_dir }}/roles"
+        state: directory
+    - name: Link role
+      file:
+        src: "{{ repro_role_path }}"
+        dest: "{{ ansible_user_dir }}/roles/tripleo-ci-reproducer"
+        state: link
     - name: Create reproducer playbook
       vars:
         reproducer_playbook:
@@ -21,5 +34,6 @@
         dest: "{{ ansible_user_dir }}/start.yaml"
 
     - name: Run reproducer
-      command: ansible-playbook -vv {{ ansible_user_dir }}/start.yaml
+      command: |
+        ~/.local/bin/ansible-playbook -vv {{ ansible_user_dir }}/start.yaml
       changed_when: true
