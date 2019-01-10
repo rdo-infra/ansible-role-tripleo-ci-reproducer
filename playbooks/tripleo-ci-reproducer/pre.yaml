@@ -1,10 +1,5 @@
 ---
 - hosts: primary
-  vars:
-    repro_role_path: >-
-      {{ ansible_user_dir }}/{{ zuul.projects[
-        'review.rdoproject.org/rdo-infra/ansible-role-tripleo-ci-reproducer'
-        ].src_dir }}
   tasks:
     - name: Gather needed facts
       setup:
@@ -15,19 +10,16 @@
       become: true
       package:
         name:
-          - ansible-2.7.5
-          - docker-1.13.1
+          - "{{ ansible_package| default('ansible-2.7.5') }}"
+          - "{{ docker_package | default('docker-1.13.1') }}"
 
     - name: Install python dependencies
       pip:
-        requirements: "{{ repro_role_path }}/requirements.txt"
+        name:
+          - openstacksdk
+          - docker
+          - docker-compose
         extra_args: --user
-
-    - name: Create openstack config dir
-      file:
-        path: "{{ ansible_user_dir }}/.config/openstack/"
-        state: directory
-        mode: 0755
 
     - name: Find out docker group name
       shell: grep docker /etc/group | cut -d":" -f1 | head -1
