@@ -1,3 +1,0 @@
-openstacksdk
-docker
-docker-compose
