@@ -30,6 +30,14 @@
 
     - name: Start it
       include_tasks: start.yaml
+    - name: Check if we have a gerrit key for tripleo
+      stat:
+        path: "{{ tripleo_ci_gerrit_key }}"
+      register: gerrit_key
+    - when: gerrit_key.stat.exists
+      name: Encrypt gerrit key
+      include_tasks: encrypt-gerrit-key.yaml
+
   when: state == "present"
 
 - name: stop reproducer

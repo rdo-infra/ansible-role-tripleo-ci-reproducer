@@ -10,6 +10,7 @@
     state: present
     build: true
     pull: "{{ pull | default(false) | bool }}"
+    restarted: true
 
 - name: Wait for zuul tenant
   uri:
