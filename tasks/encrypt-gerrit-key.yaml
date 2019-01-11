@@ -1,0 +1,51 @@
+---
+- name: Create tmp dir to clone zuul-config
+  tempfile:
+    state: directory
+  register: zuul_config
+
+- name: Clone zuul-config project
+  git:
+    repo: ssh://admin@localhost:29418/zuul-config
+    dest: "{{ zuul_config.path }}"
+
+- name: Check if we already have the secret
+  stat:
+    path: "{{ zuul_config.path }}/zuul.d/tripleo_gerrit_key_secret.yaml"
+  register: encrypted_key
+
+- when: not encrypted_key.stat.exists
+  block:
+    - name: Download encryption tool
+      get_url:
+        url: https://raw.githubusercontent.com/{{
+          "openstack-infra/zuul/master/tools/encrypt_secret.py"
+          }}
+        dest: "{{ install_path }}/encrypt_secret.py"
+        mode: 0766
+      register: encryption_tool
+    - name: Encrypt tripleo gerrit key
+      shell: |
+        secrets={{ zuul_config.path }}/zuul.d/tripleo_gerrit_key_secret.yaml
+        {{ encryption_tool.dest }} \
+          --tenant tripleo-ci-reproducer \
+          --infile {{ tripleo_ci_gerrit_key }} \
+          --outfile $secrets\
+          http://localhost:9000 zuul-config
+        sed -i "s/<name>/command/" $secrets
+        sed -i "s/<fieldname>/ssh_private_key/" $secrets
+      changed_when: true
+
+    - name: Push commit with secrets
+      shell:
+        chdir: "{{ zuul_config.path }}"
+        cmd: |
+          pwd
+          git remote add gerrit ssh://admin@localhost:29418/zuul-config
+          git add zuul.d/tripleo_gerrit_key_secret.yaml
+          git commit -m "Add secrets"
+          git review
+          alias gerrit='ssh -p 29418 admin@localhost gerrit'
+          gerrit review --workflow=+1 --verified=+2 --code-review=+2 --submit \
+          $(git rev-parse HEAD)
+      changed_when: true

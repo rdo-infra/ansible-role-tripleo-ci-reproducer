@@ -1,0 +1,7 @@
+---
+- hosts: all
+  tasks:
+    - name: Delete TripleO Gerrit SSH private key
+      file:
+        path: "{{ tripleo_gerrit_key_path }}"
+        state: absent
