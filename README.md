@@ -29,6 +29,9 @@ Role Variables
   is possible to play with docker-compose commands for more advanced uses,
   default is ansible_user_dir/tripleo-ci-reproducer/
 * `state` -- Action to do 'present' to start 'absent' to stop.
+* `tripleo_ci_gerrit_key` -- ssh key for the tripleo ci gerrit user if present
+  it will be encrypted after zuul starts to be able to run the reproducer
+  job tripleo-ci-reproducer-fedora-28
 * `build_zuul` and `build_nodepool` -- Point to a zuul/nodepool version to use
   with 'version' and 'refspec' example:
        build_zuul:
