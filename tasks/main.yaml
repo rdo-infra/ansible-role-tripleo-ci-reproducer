@@ -30,6 +30,11 @@
 
     - name: Start it
       include_tasks: start.yaml
+    - name: Add gerrit localhost to known_hosts
+      known_hosts:
+        name: "[localhost]:29418"
+        key: "{{ lookup('pipe', 'ssh-keyscan
+          -t ecdsa-sha2-nistp256 -p 29418 localhost') }}"
     - name: Check if we have a gerrit key for tripleo
       stat:
         path: "{{ tripleo_ci_gerrit_key }}"

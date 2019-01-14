@@ -8,7 +8,6 @@
   git:
     repo: ssh://admin@localhost:29418/zuul-config
     dest: "{{ zuul_config.path }}"
-    ssh_opts: -o StrictHostKeyChecking=no
 
 - name: Check if we already have the secret
   stat:
