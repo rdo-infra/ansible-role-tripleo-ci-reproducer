@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ad0253b_d29dc55a",
+        "filename": "README.md",
+        "patchSetId": 49
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 242
+      },
+      "writtenOn": "2019-01-14T13:47:40Z",
+      "side": 1,
+      "message": "I am not sure when \u0027host\u0027 is used.\nlibvirt usually runs on the same host",
+      "revId": "ecbceb8e8ffe4fac7c669c0cb1a43ab006634a02",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ad0253b_72add187",
+        "filename": "tasks/setup-nodepool-libvirt.yaml",
+        "patchSetId": 49
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 242
+      },
+      "writtenOn": "2019-01-14T13:47:40Z",
+      "side": 1,
+      "message": "Style comment - lines between the \u0027name\u0027 sections makes it more readable",
+      "revId": "ecbceb8e8ffe4fac7c669c0cb1a43ab006634a02",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ad0253b_32b639dd",
+        "filename": "templates/nodepool-host.yaml.j2",
+        "patchSetId": 49
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 242
+      },
+      "writtenOn": "2019-01-14T13:47:40Z",
+      "side": 1,
+      "message": "why ovb?",
+      "revId": "ecbceb8e8ffe4fac7c669c0cb1a43ab006634a02",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ad0253b_f2afa17b",
+        "filename": "templates/nodepool-libvirt.yaml.j2",
+        "patchSetId": 49
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 242
+      },
+      "writtenOn": "2019-01-14T13:47:40Z",
+      "side": 1,
+      "message": "incomplete?",
+      "revId": "ecbceb8e8ffe4fac7c669c0cb1a43ab006634a02",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
