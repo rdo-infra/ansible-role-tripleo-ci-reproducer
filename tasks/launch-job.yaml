@@ -1,0 +1,101 @@
+---
+- name: Create tmp dir to clone testproject
+  tempfile:
+    state: directory
+  register: testproject
+
+- name: Clone testproject project
+  git:
+    repo: ssh://admin@localhost:29418/test1
+    dest: "{{ testproject.path }}"
+
+- name: Dump zuul.yaml
+  copy:
+    content: "{{ zuul_yaml | to_nice_yaml }}"
+    dest: "{{ testproject.path }}/zuul.yaml"
+    mode: 0644
+
+- name: Push zuul.yaml to launch job
+  shell:
+    chdir: "{{ testproject.path }}"
+    cmd: |
+      scp -p -P 29418 admin@localhost:hooks/commit-msg .git/hooks/
+      git config --local user.name Admin
+      git config --local user.email admin@example.com
+      git remote add gerrit ssh://admin@localhost:29418/test1
+      git add zuul.yaml
+      git commit -m "Add job to launch"
+      {% for review in depends_on %}
+      Depends-On: {{ review }}
+      {% endfor %}
+      git push origin HEAD:refs/for/master 2>&1 | tee push.log
+      grep "remote:.*http" push.log | awk '{print $2}' | tee url.txt
+      sed "s/.*\/\([0-9]*\)$/\1/" url.txt| tee review.txt
+      git rev-parse HEAD | tee commit.txt
+  changed_when: true
+  register: git_output
+
+- name: Set facts about review
+  set_fact:
+    review: "{{ lookup('file', testproject.path + '/review.txt') }}"
+    commit: "{{ lookup('file', testproject.path + '/commit.txt') }}"
+    change: "{{ review }},1"
+
+- name: Wait for job to start
+  uri:
+    url: |
+      http://localhost:9000/api/tenant/tripleo-ci-reproducer/status/change/{{
+        change }}
+    method: GET
+    return_content: true
+    status_code: 200
+    body_format: json
+  register: zuul_status
+  retries: 20
+  delay: 10
+  until: |
+    zuul_status.json.pipelines.0.change_queues | length != 0
+  changed_when: false
+
+- name: Wait for job to finish
+  uri:
+    url: |
+      http://localhost:9000/api/tenant/tripleo-ci-reproducer/status/change/{{
+        change }}
+    method: GET
+    return_content: true
+    status_code: 200
+    body_format: json
+  register: zuul_status
+  retries: 20
+  delay: 10
+  until: |
+    zuul_status.json.pipelines.0.change_queues | length == 0
+  changed_when: false
+
+- name: Get zuul builds
+  uri:
+    url: |
+      http://localhost:9000/api/tenant/tripleo-ci-reproducer/builds?change={{
+        change }}
+    method: GET
+    return_content: true
+    status_code: 200
+    body_format: json
+  register: zuul_builds
+  changed_when: false
+
+- name: Show latest build
+  debug:
+    msg: "{{ zuul_builds.json.0 | to_nice_yaml}}"
+  when: zuul_builds.json | length > 0
+
+- name: Get gerrit info
+  command: |
+    ssh -p 29418 admin@localhost
+      gerrit query --comments "commit:{{ commit }}"
+  register: gerrit_info
+
+- name: Print gerrit info
+  debug:
+    var: gerrit_info
