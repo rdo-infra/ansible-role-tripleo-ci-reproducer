@@ -10,6 +10,7 @@
     run: playbooks/tripleo-ci-reproducer/run.yaml
     post-run:
       - playbooks/tripleo-ci-reproducer/post.yaml
+    timeout: 3600
     vars:
       upstream_gerrit_user: os-tripleo-ci
       rdo_gerrit_user: os-tripleo-ci
