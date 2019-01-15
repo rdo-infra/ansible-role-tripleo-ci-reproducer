@@ -26,7 +26,7 @@
     status_code: 200
     body_format: json
   register: result
-  retries: 30
+  retries: 60
   delay: 10
   until: result.status == 200 and result.json["zuul_version"] is defined
   changed_when: false
@@ -42,8 +42,7 @@
 
 - name: Check we have nodes to run jobs on
   when: nodepool_provider != "openstack"
-  block:
-    - name: Get node list from nodepool
+  block: - name: Get node list from nodepool
       uri:
         url: "http://localhost:8005/node-list"
         method: GET
