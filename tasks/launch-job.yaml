@@ -1,0 +1,36 @@
+---
+- name: Create tmp dir to clone testproject
+  tempfile:
+    state: directory
+  register: testproject
+
+- name: Clone testproject project
+  git:
+    repo: ssh://admin@localhost:29418/test1
+    dest: "{{ testproject.path }}"
+
+- name: Create a test branch
+  command: 'git checkout -b test-branch-{{ 1000 | random }}'
+  args:
+    chdir: "{{ testproject.path }}/test1"
+
+- name: Dump zuul.yaml
+  copy:
+    content: "{{ zuul_yaml | to_nice_yaml }}"
+    dest: "{{ testproject.path }}/zuul.yaml"
+    mode: 0644
+
+- name: Push zuul.yaml to launch job
+  shell:
+    chdir: "{{ testproject.path }}"
+    cmd: |
+      pwd
+      git remote add gerrit ssh://admin@localhost:29418/test1
+      git add zuul.yaml
+      git commit -m "Add job to launch
+      Depends-On: {{ depends_on | default('') }}"
+      git review
+      alias gerrit='ssh -p 29418 admin@localhost gerrit'
+      gerrit review --workflow=+1 --verified=+2 --code-review=+2 --submit \
+      $(git rev-parse HEAD)
+  changed_when: true
