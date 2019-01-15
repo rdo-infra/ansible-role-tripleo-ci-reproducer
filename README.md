@@ -40,28 +40,57 @@ Role Variables
        build_nodepool:
           version: HEAD
           refspec: refs/for/master
+* `nodepool_provider` -- Type of nodepool provider to use, it has three
+  possible values:
+  - openstack: Use an openstack tenant
+  - host: Use the host where docker-compose runs
+  - libvirt: Start up a pair of libvirt nodes at install and connects nodepool
+    to it
+* `zuul_job` -- zuul job to executo
+* `zuul_yaml` -- zuul config to run it overwrite zuul_job
+* `depends_on` -- Gerrit reviews to test
 
+Prerequisites
+-------------
+Inside the role there is a playbook to prepare your machine to run the
+reproducer, the path is playbooks/tripleo-ci-reproducer/pre.yaml is also
+running at CI so it's well tested.
 
 Example Playbook
 ----------------
+
+Run standalone job over tripleo noop change
 
 ```yaml
 ---
 - name: Start reproducer
   hosts: virthost
   vars:
-    state: present
-  roles:
-    - ci-reproducer
+    zuul_job: tripleo-ci-centos-7-standalone
+    depends_on:
+        - https://review.openstack.org/#/c/622261/
+  tasks:
+    - include_role:
+        name: ci-reproducer
 ```
 
+Run standalone without tempest towards a noop change
 ```yaml
 ---
 - name: Stop reproducer
   hosts: virthost
   vars:
-    state: absent
-  roles:
+    zuul_yaml:
+      - project:
+          check:
+            jobs:
+              - name: tripleo-ci-centos-7-standalone
+                vars:
+                  override_settings:
+                    tempest_run: false
+  tasks:
+    - include_role:
+        name: ci-reproducer
     - ci-reproducer
 ```
 License
