@@ -34,6 +34,7 @@
         dest: "{{ ansible_user_dir }}/start.yaml"
 
     - name: Run reproducer
-      command: |
+      command: >-
        ~/.local/bin/ansible-playbook -vv {{ ansible_user_dir }}/start.yaml
+       --tags start
       changed_when: true
