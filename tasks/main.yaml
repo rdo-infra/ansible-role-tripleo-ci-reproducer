@@ -43,11 +43,18 @@
     - when: gerrit_key.stat.exists
       name: Encrypt gerrit key
       include_tasks: encrypt-gerrit-key.yaml
+  tags:
+    - start
 
-  when: state == "present"
+- name: Launch job
+  include_tasks: launch-job.yaml
+  tags:
+    - launch
 
 - name: stop reproducer
   block:
     - name: Stop it
       include_tasks: stop.yaml
-  when: state == "absent"
+  tags:
+    - never
+    - stop
