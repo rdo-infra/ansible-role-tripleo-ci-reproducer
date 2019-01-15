@@ -31,11 +31,19 @@
     - name: Start it
       include_tasks: start.yaml
 
-    - name: Add gerrit localhost to known_hosts
+    - name: Add gerrits to known_hosts
       known_hosts:
-        name: "[localhost]:29418"
+        name: "[{{ item.name }}]:29418"
         key: "{{ lookup('pipe', 'ssh-keyscan
-          -t ecdsa-sha2-nistp256 -p 29418 localhost') }}"
+          -t {{ item.type }} -p 29418 {{ item.name }}') }}"
+      with_items:
+        - name: localhost
+          type: ecdsa-sha2-nistp256
+        - name: review.openstack.org
+          type: ssh-rsa
+        - name: review.rdoproject.org
+          type: ssh-rsa
+
     - name: Check if we have a gerrit key for tripleo
       stat:
         path: "{{ tripleo_ci_gerrit_key }}"
@@ -43,11 +51,18 @@
     - when: gerrit_key.stat.exists
       name: Encrypt gerrit key
       include_tasks: encrypt-gerrit-key.yaml
+  tags:
+    - start
 
-  when: state == "present"
+- name: Launch job
+  include_tasks: launch-job.yaml
+  tags:
+    - launch
 
 - name: stop reproducer
   block:
     - name: Stop it
       include_tasks: stop.yaml
-  when: state == "absent"
+  tags:
+    - never
+    - stop
