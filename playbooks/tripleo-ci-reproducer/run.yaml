@@ -45,5 +45,5 @@
         dest: "{{ ansible_user_dir }}/run.sh"
         mode: 0755
     - name: Run reproducer
-      command: ~/run.sh
+      command: "{{ ansible_user_dir }}/run.sh"
       changed_when: true
