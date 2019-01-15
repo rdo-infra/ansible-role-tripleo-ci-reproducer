@@ -51,6 +51,12 @@
     nodeset: single-centos-7-node
 
 
+- project-template:
+    name: tripleo-ci-reproducer
+    opentack-check:
+      jobs:
+        - tripleo-ci-reproducer-fedora-28
+
 - project:
     name: rdo-infra/ansible-role-tripleo-ci-reproducer
     check:
