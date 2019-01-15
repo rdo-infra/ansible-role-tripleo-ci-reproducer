@@ -20,24 +20,9 @@
         src: "{{ repro_role_path }}"
         dest: "{{ ansible_user_dir }}/roles/tripleo-ci-reproducer"
         state: link
-    - name: Create reproducer playbook
-      vars:
-        reproducer_playbook:
-          - hosts: localhost
-            tasks:
-              - name: Start reproducer using host as the nodepool provider
-                vars:
-                  nodepool_provider: "{{ nodepool_provider }}"
-                  upstream_gerrit_user: "{{ upstream_gerrit_user }}"
-                  upstream_gerrit_key: "{{ tripleo_gerrit_key_name }}"
-                  rdo_gerrit_user: "{{ rdo_gerrit_user }}"
-                  rdo_gerrit_key: "{{ tripleo_gerrit_key_name }}"
-                  control_vcpu: 4
-                  control_memory: 4096
-                include_role:
-                  name: tripleo-ci-reproducer
-      copy:
-        content: "{{ reproducer_playbook | to_nice_yaml }}"
+    - name: Generate reproducer playbook
+      template:
+        src: run.yaml.j2
         dest: "{{ ansible_user_dir }}/start.yaml"
     - name: Generate run script
       template:
@@ -45,5 +30,5 @@
         dest: "{{ ansible_user_dir }}/run.sh"
         mode: 0755
     - name: Run reproducer
-      command: ~/run.sh
+      command: "{{ ansible_user_dir }}/run.sh"
       changed_when: true
