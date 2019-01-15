@@ -18,8 +18,6 @@ tripleo_ci_gerrit_key: "~/.ssh/tripleo_ci_gerrit_id_rsa"
 
 install_path: "{{ ansible_user_dir }}/tripleo-ci-reproducer/"
 logs_path: "./logs"
-state: present
-
 mergers: "{{ ansible_processor_vcpus }}"
 
 nodepool_provider: openstack
@@ -32,6 +30,15 @@ os_cloud_networks:
     - provider_net_lab
 cloud_networks: "{{ os_cloud_networks[os_cloud_name]|default(['private']) }}"
 
+depends_on: []
+
+zuul_job: noop
+
+zuul_yaml:
+  - project:
+      check:
+        jobs:
+          - "{{ zuul_job }}"
 
 ##############
 # Docker images
