@@ -1,0 +1,38 @@
+---
+- hosts: localhost
+  tasks:
+    - name: Start {{ nodepool_provider }} reproducer
+      vars:
+        nodepool_provider: "{{ nodepool_provider }}"
+        upstream_gerrit_user: "{{ upstream_gerrit_user }}"
+        upstream_gerrit_key: "{{ tripleo_gerrit_key_name }}"
+        rdo_gerrit_user: "{{ rdo_gerrit_user }}"
+        rdo_gerrit_key: "{{ tripleo_gerrit_key_name }}"
+        control_vcpu: 4
+        control_memory: 4096
+        zuul_yaml:
+          - job:
+              name: hello-reproducer
+              run: playbooks/run.yaml
+          - project:
+              check:
+                jobs:
+                  - hello-reproducer
+      include_role:
+        name: tripleo-ci-reproducer
+    - name: Get zuul builds
+      uri:
+        url: http://localhost:9000/api/tenant/tripleo-ci-reproducer/builds
+        method: GET
+        return_content: true
+        status_code: 200
+        body_format: json
+      register: zuul_builds
+      changed_when: false
+
+    - name: Check that we have a build and it's a success
+      fail:
+        msg: "Build was not executed or a failure: {{ '{{' }}
+          zuul_builds.json | to_nice_yaml {{ '}}' }}"
+      when: zuul_builds.json | length == 0 or
+            zuul_builds.json.0.result != "SUCCESS"
