@@ -25,7 +25,7 @@
         reproducer_playbook:
           - hosts: localhost
             tasks:
-              - name: Start reproducer using host as the nodepool provider
+              - name: Start {{ nodepool_provider }} reproducer
                 vars:
                   nodepool_provider: "{{ nodepool_provider }}"
                   upstream_gerrit_user: "{{ upstream_gerrit_user }}"
@@ -34,6 +34,13 @@
                   rdo_gerrit_key: "{{ tripleo_gerrit_key_name }}"
                   control_vcpu: 4
                   control_memory: 4096
+                  zuul_yaml:
+                    - job:
+                        name: hello-reproducer
+                    - project:
+                        check:
+                          jobs:
+                            - hello-reproducer
                 include_role:
                   name: tripleo-ci-reproducer
       copy:
@@ -45,5 +52,5 @@
         dest: "{{ ansible_user_dir }}/run.sh"
         mode: 0755
     - name: Run reproducer
-      command: ~/run.sh
+      command: "{{ ansible_user_dir }}/run.sh"
       changed_when: true

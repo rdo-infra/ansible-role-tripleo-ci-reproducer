@@ -46,28 +46,45 @@ Role Variables
   - host: Use the host where docker-compose runs
   - libvirt: Start up a pair of libvirt nodes at install and connects nodepool
     to it
-
+* `zuul_job` -- zuul job to executo
+* `zuul_yaml` -- zuul config to run it overwrite zuul_job
+* `depends_on` -- Gerrit reviews to test
 
 Example Playbook
 ----------------
+
+Run standalone job over tripleo noop change
 
 ```yaml
 ---
 - name: Start reproducer
   hosts: virthost
   vars:
-    state: present
-  roles:
-    - ci-reproducer
+    zuul_job: tripleo-ci-centos-7-standalone
+    depends_on:
+        - https://review.openstack.org/#/c/622261/
+  tasks:
+    - include_role:
+        name: ci-reproducer
 ```
 
+Run standalone without tempest towards a noop change
 ```yaml
 ---
 - name: Stop reproducer
   hosts: virthost
   vars:
-    state: absent
-  roles:
+    zuul_yaml:
+      - project:
+          check:
+            jobs:
+              - name: tripleo-ci-centos-7-standalone
+                vars:
+                  override_settings:
+                    tempest_run: false
+  tasks:
+    - include_role:
+        name: ci-reproducer
     - ci-reproducer
 ```
 License
