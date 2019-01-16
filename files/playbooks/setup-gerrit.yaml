@@ -46,7 +46,7 @@
         version: refs/meta/config
     - name: Copy new All-Projects config into place
       copy:
-        src: "/var/playbooks/project.config"
+        src: "/usr/src/project.config"
         dest: "{{ all_projects_repo }}/project.config"
     - name: Update All-Projects config in Gerrit
       shell: |
