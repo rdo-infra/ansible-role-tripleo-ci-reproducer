@@ -43,6 +43,18 @@
     - web-logging.yaml
     - merger-logging.yaml
 
+- name: Generate secrets.env
+  vars:
+    id_rsa_b64: "{{ lookup('file', '~/.ssh/id_rsa') | b64encode }}"
+    upstream_gerrit_key_b64: "{{ lookup('file', '~/.ssh/' +
+      upstream_gerrit_key) | b64encode }}"
+    rdo_gerrit_key_b64: "{{ lookup('file', '~/.ssh/' +
+      rdo_gerrit_key) | b64encode }}"
+  template:
+    src: secrets.env.j2
+    dest: "{{ install_path }}/secrets.env"
+    mode: 0600
+
 - name: Do openstack setup
   block:
     - name: Open needed ports at default security group
@@ -81,5 +93,5 @@
       fail:
         msg: 'Network "{{ item }} is not found!'
       when: "item not in openstack_networks|map(attribute='name')|list"
-      loop: "{{ cloud_networks }}"
+      with_items: "{{ cloud_networks }}"
   when: nodepool_provider == "openstack"
