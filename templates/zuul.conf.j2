@@ -18,7 +18,7 @@ server=review.openstack.org
 canonical_hostname=git.openstack.org
 gitweb_url_template=https://git.openstack.org/cgit/{project.name}/commit/?id={sha}
 user={{ upstream_gerrit_user }}
-sshkey=/var/ssh/{{ upstream_gerrit_key }}
+sshkey=/var/ssh/upstream_gerrit_key
 
 # Add your rdo user to gerrit stream group, e.g.:
 # https://review.rdoproject.org/r/#/c/17581/
@@ -29,7 +29,7 @@ server=review.rdoproject.org
 port=29418
 baseurl=https://review.rdoproject.org/r
 user={{ rdo_gerrit_user }}
-sshkey=/var/ssh/{{ rdo_gerrit_key }}
+sshkey=/var/ssh/rdo_gerrit_key
 
 [connection "gerrit"]
 name=gerrit
