@@ -1,0 +1,17 @@
+---
+- hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Create ssh dir
+      file:
+        path: /var/ssh
+        state: directory
+        mode: 0644
+    - name: Link all the ssh keys from secrets
+      file:
+        src: /run/secrets/{{ item }}
+        dest: /var/ssh/{{ item }}
+        state: link
+      with_items:
+        - id_rsa
+        - id_rsa.pub

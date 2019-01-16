@@ -1,4 +1,4 @@
-version: '3'
+version: '3.5'
 
 services:
   gerrit:
@@ -20,10 +20,12 @@ services:
     depends_on:
       - gerrit
     volumes:
-      - "~/.ssh/:/var/ssh/:z"
-      - "./playbooks/:/var/playbooks/:z"
+      - "./playbooks/:/usr/src/:z"
       - "./projects/:/var/projects/:z"
-    command: "ansible-playbook /var/playbooks/setup-gerrit.yaml"
+    secrets:
+      - id_rsa
+      - id_rsa.pub
+    command: "ansible-playbook inject-ssh-keys.yaml setup-gerrit.yaml"
   zk:
     image: "{{ zk_image }}"
   mysql:
@@ -40,16 +42,18 @@ services:
       - mysql
     environment:
       no_proxy: "${no_proxy},gerrit"
-    command: "sh -c 'ansible-playbook /var/playbooks/wait-gerrit.yaml; zuul-scheduler -d'"
+    command: "sh -c 'ansible-playbook inject-ssh-keys.yaml wait-gerrit.yaml; zuul-scheduler -d'"
     image: "{{ zuul_scheduler_image }}"
     volumes:
       - "./etc_zuul/:/etc/zuul/:z"
-      - "./playbooks/:/var/playbooks/:z"
-      - "~/.ssh/:/var/ssh/:z"
+      - "./playbooks/:/usr/src/:z"
       - /var/lib/zuul
       - "./projects:/var/projects/:z"
+    secrets:
+      - id_rsa
+      - id_rsa.pub
   web:
-    command: "sh -c 'ansible-playbook /var/playbooks/wait-mysql.yaml; zuul-web -d'"
+    command: "sh -c 'ansible-playbook wait-mysql.yaml; zuul-web -d'"
     depends_on:
       - scheduler
       - mysql
@@ -58,12 +62,12 @@ services:
     image: "{{ zuul_web_image }}"
     volumes:
       - "./etc_zuul/:/etc/zuul/:z"
-      - "./playbooks/:/var/playbooks/:z"
+      - "./playbooks/:/usr/src/:z"
   executor:
     privileged: true
     environment:
       no_proxy: "${no_proxy},gerrit"
-    command: "zuul-executor -d"
+    command: "sh -c 'ansible-playbook inject-ssh-keys.yaml && zuul-executor -d'"
     depends_on:
       - scheduler
     image: "{{ zuul_executor_image }}"
@@ -73,10 +77,12 @@ services:
       net.ipv4.tcp_keepalive_probes: 9
     volumes:
       - "./etc_zuul/:/etc/zuul/:z"
-      - "./playbooks/:/var/playbooks/:z"
-      - "~/.ssh/:/var/ssh/:z"
+      - "./playbooks/:/usr/src/:z"
       - "{{ logs_path }}:/srv/static/logs:z"
       - "./projects:/projects/:z"
+    secrets:
+      - id_rsa
+      - id_rsa.pub
 
   launcher:
     command: "nodepool-launcher -d -l /etc/nodepool/launcher-logging.yaml"
@@ -104,13 +110,25 @@ services:
   merger{{ i }}:
     environment:
       no_proxy: "${no_proxy},gerrit"
-    command: "zuul-merger -d"
+    command: |
+        sh -c ' \
+            ansible-playbook inject-ssh-keys.yaml && \
+            zuul-merger -d'
     depends_on:
       - scheduler
     image: "{{ zuul_merger_image }}"
+    secrets:
+      - id_rsa
+      - id_rsa.pub
     volumes:
       - "./etc_zuul/:/etc/zuul/:z"
-      - "~/.ssh/:/var/ssh/:z"
       - "{{ logs_path }}:/srv/static/logs:z"
+      - "./playbooks:/usr/src:z"
 
 {% endfor %}
+
+secrets:
+  id_rsa:
+    file: ~/.ssh/id_rsa
+  id_rsa.pub:
+    file: ~/.ssh/id_rsa.pub
