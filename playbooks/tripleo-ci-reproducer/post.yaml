@@ -1,8 +1,10 @@
 ---
 - hosts: primary
   tasks:
-    - name: Get docker-compose logs
-      command: ~/.local/bin/docker-compose logs --no-color
+    - name: Get docker-compose ps and logs
+      command: |
+        ~/.local/bin/docker-compose ps
+        ~/.local/bin/docker-compose logs --no-color
       args:
         chdir: "{{ ansible_user_dir }}/tripleo-ci-reproducer"
       changed_when: false
