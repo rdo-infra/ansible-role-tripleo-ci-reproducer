@@ -26,11 +26,38 @@
           package:
             name:
               - python-pip
-    - name: Install package dependencies
+
+    - name: Install docker-ce
       become: true
-      package:
-        name:
-          - "{{ docker_package | default('docker-1.13.1') }}"
+      block:
+        - name: Ensure old versions of Docker are not installed.
+          package:
+            name:
+              - docker
+              - docker-common
+              - docker-engine
+            state: absent
+
+        - name: Add Docker GPG key.
+          rpm_key:
+            key: https://download.docker.com/linux/centos/gpg
+            state: present
+
+        - name: Add Docker repository.
+          get_url:
+            url: |
+              https://download.docker.com/linux/{{
+              (ansible_distribution == "Fedora") |
+              ternary("fedora","centos") }}/docker-ce.repo
+            dest: '/etc/yum.repos.d/docker-ce.repo'
+            owner: root
+            group: root
+            mode: 0644
+
+        - name: Install Docker.
+          package:
+            name: docker-ce
+            state: present
 
     - name: Install python dependencies
       pip:
@@ -75,23 +102,6 @@
 
     - name: reset ssh connection to allow user changes to affect
       meta: reset_connection
-
-    - name: Create docker configuration file
-      become: true
-      copy:
-        content: |
-          {
-          "group": "{{ docker_group.stdout }}",
-          }
-        dest: /etc/docker/daemon.json
-      register: docker_config
-
-    - name: Reload docker if config was changed
-      become: true
-      service:
-        name: docker
-        state: reloaded
-      when: docker_config is changed
 
     - name: Start and enable docker
       become: true
