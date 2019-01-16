@@ -1,0 +1,21 @@
+---
+- hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Create ssh dir
+      file:
+        path: /var/ssh
+        state: directory
+        mode: 0644
+    - name: Find all secrets
+      find:
+        path: /run/secrets
+      register: secrets
+    - debug:
+        var: secrets
+    - name: Link all the secrets to /var/ssh
+      file:
+        src: "{{ item.path }}"
+        dest: /var/ssh/{{ item.path | basename }}
+        state: link
+      with_items: "{{ secrets.files }}"
