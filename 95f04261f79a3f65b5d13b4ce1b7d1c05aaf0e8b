@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ad0253b_e33fd0d4",
+        "filename": "playbooks/tripleo-ci-reproducer/templates/run.sh.j2",
+        "patchSetId": 3
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 242
+      },
+      "writtenOn": "2019-01-17T16:27:28Z",
+      "side": 1,
+      "message": "not a huge fan of tags ... caused us a lot of pain in the past",
+      "revId": "95f04261f79a3f65b5d13b4ce1b7d1c05aaf0e8b",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ad0253b_632ce0ab",
+        "filename": "tasks/launch-job.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 242
+      },
+      "writtenOn": "2019-01-17T16:27:28Z",
+      "side": 1,
+      "message": "Check out a branch?",
+      "revId": "95f04261f79a3f65b5d13b4ce1b7d1c05aaf0e8b",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ad0253b_c325f4c2",
+        "filename": "tasks/launch-job.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 242
+      },
+      "writtenOn": "2019-01-17T16:27:28Z",
+      "side": 1,
+      "message": "Need to add depends-on here",
+      "revId": "95f04261f79a3f65b5d13b4ce1b7d1c05aaf0e8b",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ad0253b_231dc873",
+        "filename": "tasks/main.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 242
+      },
+      "writtenOn": "2019-01-17T16:27:28Z",
+      "side": 1,
+      "message": "would rather go with a when: set to default false",
+      "revId": "95f04261f79a3f65b5d13b4ce1b7d1c05aaf0e8b",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ad0253b_0312cc62",
+        "filename": "tasks/main.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 242
+      },
+      "writtenOn": "2019-01-17T16:27:28Z",
+      "side": 1,
+      "message": "when: set default true",
+      "revId": "95f04261f79a3f65b5d13b4ce1b7d1c05aaf0e8b",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
