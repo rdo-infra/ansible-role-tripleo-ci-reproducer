@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "5ad0253b_8306dc1e",
+        "filename": "README.md",
+        "patchSetId": 71
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 242
+      },
+      "writtenOn": "2019-01-17T16:38:27Z",
+      "side": 1,
+      "message": "Unsure about the last two options...\nhost and libvirt\nIn the past, users have mostly run the libvirt option by creating the nodes on the same machine where the reproducer is run.\nIs host mainly a CI thing?",
+      "revId": "2e4f7fb8ff477eb85817807197c0706e6f4738b8",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5ad0253b_832ffca0",
         "filename": "tasks/libvirt/main.yaml",
         "patchSetId": 71
