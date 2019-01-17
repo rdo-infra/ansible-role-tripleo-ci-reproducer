@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "5ad0253b_a32559c3",
+        "filename": "files/playbooks/inject-ssh-keys.yaml",
+        "patchSetId": 8
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 517
+      },
+      "writtenOn": "2019-01-17T10:49:54Z",
+      "side": 1,
+      "message": "We need ssh at nodes at it includes ssh-keygen so we are good, this way we reduce the stuff we take from host.",
+      "parentUuid": "5ad0253b_e343516b",
+      "range": {
+        "startLine": 21,
+        "startChar": 37,
+        "endLine": 21,
+        "endChar": 47
+      },
+      "revId": "0ed1d1ee39a095d03ed9daea1953ad898050a950",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5ad0253b_a35e7943",
         "filename": "tasks/install.yaml",
         "patchSetId": 8
@@ -36,6 +60,30 @@
       "writtenOn": "2019-01-17T10:46:57Z",
       "side": 1,
       "message": "not sure it\u0027s the same as loop here, why do we change?",
+      "range": {
+        "startLine": 96,
+        "startChar": 6,
+        "endLine": 96,
+        "endChar": 15
+      },
+      "revId": "0ed1d1ee39a095d03ed9daea1953ad898050a950",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ad0253b_83225db8",
+        "filename": "tasks/install.yaml",
+        "patchSetId": 8
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 517
+      },
+      "writtenOn": "2019-01-17T10:49:54Z",
+      "side": 1,
+      "message": "I took it from your review https://review.rdoproject.org/r/#/c/18286/",
+      "parentUuid": "5ad0253b_a35e7943",
       "range": {
         "startLine": 96,
         "startChar": 6,
