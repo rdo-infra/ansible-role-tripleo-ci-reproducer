@@ -45,6 +45,30 @@
       "revId": "9812d6e3d73b21a10b06689ff5513f73e3e3b989",
       "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ad0253b_2604b613",
+        "filename": "playbooks/tripleo-ci-reproducer/post.yaml",
+        "patchSetId": 14
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 138
+      },
+      "writtenOn": "2019-01-17T16:55:44Z",
+      "side": 1,
+      "message": "@sagi.. your comment makes sense. Just speculating though.. is the intent for a post.yaml to be executed by both CI and users?\n\nIf it\u0027s just CI then running docker-compose down is not needed, agree",
+      "parentUuid": "5ad0253b_4331e40a",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 43
+      },
+      "revId": "9812d6e3d73b21a10b06689ff5513f73e3e3b989",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
     }
   ]
 }
