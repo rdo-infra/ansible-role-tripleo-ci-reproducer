@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ad0253b_832ffca0",
+        "filename": "tasks/libvirt/main.yaml",
+        "patchSetId": 71
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 155
+      },
+      "writtenOn": "2019-01-17T16:29:40Z",
+      "side": 1,
+      "message": "if dividing tasks by blank lines it seems more clear",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 24
+      },
+      "revId": "2e4f7fb8ff477eb85817807197c0706e6f4738b8",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
