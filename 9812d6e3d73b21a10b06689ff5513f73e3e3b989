@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "5ad0253b_a61d6611",
+        "filename": "files/playbooks/add-gerrit-host-keys.yaml",
+        "patchSetId": 14
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 517
+      },
+      "writtenOn": "2019-01-18T07:16:11Z",
+      "side": 1,
+      "message": "I still thing that if we can generate why adding the dependency of the user having public key somewhere I know near 100% have it, but is not needed, this is not adding more complexity is reducing the reproducer interface.",
+      "parentUuid": "5ad0253b_e348f089",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 18
+      },
+      "revId": "9812d6e3d73b21a10b06689ff5513f73e3e3b989",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5ad0253b_4331e40a",
         "filename": "playbooks/tripleo-ci-reproducer/post.yaml",
         "patchSetId": 14
@@ -84,6 +108,30 @@
       "side": 1,
       "message": "It\u0027s only for CI",
       "parentUuid": "5ad0253b_2604b613",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 43
+      },
+      "revId": "9812d6e3d73b21a10b06689ff5513f73e3e3b989",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ad0253b_66174eee",
+        "filename": "playbooks/tripleo-ci-reproducer/post.yaml",
+        "patchSetId": 14
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 517
+      },
+      "writtenOn": "2019-01-18T07:16:11Z",
+      "side": 1,
+      "message": "Yep will split between services it was at my mental backlog\n\nAbout shuting down, maybe it\u0027s better to dump stuff at run, and run the playbook with stop tag so we test that we can stop the thing from the role, wdyt ?",
+      "parentUuid": "5ad0253b_8634aade",
       "range": {
         "startLine": 6,
         "startChar": 0,
