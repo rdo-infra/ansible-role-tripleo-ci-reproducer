@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ad0253b_2665d644",
+        "filename": "meta/main.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 192
+      },
+      "writtenOn": "2019-01-18T13:41:00Z",
+      "side": 1,
+      "message": "is that right? does it need to match the project name like ansible-role-tripleo-ci-reproducer?",
+      "range": {
+        "startLine": 3,
+        "startChar": 13,
+        "endLine": 3,
+        "endChar": 34
+      },
+      "revId": "bcc38210023a9f2b5c39943e0326d17b7f72a06a",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
