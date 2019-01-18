@@ -22,6 +22,30 @@
       "revId": "bcc38210023a9f2b5c39943e0326d17b7f72a06a",
       "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ad0253b_c602a23e",
+        "filename": "meta/main.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 517
+      },
+      "writtenOn": "2019-01-18T15:25:02Z",
+      "side": 1,
+      "message": "It does not have the be like the repo name, it\u0027s the role name you are going to use at include_role, name: ..., so it\u0027s good that we remove ansible-role since is implicit",
+      "parentUuid": "5ad0253b_2665d644",
+      "range": {
+        "startLine": 3,
+        "startChar": 13,
+        "endLine": 3,
+        "endChar": 34
+      },
+      "revId": "bcc38210023a9f2b5c39943e0326d17b7f72a06a",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
     }
   ]
 }
