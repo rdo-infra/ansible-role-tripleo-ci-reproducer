@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "5ad0253b_26d83653",
+        "filename": "README.md",
+        "patchSetId": 71
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 517
+      },
+      "writtenOn": "2019-01-18T07:22:07Z",
+      "side": 1,
+      "message": "The host option is a CI thing that will fail fast (\u003c 10 m) if there are problems at installation, it just connect nodepool to the same machine where reproducer is run.\n\nMy idea is to use this mode within molecule so people can do a tox -e molecule with fast testing on partial code",
+      "parentUuid": "5ad0253b_8306dc1e",
+      "revId": "2e4f7fb8ff477eb85817807197c0706e6f4738b8",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5ad0253b_832ffca0",
         "filename": "tasks/libvirt/main.yaml",
         "patchSetId": 71
@@ -30,6 +48,30 @@
       "writtenOn": "2019-01-17T16:29:40Z",
       "side": 1,
       "message": "if dividing tasks by blank lines it seems more clear",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 24
+      },
+      "revId": "2e4f7fb8ff477eb85817807197c0706e6f4738b8",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ad0253b_06dd3a42",
+        "filename": "tasks/libvirt/main.yaml",
+        "patchSetId": 71
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 517
+      },
+      "writtenOn": "2019-01-18T07:22:07Z",
+      "side": 1,
+      "message": "Yep, agree let\u0027s do this at a later patch so we don\u0027t lose votes",
+      "parentUuid": "5ad0253b_832ffca0",
       "range": {
         "startLine": 14,
         "startChar": 0,
