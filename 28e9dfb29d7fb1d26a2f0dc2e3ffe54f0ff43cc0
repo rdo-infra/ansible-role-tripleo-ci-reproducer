@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ad0253b_c6e74211",
+        "filename": "tasks/launch-job.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 517
+      },
+      "writtenOn": "2019-01-18T07:26:28Z",
+      "side": 1,
+      "message": "Well I designed something wront here we don\u0027t need to commit so we don\u0027t need a branch, will remove it",
+      "revId": "28e9dfb29d7fb1d26a2f0dc2e3ffe54f0ff43cc0",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ad0253b_86f14ad0",
+        "filename": "tasks/launch-job.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 517
+      },
+      "writtenOn": "2019-01-18T07:26:28Z",
+      "side": 1,
+      "message": "depends_on can be a list of patches.",
+      "revId": "28e9dfb29d7fb1d26a2f0dc2e3ffe54f0ff43cc0",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ad0253b_a6e4460d",
+        "filename": "tasks/launch-job.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 517
+      },
+      "writtenOn": "2019-01-18T07:26:28Z",
+      "side": 1,
+      "message": "We don\u0027t have to submit, since this is not a trusted project, zuul will start in the review directly",
+      "revId": "28e9dfb29d7fb1d26a2f0dc2e3ffe54f0ff43cc0",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
