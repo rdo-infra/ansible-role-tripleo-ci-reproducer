@@ -1,0 +1,18 @@
+---
+galaxy_info:
+  role_name: tripleo-ci-reproducer
+  author: Openstack Tripleo CI Team
+  description: |
+    Role to reproduce openstack tripleo jobs
+  company: Red Hat
+
+  min_ansible_version: 2.7.5
+
+  platforms:
+    - name: Fedora
+       - 28
+    - name: Centos
+       - 7
+
+# Would be nice to have libvirt here
+dependencies: []
