@@ -50,9 +50,13 @@ Example Playbook
 - name: Start reproducer
   hosts: virthost
   vars:
+    upstream_gerrit_user: a_user
+    rdo_gerrit_user: a_user
+    os_centos7_image: upstream-infra-centos-7
+    os_fedora28_image: upstream-infra-fedora-28
     state: present
   roles:
-    - ci-reproducer
+    - ansible-role-tripleo-ci-reproducer
 ```
 
 ```yaml
@@ -62,7 +66,7 @@ Example Playbook
   vars:
     state: absent
   roles:
-    - ci-reproducer
+    - ansible-role-tripleo-ci-reproducer
 ```
 License
 -------
