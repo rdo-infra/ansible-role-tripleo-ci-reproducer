@@ -45,6 +45,13 @@
     dest: "{{ install_path }}/secrets.env"
     mode: 0600
 
+- name: Clone tripleo-quickstart if running libvirt
+  git:
+    repo: "https://git.openstack.org/openstack/tripleo-quickstart"
+    dest: '{{ install_path }}/tripleo-quickstart'
+    version: 'master'
+  when: nodepool_provider == "libvirt"
+
 - name: Setup nodepool provider
   include_tasks: "{{ nodepool_provider }}/main.yaml"
   when: nodepool_provider != "host" and setup_nodepool
