@@ -67,6 +67,8 @@
         contents:
           - "/var/projects/zuul-config/"
 
+    - include_tasks: add_rdo_config.yml
+
     - name: Create test1 project
       include_role:
         name: create_project
