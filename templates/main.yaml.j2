@@ -39,19 +39,11 @@
             - openstack/tripleo-heat-templates
             - openstack/openstack-virtual-baremetal
       rdoproject.org:
-        config-projects:
-          - exclude:
-            - project
-            - project-template
-            - pipeline
-            projects:
-            - config
         untrusted-projects:
           - exclude:
             - project
             - project-template
             projects:
-            - rdo-jobs:
-                shadow: config
+            - rdo-jobs
             - rdo-infra/ci-config
             - rdo-infra/ansible-role-tripleo-ci-reproducer
