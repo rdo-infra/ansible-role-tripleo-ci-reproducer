@@ -9,7 +9,7 @@
         mode: 0644
     - name: Dump ssh keys
       copy:
-        content: "{{ lookup('env', item) | b64decode }}"
+        content: "{{ lookup('env', item) | b64decode }}\n"
         dest: /var/ssh/{{ item }}
         mode: 0600
       with_items:
