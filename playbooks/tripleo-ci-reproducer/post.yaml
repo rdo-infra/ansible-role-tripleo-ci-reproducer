@@ -26,3 +26,4 @@
         verify_host: true
         rsync_opts:
           - "--exclude=*.qcow2"
+          - "--exclude=secrets.env"
