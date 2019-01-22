@@ -21,7 +21,7 @@
           become: true
           package:
             name: epel-release
-        - name: Install pip
+        - name: Install package dependencies
           become: true
           package:
             name:
@@ -32,7 +32,6 @@
       package:
         name:
           - "{{ docker_package | default('docker-1.13.1') }}"
-          - "{{ netaddr_package | default('python-netaddr') }}"
 
     - name: Install python dependencies
       pip:

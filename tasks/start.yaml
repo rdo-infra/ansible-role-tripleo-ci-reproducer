@@ -4,19 +4,13 @@
     name: docker
     state: started
 
-# ansible module does not support removal of anon volumes at restart
-# so we do a stop/start
-#
-- name: Stop up zuul and friends
-  docker_service:
-    project_src: "{{ install_path }}"
-    state: absent
-    remove_volumes: true
 - name: Start up zuul and friends
   docker_service:
     project_src: "{{ install_path }}"
     state: present
+    build: true
     pull: "{{ pull | default(false) | bool }}"
+    restarted: true
 
 - name: Wait for zuul tenant
   uri:

@@ -17,12 +17,10 @@
         content: "{{ docker_compose_log.stdout }}"
         dest: "{{ ansible_user_dir }}/tripleo-ci-reproducer/docker-compose.log"
 
-    - name: Copy files from reproducer on node to log
+    - name: Copy files from {{ ansible_user_dir }} on node to log
       synchronize:
         src: '{{ ansible_user_dir }}/tripleo-ci-reproducer/'
         dest: '{{ zuul.executor.log_root }}/tripleo-ci-reproducer/'
         mode: pull
         copy_links: true
         verify_host: true
-        rsync_opts:
-          - "--exclude=*.qcow2"

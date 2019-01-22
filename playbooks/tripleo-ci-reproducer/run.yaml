@@ -1,9 +1,4 @@
 ---
-
-# Zuul executor has some limitations that prevents from running the role
-# directly there so we have to generate a playbook and run it at the
-# node
-
 - hosts: primary
   vars:
     repro_role_path: >-
@@ -27,23 +22,18 @@
             tasks:
               - name: Start reproducer using host as the nodepool provider
                 vars:
-                  nodepool_provider: "{{ nodepool_provider }}"
+                  nodepool_provider: host
                   upstream_gerrit_user: "{{ upstream_gerrit_user }}"
                   upstream_gerrit_key: "{{ tripleo_gerrit_key_name }}"
                   rdo_gerrit_user: "{{ rdo_gerrit_user }}"
                   rdo_gerrit_key: "{{ tripleo_gerrit_key_name }}"
-                  control_vcpu: 4
-                  control_memory: 4096
                 include_role:
                   name: tripleo-ci-reproducer
       copy:
         content: "{{ reproducer_playbook | to_nice_yaml }}"
         dest: "{{ ansible_user_dir }}/start.yaml"
-    - name: Generate run script
-      template:
-        src: run.sh.j2
-        dest: "{{ ansible_user_dir }}/run.sh"
-        mode: 0755
+
     - name: Run reproducer
-      command: ~/run.sh
+      command: |
+       ~/.local/bin/ansible-playbook -vv {{ ansible_user_dir }}/start.yaml
       changed_when: true
