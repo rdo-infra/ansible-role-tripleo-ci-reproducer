@@ -1,0 +1,9 @@
+Verified-1: Zuul CI <zuul@review.rdoproject.org>
+Code-Review+2: Félix Enrique Llorente Pastora <quique.llorente@gmail.com>
+Verified+2: Félix Enrique Llorente Pastora <quique.llorente@gmail.com>
+Workflow+1: Félix Enrique Llorente Pastora <quique.llorente@gmail.com>
+Submitted-by: Félix Enrique Llorente Pastora <quique.llorente@gmail.com>
+Submitted-at: Tue, 22 Jan 2019 10:43:12 +0000
+Reviewed-on: https://review.rdoproject.org/r/18443
+Project: rdo-infra/ansible-role-tripleo-ci-reproducer
+Branch: refs/heads/master
