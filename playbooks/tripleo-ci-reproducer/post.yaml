@@ -24,3 +24,5 @@
         mode: pull
         copy_links: true
         verify_host: true
+        rsync_opts:
+          - "--exclude=secrets.env"
