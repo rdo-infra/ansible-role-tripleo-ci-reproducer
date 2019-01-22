@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ad0253b_2c949535",
+        "filename": "zuul.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 192
+      },
+      "writtenOn": "2019-01-22T07:44:56Z",
+      "side": 1,
+      "message": "same question as yatin where is this defined please i cant find it in http://codesearch.openstack.org/?q\u003dtripleo-ci-reproducer-fedora-28\u0026i\u003dnope\u0026files\u003d\u0026repos\u003d \nor  https://codesearch.rdoproject.org/?q\u003dtripleo-ci-reproducer-fedora-28\u0026i\u003dnope\u0026files\u003d\u0026repos\u003d",
+      "range": {
+        "startLine": 58,
+        "startChar": 10,
+        "endLine": 58,
+        "endChar": 41
+      },
+      "revId": "9e9f0bdde36ec70ff46844ef00198be111e3f201",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
