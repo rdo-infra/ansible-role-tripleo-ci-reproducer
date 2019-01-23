@@ -30,6 +30,7 @@
     - main.yaml
     - scheduler-logging.yaml
     - executor-logging.yaml
+    - fingergw-logging.yaml
     - web-logging.yaml
     - merger-logging.yaml
 

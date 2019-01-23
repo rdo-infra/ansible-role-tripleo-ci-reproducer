@@ -25,6 +25,7 @@
         - scheduler
         - web
         - executor
+        - fingergw
 
     - name: Get docker-compose mergers logs
       shell: |
