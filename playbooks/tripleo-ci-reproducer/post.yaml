@@ -1,21 +1,40 @@
 ---
 - hosts: primary
   tasks:
-    - name: Get docker-compose ps and logs
+    - name: Get docker-compose ps
       shell: |
-        ~/.local/bin/docker-compose ps
-        ~/.local/bin/docker-compose logs --no-color scheduler
-        ~/.local/bin/docker-compose logs --no-color
-        ~/.local/bin/docker-compose down -v
+        ~/.local/bin/docker-compose ps 2>&1 > ps.log
+      args:
+        chdir: "{{ ansible_user_dir }}/tripleo-ci-reproducer"
+      changed_when: true
+
+    - name: Get docker-compose services logs
+      shell: |
+        ~/.local/bin/docker-compose logs --no-color {{ item }} 2>&1 > \
+          {{ item }}.log
       args:
         chdir: "{{ ansible_user_dir }}/tripleo-ci-reproducer"
       changed_when: false
-      register: docker_compose_log
+      whit_items:
+        - zk
+        - mysql
+        - gerrit
+        - logs
+        - launcher
+        - gerritconfig
+        - scheduler
+        - web
+        - executor
 
-    - name: Dump docker-compose log to a file
-      copy:
-        content: "{{ docker_compose_log.stdout }}"
-        dest: "{{ ansible_user_dir }}/tripleo-ci-reproducer/docker-compose.log"
+    - name: Get docker-compose mergers logs
+      shell: |
+        ~/.local/bin/docker-compose logs --no-color {{ item }} 2>&1 > \
+          {{ item }}.log
+      args:
+        chdir: "{{ ansible_user_dir }}/tripleo-ci-reproducer"
+      changed_when: false
+      with_items: "{{ lookup('sequence', 'count=' + ansible_processor_vcpus +
+            'start=0 format=merger%d', wantlist=true) }}"
 
     - name: Copy files from {{ ansible_user_dir }} on node to log
       synchronize:
