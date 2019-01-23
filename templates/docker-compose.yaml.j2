@@ -78,6 +78,19 @@ services:
       - "./projects:/projects/:z"
     env_file: secrets.env
 
+  fingergw:
+    environment:
+      no_proxy: "${no_proxy}"
+    command: "zuul-fingergw -d"
+    depends_on:
+      - executor
+    image: "{{ zuul_fingergw_image }}"
+    volumes:
+      - "./etc_zuul/:/etc/zuul/:z"
+      - /var/lib/zuul
+    ports:
+      - "79:79"
+
   launcher:
     command: "nodepool-launcher -d -l /etc/nodepool/launcher-logging.yaml"
     depends_on:
