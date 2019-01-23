@@ -54,6 +54,8 @@ zuul_executor_image: rdoci/zuul-executor:stable
 nodepool_launcher_image: rdoci/nodepool-launcher:stable
 # zuul_merger_image: zuul/zuul-merger
 zuul_merger_image: rdoci/zuul-merger:stable
+zuul_fingergw_image: rdoci/zuul-fingergw:stable
+# zuul_fingergw_image: rdoci/zuul-fingergw:stable
 # logs_image: httpd
 logs_image: rdoci/httpd:stable
 
