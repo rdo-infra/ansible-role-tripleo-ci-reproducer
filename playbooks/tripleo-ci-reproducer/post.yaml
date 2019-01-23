@@ -10,6 +10,7 @@
       args:
         chdir: "{{ ansible_user_dir }}/tripleo-ci-reproducer"
       changed_when: false
+      no_log: true
       register: docker_compose_log
 
     - name: Dump docker-compose log to a file
