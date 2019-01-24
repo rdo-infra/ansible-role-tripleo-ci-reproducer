@@ -16,6 +16,6 @@
         user: admin
         password: secret
       register: result
-      until: result.status == 200 and result.redirected == false
+      until: result.status == 200 and not result.redirected
       delay: 1
       retries: 120
