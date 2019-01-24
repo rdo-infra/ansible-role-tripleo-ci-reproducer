@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ad0253b_1d68e5f4",
+        "filename": "files/playbooks/add_rdo_config.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 517
+      },
+      "writtenOn": "2019-01-24T07:08:40Z",
+      "side": 1,
+      "message": "changed_when: true",
+      "revId": "363bc287d7f237b32d78cb6529d78cc277e0848e",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ad0253b_fd6c090a",
+        "filename": "files/playbooks/add_rdo_config.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 517
+      },
+      "writtenOn": "2019-01-24T07:08:40Z",
+      "side": 1,
+      "message": "changed_whe: true",
+      "revId": "363bc287d7f237b32d78cb6529d78cc277e0848e",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ad0253b_dd714de2",
+        "filename": "files/playbooks/add_rdo_config.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 517
+      },
+      "writtenOn": "2019-01-24T07:08:40Z",
+      "side": 1,
+      "message": "changed_when: true",
+      "revId": "363bc287d7f237b32d78cb6529d78cc277e0848e",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
