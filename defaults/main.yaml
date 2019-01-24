@@ -5,8 +5,8 @@ log_level: DEBUG
 # Configuration for openstack nodepool
 ###############
 os_cloud_name: rdo-cloud
-os_centos7_image: openstack-infra-centos-7
-os_fedora28_image: openstack-infra-fedora-28
+os_centos7_image: upstream-cloudinit-centos-7
+os_fedora28_image: upstream-cloudinit-fedora-28
 
 upstream_gerrit_user: "{{ ansible_user }}"
 upstream_gerrit_key: "id_rsa"
@@ -18,6 +18,9 @@ tripleo_ci_gerrit_key: "~/.ssh/tripleo_ci_gerrit_id_rsa"
 
 install_path: "{{ ansible_user_dir }}/tripleo-ci-reproducer/"
 logs_path: "./logs"
+state: present
+vm_password: changeme
+
 mergers: "{{ ansible_processor_vcpus }}"
 
 nodepool_provider: openstack
@@ -58,7 +61,7 @@ zuul_web_image: rdoci/zuul-web:stable
 # zuul_executor_image: zuul/zuul-executor
 zuul_executor_image: rdoci/zuul-executor:stable
 # nodepool_launcher_image: zuul/nodepool-launcher
-nodepool_launcher_image: rdoci/nodepool-launcher:stable
+nodepool_launcher_image: rdoci/nodepool-launcher:44ae87c
 # zuul_merger_image: zuul/zuul-merger
 zuul_merger_image: rdoci/zuul-merger:stable
 # logs_image: httpd
@@ -80,3 +83,19 @@ non_root_user: "{{ ansible_user }}"
 non_root_group: "{{ ansible_user }}"
 restore_snapshot: false
 create_snapshot: false
+
+# SSH with password is not allowed: 'ssh_pwauth: False'
+cloud_config: |
+  userdata: |
+    #cloud-config
+    password: {{ vm_password }}
+    chpasswd: { expire: False }
+    ssh_pwauth: False
+    output: {all: '| tee -a /var/log/cloud-init-output.log'}
+    ssh_authorized_keys:
+      - {{ lookup('file', '~/.ssh/id_rsa.pub' )}}
+    users:
+    - default
+    - name: zuul
+      ssh_authorized_keys:
+        - {{ lookup('file', '~/.ssh/id_rsa.pub' )}}

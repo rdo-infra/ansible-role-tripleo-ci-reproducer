@@ -38,13 +38,16 @@ providers:
             flavor-name: 'm1.large'
             cloud-image: centos-7
             console-log: true
+            {{ cloud_config | indent(12) }}
           - name: tripleo-ovb-centos-7
             min-ram: 8192
             flavor-name: 'm1.large'
             cloud-image: centos-7
             console-log: true
+            {{ cloud_config | indent(12) }}
           - name: fedora-28
             min-ram: 8192
             flavor-name: 'm1.large'
             cloud-image: fedora-28
             console-log: true
+            {{ cloud_config | indent(12) }}
