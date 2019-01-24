@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ad0253b_5800abaa",
+        "filename": ".pre-commit-config.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 371
+      },
+      "writtenOn": "2019-01-24T12:05:44Z",
+      "side": 1,
+      "message": "these two linters are special as they can alter the code to auto-fix it. They never change the commit, the change remains local.\n\nIf they fixed it, the linting will fail but you are likely to have the fix on disk, ready.",
+      "range": {
+        "startLine": 6,
+        "startChar": 6,
+        "endLine": 7,
+        "endChar": 31
+      },
+      "revId": "b6ad615d5373d8410e7ac4d4d914b2e54787c365",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
