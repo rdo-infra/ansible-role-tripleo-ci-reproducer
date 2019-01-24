@@ -1,0 +1,6 @@
+# Introduced for the reproducer. Forcing the job to fail in post will allow the
+# zuul autohold command to hold the node.
+# can be removed if https://review.openstack.org/632498 is merged.
+- fail:
+    msg: force_post_failure flag set to TRUE, this job is forced to fail whatever the result of the run.
+  when: force_post_failure|bool|default(false)
