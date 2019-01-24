@@ -47,7 +47,7 @@
       register: docker_group
       changed_when: false
 
-    - when: docker_group.stdout == ""
+    - when: not docker_group.stdout
       block:
         - name: Create docker group
           become: true

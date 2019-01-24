@@ -21,7 +21,7 @@
     - name: Create initial commit in {{ project }}
       shell:
         executable: /bin/sh
-        chdir: "{{ project_tmp.path}}"
+        chdir: "{{ project_tmp.path }}"
         cmd: |
           git init .
           git config user.name "Admin"
