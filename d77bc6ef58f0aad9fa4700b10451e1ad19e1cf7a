@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ad0253b_78db671c",
+        "filename": "zuul.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 242
+      },
+      "writtenOn": "2019-01-24T13:41:46Z",
+      "side": 1,
+      "message": "openstack",
+      "revId": "d77bc6ef58f0aad9fa4700b10451e1ad19e1cf7a",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
