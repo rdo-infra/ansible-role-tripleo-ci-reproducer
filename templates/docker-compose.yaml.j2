@@ -91,7 +91,7 @@ services:
       - "8022:8022"
     environment:
       - REQUESTS_CA_BUNDLE=/etc/pki/tls/certs/ca-bundle.crt
-
+    network_mode: {{ nodepool_provider == "host" | ternary("host", "bridge") }}
   logs:
     image: "{{ logs_image }}"
     ports:
