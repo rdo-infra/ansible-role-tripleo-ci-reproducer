@@ -15,6 +15,7 @@
     post-run:
       - playbooks/base/post-ssh.yaml
       - playbooks/base/post-logs.yaml
+      - playbooks/base/post-failure.yaml
     roles:
       - zuul: openstack-infra/project-config
       - zuul: openstack-infra/zuul-jobs
