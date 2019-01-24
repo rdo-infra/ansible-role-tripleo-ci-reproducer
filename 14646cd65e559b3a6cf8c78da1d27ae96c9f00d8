@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ad0253b_b889ffcc",
+        "filename": "templates/zuul.conf.j2",
+        "patchSetId": 6
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 63
+      },
+      "writtenOn": "2019-01-24T16:14:18Z",
+      "side": 1,
+      "message": "typo",
+      "revId": "14646cd65e559b3a6cf8c78da1d27ae96c9f00d8",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
