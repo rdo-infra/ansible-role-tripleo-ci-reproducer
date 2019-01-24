@@ -1,4 +1,23 @@
 ---
+- name: Check if tripleo-quickstart is installed in zuul.projects
+  stat:
+    path: "{{ ansible_user_dir }}/src/git.openstack.org/openstack/tripleo-quickstart"
+  register: tq_zuul_projects
+
+- name: Check if tripleo-quickstart is installed in install_path
+  stat:
+    path: "{{ install_path }}/tripleo-quickstart"
+  register: tq_install_path
+
+- name: Clone tripleo-quickstart if not present
+  git:
+    repo: "https://git.openstack.org/openstack/tripleo-quickstart"
+    dest: "{{ install_path }}/tripleo-quickstart"
+    version: "master"
+  when:
+    - not tq_zuul_projects.stat.exists
+    - not tq_install_path.stat.exists
+
 - name: Install libvirt packages
   include_role:
     name: parts/libvirt
