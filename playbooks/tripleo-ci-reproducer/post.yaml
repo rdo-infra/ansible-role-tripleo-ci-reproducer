@@ -34,7 +34,7 @@
         chdir: "{{ ansible_user_dir }}/tripleo-ci-reproducer"
       changed_when: true
       with_sequence: |
-        start=0 count={{ansible_processor_vcpus}} format='merger%d'
+        start=0 count={{ ansible_processor_vcpus }} format='merger%d'
 
     - name: Shut down docker-compose
       command: ~/.local/bin/docker-compose down -v
