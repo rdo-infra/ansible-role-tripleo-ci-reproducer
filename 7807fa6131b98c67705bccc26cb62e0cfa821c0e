@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ad0253b_cc92bc57",
+        "filename": "README.md",
+        "patchSetId": 44
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 324
+      },
+      "writtenOn": "2019-01-25T09:50:22Z",
+      "side": 1,
+      "message": "executo? ;)",
+      "revId": "7807fa6131b98c67705bccc26cb62e0cfa821c0e",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ad0253b_ac9f805e",
+        "filename": "README.md",
+        "patchSetId": 44
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 324
+      },
+      "writtenOn": "2019-01-25T09:50:22Z",
+      "side": 1,
+      "message": "Sorry, it\u0027s documentation, not code, but it\u0027s not clear to me, maybe (and I am not english speaker) zuul config to run it, overwriting zuul_job",
+      "range": {
+        "startLine": 50,
+        "startChar": 17,
+        "endLine": 50,
+        "endChar": 56
+      },
+      "revId": "7807fa6131b98c67705bccc26cb62e0cfa821c0e",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
