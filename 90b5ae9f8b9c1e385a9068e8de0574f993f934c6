@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ad0253b_cc5bdc53",
+        "filename": "tasks/launch-job.yaml",
+        "patchSetId": 50
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 138
+      },
+      "writtenOn": "2019-01-25T14:11:54Z",
+      "side": 1,
+      "message": "need to add mkdir -p .git/hooks",
+      "revId": "90b5ae9f8b9c1e385a9068e8de0574f993f934c6",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
