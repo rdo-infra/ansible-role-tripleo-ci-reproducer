@@ -31,17 +31,23 @@
       become: true
       package:
         name:
-          - "{{ docker_package | default('docker-1.13.1') }}"
+          - "{{ docker_package | default('docker') }}"
           - "{{ netaddr_package | default('python-netaddr') }}"
+          - "{{ git_package | default('git') }}"
+          - "{{ git_review_package | default('git-review') }}"
+          - "{{ docker_compose_package | default('docker-compose') }}"
+          - "{{ openstacksdk | default('python3-openstacksdk') }}"
 
-    - name: Install python dependencies
-      pip:
-        name:
-          - ansible==2.7.5
-          - openstacksdk==0.13.0
-          - docker==3.6.0
-          - docker-compose==1.23.2
-        extra_args: --user
+    # leaving this here for comparison
+    #
+    # - name: Install python dependencies
+    #   pip:
+    #     name:
+    #       - ansible==2.7.5
+    #       - openstacksdk==0.13.0
+    #       - docker==3.6.0
+    #       - docker-compose==1.23.2
+    #     extra_args: --user
 
     - name: Find out docker group name
       shell: grep docker /etc/group | cut -d":" -f1 | head -1
@@ -74,6 +80,10 @@
             groups: '{{ docker_group.stdout }}'
             append: true
           register: groupadd
+
+        # fails clean system test..
+        - name: user execution, add user to docker group
+          command: groups; newgrp docker; groups
 
     - name: reset ssh connection to allow user changes to affect
       meta: reset_connection
