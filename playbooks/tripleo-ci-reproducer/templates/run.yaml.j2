@@ -12,12 +12,15 @@
         control_memory: 4096
         zuul_yaml:
           - job:
-              name: hello-reproducer
-              run: playbooks/run.yaml
+              name: tripleo-ci-centos-7-standalone-reprozuul-dryrun
+              parent: tripleo-ci-centos-7-standalone
+              vars:
+                dryrun: true
+                zuul_site_mirror_fqdn: mirror.regionone.rdo-cloud-tripleo.rdoproject.org
           - project:
               check:
                 jobs:
-                  - hello-reproducer
+                  - tripleo-ci-centos-7-standalone-reprozuul-dryrun
       include_role:
         name: tripleo-ci-reproducer
     - name: Get zuul builds
