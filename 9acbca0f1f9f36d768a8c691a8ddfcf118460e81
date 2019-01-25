@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ad0253b_ac2f80a0",
+        "filename": "playbooks/tripleo-ci-reproducer/templates/run.yaml.j2",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 517
+      },
+      "writtenOn": "2019-01-25T14:26:09Z",
+      "side": 1,
+      "message": "Yep, looks like it https://github.com/openstack-infra/tripleo-ci/blob/master/roles/run-test/templates/toci_quickstart.sh.j2#L145",
+      "revId": "9acbca0f1f9f36d768a8c691a8ddfcf118460e81",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
