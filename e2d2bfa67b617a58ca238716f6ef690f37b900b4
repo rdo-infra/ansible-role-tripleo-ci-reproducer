@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ad0253b_ec77b8d2",
+        "filename": "playbooks/tripleo-ci-reproducer/templates/run.yaml.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 192
+      },
+      "writtenOn": "2019-01-25T13:52:04Z",
+      "side": 1,
+      "message": "not sure if we can get away with this yet. This is already defined as an ansible variable, or at least expected to be consumed like one, in https://github.com/openstack-infra/tripleo-ci/blob/f5c627ad39b5c59fe9523faaa952417b0eb1eebd/roles/run-test/templates/toci_quickstart.sh.j2#L145",
+      "range": {
+        "startLine": 13,
+        "startChar": 8,
+        "endLine": 13,
+        "endChar": 14
+      },
+      "revId": "e2d2bfa67b617a58ca238716f6ef690f37b900b4",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
