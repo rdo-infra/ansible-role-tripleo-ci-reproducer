@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ad0253b_4ce22cd7",
+        "filename": "defaults/main.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 517
+      },
+      "writtenOn": "2019-01-25T10:51:19Z",
+      "side": 1,
+      "message": "Let\u0027s try to remove this, if it\u0027s not really needed so we reduce the requisites",
+      "revId": "3fffb96257452d10a9667395d7b78ccf7a9b420b",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
