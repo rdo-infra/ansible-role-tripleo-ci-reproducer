@@ -1,6 +1,9 @@
 ---
 - hosts: primary
   tasks:
+    - debug:
+        var: zuul_site_mirror_fqdn
+
     - name: Gather needed facts
       setup:
         gather_subset: "!min,user_dir,distribution"
@@ -87,7 +90,6 @@
           }
         dest: /etc/docker/daemon.json
       register: docker_config
-
     - name: Reload docker if config was changed
       become: true
       service:
