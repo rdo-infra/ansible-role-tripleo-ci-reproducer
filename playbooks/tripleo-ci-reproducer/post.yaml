@@ -52,6 +52,8 @@
         rsync_opts:
           - "--exclude=secrets.env"
           - "--exclude=*.qcow2"
+          - "--exclude=playbooks/rdo_config_repo"
+          - "--exclude=playbooks/zuul_config_repo"
 
     - name: Copy files from /etc
       synchronize:
