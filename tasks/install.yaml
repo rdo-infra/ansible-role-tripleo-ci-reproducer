@@ -35,7 +35,7 @@
 
 - name: Generate secrets.env
   vars:
-    id_rsa_b64: "{{ lookup('file', '~/.ssh/id_rsa') | b64encode }}"
+    id_rsa_b64: "{{ lookup('file', '~/.ssh/{{ user_key }}') | b64encode }}"
     upstream_gerrit_key_b64: "{{ lookup('file', '~/.ssh/' +
       upstream_gerrit_key) | b64encode }}"
     rdo_gerrit_key_b64: "{{ lookup('file', '~/.ssh/' +
