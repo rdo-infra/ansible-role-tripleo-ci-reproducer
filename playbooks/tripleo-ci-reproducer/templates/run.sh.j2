@@ -14,4 +14,6 @@ export ANSIBLE_STDOUT_CALLBACK=debug
 # At zuul images we don't have any .bash_profile or .profile
 export PATH=$PATH:$HOME/.local/bin
 
+export LIBGUESTFS_BACKEND_SETTINGS=force_tcg
+
 ansible-playbook -vv ~/start.yaml
