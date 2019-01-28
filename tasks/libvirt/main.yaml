@@ -3,10 +3,14 @@
   include_role:
     name: parts/libvirt
 
+- name: get current user name
+      command: "echo {{ ansible_user }}"
+      register: my_ansible_user
+
 - name: Add user to libvirt group
   become: true
   user:
-    name: "{{ ansible_user }}"
+    name: "{{ my_ansible_user.stdout }}"
     groups:
       - libvirt
       - wheel
