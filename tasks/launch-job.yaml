@@ -26,7 +26,7 @@
       #FIXME: for centos7 the git version is too old for the local gerrit
       #       hooks so we get them from upstream
       mkdir -p .git/hooks/
-      scp -p -P 29418 -i ~/.ssh/{{ upstream_gerrit_key }} \
+      scp -p -P 29418 -i {{ ssh_path }}/{{ upstream_gerrit_key }} \
       {{ upstream_gerrit_user }}@review.openstack.org:hooks/commit-msg \
         .git/hooks/
       git config --local user.name Admin
