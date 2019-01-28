@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ad0253b_cf5bce53",
+        "filename": "defaults/main.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 517
+      },
+      "writtenOn": "2019-01-28T06:40:00Z",
+      "side": 1,
+      "message": "Can\u0027t we doo ssh authenticatino Only like stated here [1] ? \nhttps://cloudinit.readthedocs.io/en/latest/topics/examples.html",
+      "revId": "984d6ff020ec2a27c591bcc81f06866d40479f6b",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
