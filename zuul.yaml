@@ -16,6 +16,9 @@
     vars:
       upstream_gerrit_user: os-tripleo-ci
       rdo_gerrit_user: os-tripleo-ci
+      mirror_fqdn: |
+        mirror.{{ nodepool.region | lower }}.{{
+          nodepool.cloud | lower }}.rdoproject.org
 
 - job:
     name: tripleo-ci-reproducer-host
