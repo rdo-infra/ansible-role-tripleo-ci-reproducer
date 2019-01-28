@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ad0253b_a220a9f8",
+        "filename": "playbooks/tripleo-ci-reproducer/pre.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 517
+      },
+      "writtenOn": "2019-01-28T13:12:21Z",
+      "side": 1,
+      "message": "Pin packages versions",
+      "revId": "b1d373a9483efd2f3db99c4ee56da340add1386d",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ad0253b_c223a504",
+        "filename": "playbooks/tripleo-ci-reproducer/pre.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 517
+      },
+      "writtenOn": "2019-01-28T13:12:21Z",
+      "side": 1,
+      "message": "Let\u0027s remove this as we are installing with packages",
+      "revId": "b1d373a9483efd2f3db99c4ee56da340add1386d",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
