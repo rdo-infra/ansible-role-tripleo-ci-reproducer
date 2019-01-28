@@ -88,6 +88,17 @@
         dest: /etc/docker/daemon.json
       register: docker_config
 
+    - name: Add dockerhub mirror
+      become: true
+      copy:
+        content: |
+          {
+          "group": "{{ docker_group.stdout }}",
+          }
+        dest: /etc/docker/daemon.json
+      register: docker_config
+      when: mirror_fqdn is defined
+
     - name: Reload docker if config was changed
       become: true
       service:
