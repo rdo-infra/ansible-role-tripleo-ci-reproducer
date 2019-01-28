@@ -13,6 +13,11 @@
     append: true
 - name: reset ssh connection to allow user changes to affect
   meta: reset_connection
+
+- name: Check libvirt can run
+  become: true
+  command: libguestfs-test-tool
+
 - name: Restore a libvirt snapshot
   when: restore_snapshot
   vars:
