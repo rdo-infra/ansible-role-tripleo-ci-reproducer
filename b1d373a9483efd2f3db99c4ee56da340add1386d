@@ -33,6 +33,23 @@
       "revId": "b1d373a9483efd2f3db99c4ee56da340add1386d",
       "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ad0253b_627971fc",
+        "filename": "playbooks/tripleo-ci-reproducer/pre.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 517
+      },
+      "writtenOn": "2019-01-28T13:12:50Z",
+      "side": 1,
+      "message": "This is not needed, and changes the default group, let\u0027s remove it",
+      "revId": "b1d373a9483efd2f3db99c4ee56da340add1386d",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
     }
   ]
 }
