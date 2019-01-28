@@ -28,6 +28,7 @@
     name: tripleo-ci-reproducer-libvirt
     abstract: true
     parent: tripleo-ci-reproducer
+    timeout: 7200
     vars:
       nodepool_provider: libvirt
     required-projects:
