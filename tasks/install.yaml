@@ -36,10 +36,10 @@
 
 - name: Generate secrets.env
   vars:
-    id_rsa_b64: "{{ lookup('file', '~/.ssh/id_rsa') | b64encode }}"
-    upstream_gerrit_key_b64: "{{ lookup('file', '~/.ssh/' +
+    id_rsa_b64: "{{ lookup('file', '{{ ssh_path }}/{{ user_key }}') | b64encode }}"
+    upstream_gerrit_key_b64: "{{ lookup('file', ssh_path + '/' +
       upstream_gerrit_key) | b64encode }}"
-    rdo_gerrit_key_b64: "{{ lookup('file', '~/.ssh/' +
+    rdo_gerrit_key_b64: "{{ lookup('file', ssh_path + '/' +
       rdo_gerrit_key) | b64encode }}"
   template:
     src: secrets.env.j2

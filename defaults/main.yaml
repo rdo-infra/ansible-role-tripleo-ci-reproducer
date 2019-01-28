@@ -8,13 +8,16 @@ os_cloud_name: rdo-cloud
 os_centos7_image: upstream-cloudinit-centos-7
 os_fedora28_image: upstream-cloudinit-fedora-28
 
+user_key: "id_rsa"
+ssh_path: "{{ ansible_user_dir }}/.ssh"
+
 upstream_gerrit_user: "{{ ansible_user }}"
-upstream_gerrit_key: "id_rsa"
+upstream_gerrit_key: "{{ user_key }}"
 
 rdo_gerrit_user: "{{ ansible_user }}"
-rdo_gerrit_key: "id_rsa"
+rdo_gerrit_key: "{{ user_key }}"
 
-tripleo_ci_gerrit_key: "~/.ssh/tripleo_ci_gerrit_id_rsa"
+tripleo_ci_gerrit_key: "{{ ssh_path }}/tripleo_ci_gerrit_id_rsa"
 
 install_path: "{{ ansible_user_dir }}/tripleo-ci-reproducer/"
 logs_path: "./logs"
@@ -94,9 +97,9 @@ cloud_config: |
     ssh_pwauth: False
     output: { all: '| tee -a /var/log/cloud-init-output.log' }
     ssh_authorized_keys:
-      - {{ lookup('file', '~/.ssh/id_rsa.pub' ) }}
+      - {{ lookup('file', '{{ ssh_path }}/{{ user_key }}.pub' ) }}
     users:
     - default
     - name: zuul
       ssh_authorized_keys:
-        - {{ lookup('file', '~/.ssh/id_rsa.pub' ) }}
+        - {{ lookup('file', '{{ ssh_path }}/{{ user_key }}.pub' ) }}

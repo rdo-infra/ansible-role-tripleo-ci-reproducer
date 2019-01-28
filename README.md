@@ -49,6 +49,8 @@ Role Variables
 * `zuul_job` -- zuul job to executo
 * `zuul_yaml` -- zuul config to run it overwrite zuul_job
 * `depends_on` -- Gerrit reviews to test
+* `user_key` -- ssh private key to use for the user, default "id_rsa"
+* `ssh_path` --  path where the ssh keys are present, default "~/.ssh"
 
 Prerequisites
 -------------
