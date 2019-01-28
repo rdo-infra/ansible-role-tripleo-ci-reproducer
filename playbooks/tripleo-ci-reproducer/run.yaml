@@ -11,6 +11,26 @@
         'review.rdoproject.org/rdo-infra/ansible-role-tripleo-ci-reproducer'
         ].src_dir }}
   tasks:
+    - name: Load docker vars
+      slurp:
+        src: /etc/docker/daemon.json
+      register: docker
+    - name: Add {{ mirror_fqdn }} to docker
+      set_fact:
+        mirrored_docker: "{{ docker.content | combine({
+          'registry-mirrors': [mirror_fqdn]
+        }) }}"
+    - name: Write modified docker daemon config
+      become: true
+      copy:
+        content: "{{ mirrored_docker | to_nice_json }}"
+        dest: /etc/docker/daemon.json
+    - name: Reload docker if config was changed
+      become: true
+      service:
+        name: docker
+        state: reloaded
+
     - name: Create roles directory
       file:
         path: "{{ ansible_user_dir }}/roles"
