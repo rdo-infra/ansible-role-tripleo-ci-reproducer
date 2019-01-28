@@ -65,4 +65,5 @@
           - "--include=*yum*"
           - "--include=*dnf*"
           - "--include=*pip*"
+          - "--include=*virt-resize*"
           - "--exclude=*"
