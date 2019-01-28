@@ -1,6 +1,28 @@
 ---
 - hosts: localhost
   tasks:
+    - name: Load docker vars
+      include_vars:
+        file: /etc/docker/daemon.json
+        name: docker
+    - name: Set docker mirror
+      set_fact:
+        docker_mirror: http://{{ mirror_fqdn }}:8081/registry-1.docker/
+    - name: Configure docker mirror
+      set_fact:
+        mirrored_docker: "{{ '{{' }} docker | combine({
+          'registry-mirrors': [docker_mirror]
+        }) {{ '}}' }}"
+    - name: Write modified docker daemon config
+      become: true
+      copy:
+        content: "{{ mirrored_docker | to_nice_json }}"
+        dest: /etc/docker/daemon.json
+    - name: Reload docker if config was changed
+      become: true
+      service:
+        name: docker
+        state: reloaded
     - name: Start {{ nodepool_provider }} reproducer
       vars:
         nodepool_provider: "{{ nodepool_provider }}"
