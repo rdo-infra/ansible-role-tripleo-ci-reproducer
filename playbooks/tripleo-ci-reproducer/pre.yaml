@@ -64,13 +64,17 @@
       command: "groups {{ ansible_user }}"
       register: user_groups
       changed_when: false
+    
+    - name: get current user name
+      command: "echo {{ ansible_user }}"
+      register: my_ansible_user
 
     - when: "docker_group.stdout not in user_groups.stdout"
       block:
         - name: Add user to docker group
           become: true
           user:
-            name: '{{ ansible_user }}'
+            name: '{{ my_ansible_user.stdout }}'
             groups: '{{ docker_group.stdout }}'
             append: true
           register: groupadd
