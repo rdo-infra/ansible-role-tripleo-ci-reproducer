@@ -87,7 +87,6 @@
           }
         dest: /etc/docker/daemon.json
       register: docker_config
-
     - name: Reload docker if config was changed
       become: true
       service:
