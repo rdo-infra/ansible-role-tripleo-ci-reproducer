@@ -3,10 +3,14 @@
   include_role:
     name: parts/libvirt
 
+- name: get current user name
+  command: "echo {{ ansible_user }}"
+  register: my_ansible_user
+
 - name: Add user to libvirt group
   become: true
   user:
-    name: "{{ ansible_user }}"
+    name: "{{ my_ansible_user.stdout }}"
     groups:
       - libvirt
       - wheel
@@ -27,8 +31,8 @@
     libvirt_nodepool: true
     local_working_dir: "{{ install_path }}"
     working_dir: "{{ install_path }}"
-    non_root_user: "{{ ansible_user }}"
-    non_root_group: "{{ ansible_user }}"
+    non_root_user: "{{ my_ansible_user.stdout }}"
+    non_root_group: "{{ my_ansible_user.stdout }}"
 
   block:
     - name: Start nodes
