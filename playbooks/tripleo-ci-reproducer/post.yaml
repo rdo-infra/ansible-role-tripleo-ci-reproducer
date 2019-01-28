@@ -43,6 +43,15 @@
         chdir: "{{ ansible_user_dir }}/tripleo-ci-reproducer"
       changed_when: true
 
+    - name: Dump journalctl
+      become: true
+      shell: |
+        journalctl 2>&1 > journald.log
+        chown {{ ansible_user }} journald.log
+      args:
+        chdir: "{{ ansible_user_dir }}/tripleo-ci-reproducer"
+      changed_when: true
+
     - name: Copy files from reproducer on node to log
       synchronize:
         src: '{{ ansible_user_dir }}/tripleo-ci-reproducer/'
@@ -68,4 +77,5 @@
           - "--include=*yum*"
           - "--include=*dnf*"
           - "--include=*pip*"
+          - "--include=*journal*"
           - "--exclude=*"
