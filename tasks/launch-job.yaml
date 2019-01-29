@@ -64,9 +64,15 @@
   register: zuul_status
   retries: 20
   delay: 10
-  until: |
-    zuul_status.json | length != 0
+  until:
+    - zuul_status.json | length != 0
+    - zuul_status.json.0.jobs | length != 0
+    - zuul_status.json.0.jobs.0.uuid
   changed_when: false
+
+- name: Print stream command
+  debug:
+    msg: 'finger {{ zuul_status.json.0.jobs.0.uuid }}@localhost'
 
 - name: Wait for job to finish
   uri:
