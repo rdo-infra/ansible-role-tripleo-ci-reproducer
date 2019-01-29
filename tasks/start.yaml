@@ -76,9 +76,9 @@
         - git clone http://localhost:8080/test1
         - Add a zuul.yaml with content like this:
           - project:
-            check:
-              jobs:
-                - tripleo-ci-centos-7-scenario002-standalone
+              check:
+                jobs:
+                  - tripleo-ci-centos-7-scenario002-standalone
         - git review it
 
       You can also comment with 'recheck' at local gerrit to spin a job
