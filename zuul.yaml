@@ -1,4 +1,28 @@
 ---
+- nodeset:
+    name: single-minimal-centos-7-node
+    nodes:
+      - name: primary
+        label: dib-centos-7-minimal
+    groups:
+      - name: switch
+        nodes:
+          - primary
+      - name: peers
+        nodes: []
+
+- nodeset:
+    name: single-minimal-fedora-28-node
+    nodes:
+      - name: primary
+        label: dib-fedora-28-minimal
+    groups:
+      - name: switch
+        nodes:
+          - primary
+      - name: peers
+        nodes: []
+
 - job:
     name: tripleo-ci-reproducer
     parent: tripleo-ci-reproducer-base
@@ -36,22 +60,22 @@
 - job:
     name: tripleo-ci-reproducer-fedora-28-host
     parent: tripleo-ci-reproducer-host
-    nodeset: single-fedora-28-node
+    nodeset: single-minimal-fedora-28-node
 
 - job:
     name: tripleo-ci-reproducer-centos-7-host
     parent: tripleo-ci-reproducer-host
-    nodeset: single-centos-7-node
+    nodeset: single-minimal-centos-7-node
 
 - job:
     name: tripleo-ci-reproducer-fedora-28-libvirt
     parent: tripleo-ci-reproducer-libvirt
-    nodeset: single-fedora-28-node
+    nodeset: single-minimal-fedora-28-node
 
 - job:
     name: tripleo-ci-reproducer-centos-7-libvirt
     parent: tripleo-ci-reproducer-libvirt
-    nodeset: single-centos-7-node
+    nodeset: single-minimal-centos-7-node
 
 
 - project:
