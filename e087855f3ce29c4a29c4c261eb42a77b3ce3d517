@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ad0253b_e0545955",
+        "filename": "playbooks/tripleo-ci-reproducer/templates/run.yaml.j2",
+        "patchSetId": 4
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 192
+      },
+      "writtenOn": "2019-01-29T14:41:03Z",
+      "side": 1,
+      "message": "logs at http://logs.rdoproject.org/39/18539/4/check/tripleo-ci-reproducer-fedora-28-libvirt/8c0f8a0/tripleo-ci-reproducer/logs/01/1001/1/check/tripleo-ci-centos-7-standalone-reprozuul-dryrun/7f0cd1c/job-output.txt.gz",
+      "revId": "e087855f3ce29c4a29c4c261eb42a77b3ce3d517",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
