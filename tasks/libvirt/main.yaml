@@ -33,6 +33,7 @@
     working_dir: "{{ install_path }}"
     non_root_user: "{{ my_ansible_user.stdout }}"
     non_root_group: "{{ my_ansible_user.stdout }}"
+    ansible_python_interpreter: /usr/bin/python3
 
   block:
     - name: Start nodes
