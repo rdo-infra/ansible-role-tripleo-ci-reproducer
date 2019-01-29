@@ -1,4 +1,15 @@
 ---
+- nodeset:
+    name: single-cloud-centos-7-node
+    nodes:
+      - name: primary
+        label: cloud-centos-7
+    groups:
+      - name: switch
+        nodes:
+          - primary
+      - name: peers
+        nodes: []
 - job:
     name: tripleo-ci-reproducer
     parent: tripleo-ci-reproducer-base
@@ -41,7 +52,7 @@
 - job:
     name: tripleo-ci-reproducer-centos-7-host
     parent: tripleo-ci-reproducer-host
-    nodeset: single-centos-7-node
+    nodeset: single-cloud-centos-7-node
 
 - job:
     name: tripleo-ci-reproducer-fedora-28-libvirt
@@ -51,7 +62,7 @@
 - job:
     name: tripleo-ci-reproducer-centos-7-libvirt
     parent: tripleo-ci-reproducer-libvirt
-    nodeset: single-centos-7-node
+    nodeset: single-cloud-centos-7-node
 
 
 - project:
