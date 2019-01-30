@@ -58,15 +58,4 @@
     name: rdo-infra/ansible-role-tripleo-ci-reproducer
     check:
       jobs:
-        - tox-linters
-        - tripleo-ci-reproducer-fedora-28-host
-        - tripleo-ci-reproducer-centos-7-host
-        - tripleo-ci-reproducer-fedora-28-libvirt
-        - tripleo-ci-reproducer-centos-7-libvirt
-    gate:
-      jobs:
-        - tox-linters
-        - tripleo-ci-reproducer-fedora-28-host
-        - tripleo-ci-reproducer-centos-7-host
-        - tripleo-ci-reproducer-fedora-28-libvirt
-        - tripleo-ci-reproducer-centos-7-libvirt
+        - tripleo-ci-fedora-28-standalone
