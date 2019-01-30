@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ad0253b_36173ba5",
+        "filename": "tasks/libvirt/prepare.yaml",
+        "patchSetId": 28
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 155
+      },
+      "writtenOn": "2019-01-30T20:41:44Z",
+      "side": 1,
+      "message": "do we have problem with packages installation? why do we need this?",
+      "range": {
+        "startLine": 36,
+        "startChar": 2,
+        "endLine": 40,
+        "endChar": 40
+      },
+      "revId": "cd0bb22eb6396007d49438713a8cae83087885c5",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ad0253b_160c3f93",
+        "filename": "tasks/libvirt/prepare.yaml",
+        "patchSetId": 28
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 155
+      },
+      "writtenOn": "2019-01-30T20:41:44Z",
+      "side": 1,
+      "message": "ditto",
+      "range": {
+        "startLine": 66,
+        "startChar": 10,
+        "endLine": 71,
+        "endChar": 38
+      },
+      "revId": "cd0bb22eb6396007d49438713a8cae83087885c5",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
