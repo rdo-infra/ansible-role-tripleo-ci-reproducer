@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ad0253b_5b8f8023",
+        "filename": "playbooks/tripleo-ci-reproducer/pre.yaml",
+        "patchSetId": 8
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 517
+      },
+      "writtenOn": "2019-01-30T06:23:18Z",
+      "side": 1,
+      "message": "missing changed_when: true \u003c- this will fix linting",
+      "revId": "ad5bbb7576e7a03da84e580398c451bbda655ffb",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
