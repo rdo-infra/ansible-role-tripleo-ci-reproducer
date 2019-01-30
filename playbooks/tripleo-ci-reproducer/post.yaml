@@ -57,6 +57,7 @@
           - "--exclude=playbooks/zuul_config_repo"
 
     - name: Copy files from /etc
+      become: true
       synchronize:
         src: '/etc/'
         dest: '{{ zuul.executor.log_root }}/etc/'
@@ -68,4 +69,4 @@
           - "--include=*yum*"
           - "--include=*dnf*"
           - "--include=*pip*"
-          - "--exclude=*"
+          - "--exclude=*docker*"
