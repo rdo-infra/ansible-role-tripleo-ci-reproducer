@@ -12,7 +12,7 @@
         ].src_dir }}
   tasks:
     - name: Use RDO docker registry at RDO cloud
-      when: nodepool.cloud == 'rdo-cloud'
+      when: "'rdo-cloud' in nodepool.cloud"
       vars:
         mirror_fqdn: |
           mirror.{{ nodepool.region | lower }}.{{

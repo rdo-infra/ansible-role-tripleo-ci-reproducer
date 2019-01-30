@@ -1,6 +1,14 @@
 ---
 - hosts: primary
   tasks:
+    - name: Get docker system info
+      shell: |
+        docker system info > docker.system.log 2>&1
+      args:
+        chdir: "{{ ansible_user_dir }}/tripleo-ci-reproducer"
+      changed_when: true
+
+
     - name: Get docker-compose ps
       shell: |
         ~/.local/bin/docker-compose ps 2>&1 > ps.log
@@ -78,4 +86,5 @@
           - "--include=*dnf*"
           - "--include=*pip*"
           - "--include=*journal*"
+          - "--include=*docker*"
           - "--exclude=*"
