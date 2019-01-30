@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "5ad0253b_bbce9458",
+        "filename": "README.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 517
+      },
+      "writtenOn": "2019-01-30T07:52:49Z",
+      "side": 1,
+      "message": "Usually people will just be fine with defaults or maybe just create new one and set user_key.\n\ngerrit_key and rdo_key are using user_key so this is just for flexibility of the thing.",
+      "parentUuid": "5ad0253b_dbca704f",
+      "range": {
+        "startLine": 16,
+        "startChar": 5,
+        "endLine": 16,
+        "endChar": 14
+      },
+      "revId": "608db2df45189d1882165e6dc7fbd7a26eaba67b",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5ad0253b_fbb40cd2",
         "filename": "README.md",
         "patchSetId": 9
@@ -36,6 +60,30 @@
       "writtenOn": "2019-01-30T07:27:34Z",
       "side": 1,
       "message": "do we need both (doesn\u0027t it default to key_name.pub ..)\n[EDIT]: yeah looks like you\u0027re just using user_key.pub there https://review.rdoproject.org/r/#/c/18569/9/defaults/main.yaml@12. maybe we can just label that optional (like if you pass user_key only pass pub_key if different from user_key.pub)",
+      "range": {
+        "startLine": 52,
+        "startChar": 4,
+        "endLine": 53,
+        "endChar": 19
+      },
+      "revId": "608db2df45189d1882165e6dc7fbd7a26eaba67b",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ad0253b_9bdbd81b",
+        "filename": "README.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 517
+      },
+      "writtenOn": "2019-01-30T07:52:49Z",
+      "side": 1,
+      "message": "Well all have defaults so all are optional, what we need if put playbook examples after this with different type of scenarios regarding keys.",
+      "parentUuid": "5ad0253b_fbb40cd2",
       "range": {
         "startLine": 52,
         "startChar": 4,
