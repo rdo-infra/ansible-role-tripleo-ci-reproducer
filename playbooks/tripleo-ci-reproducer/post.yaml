@@ -68,4 +68,4 @@
           - "--include=*yum*"
           - "--include=*dnf*"
           - "--include=*pip*"
-          - "--exclude=*"
+          - "--exclude=*docker*"
