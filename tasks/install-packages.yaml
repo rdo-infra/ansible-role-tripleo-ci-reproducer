@@ -1,0 +1,13 @@
+---
+- name: Check list of package that need to be installed
+  package:
+    name: "{{ package }}"
+    state: present
+  check_mode: true
+  register: package_check
+
+- name: Install package dependencies
+  become: true
+  package:
+    name: "{{ package }}"
+  when: package_check is changed
