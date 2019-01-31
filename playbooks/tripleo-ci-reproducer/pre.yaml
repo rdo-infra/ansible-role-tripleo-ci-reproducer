@@ -80,12 +80,13 @@
 
     - name: Create docker configuration file
       become: true
-      copy:
-        content: |
+      blockinfile:
+        block: |
           {
           "group": "{{ docker_group.stdout }}",
           }
         dest: /etc/docker/daemon.json
+        create: true
       register: docker_config
 
     - name: Reload docker if config was changed
