@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "5ad0253b_d65ec744",
+        "filename": "tasks/libvirt/prepare.yaml",
+        "patchSetId": 28
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 517
+      },
+      "writtenOn": "2019-01-31T08:57:55Z",
+      "side": 1,
+      "message": "Yes, the issue from the other day where we didn\u0027t know where was failing it was failing at install packages, sometimes it fails, we didn\u0027t see that because is don\u0027t in parallel at the two subnodes and we were seeing the good one.\n\nI haven\u0027t see this install issue here again, after this.",
+      "parentUuid": "5ad0253b_36173ba5",
+      "range": {
+        "startLine": 36,
+        "startChar": 2,
+        "endLine": 40,
+        "endChar": 40
+      },
+      "revId": "cd0bb22eb6396007d49438713a8cae83087885c5",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5ad0253b_160c3f93",
         "filename": "tasks/libvirt/prepare.yaml",
         "patchSetId": 28
