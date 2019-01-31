@@ -27,20 +27,20 @@
             name:
               - python-pip
 
-    - name: Install package dependencies
-      become: true
-      package:
-        name:
-          - "{{ docker_package | default('docker-1.13.1') }}"
-          - "{{ netaddr_package | default('python-netaddr') }}"
+    - name: Read bindep file contents
+      set_fact:
+        bindep_contents: "{{ lookup('file', 'bindep_python2.txt') }}"
+
+    - include: install-packages.yaml package="{{item}}"
+      with_items: "{{ bindep_contents }}"
+
+    - name: Read requirements.txt file contents
+      set_fact:
+        requirements_contents: "{{ lookup('file', 'requirements.txt') }}"
 
     - name: Install python dependencies
       pip:
-        name:
-          - ansible==2.7.5
-          - openstacksdk==0.13.0
-          - docker==3.6.0
-          - docker-compose==1.23.2
+        name: "{{ requirements_contents }}"
         extra_args: --user
 
     - name: Find out docker group name
@@ -78,15 +78,33 @@
     - name: reset ssh connection to allow user changes to affect
       meta: reset_connection
 
+    - name: Check if docker configuration file already exists
+      stat:
+        path: /etc/docker/daemon.json
+      register: docker_daemon_file
+
+    - name: Check if the daemon.json contains the group line
+      lineinfile:
+        dest: /etc/docker/daemon.json
+        line: "group": "{{ docker_group.stdout }}"
+      check_mode: true
+      register: existing_docker_group
+      when: docker_daemon_file.stat.exists|bool
+
     - name: Create docker configuration file
       become: true
-      copy:
-        content: |
+      blockinfile:
+        block: |
           {
           "group": "{{ docker_group.stdout }}",
           }
         dest: /etc/docker/daemon.json
+        create: true
       register: docker_config
+      when:
+        - docker_daemon_file.stat.exists|bool
+        - existing_docker_group is defined
+        - existing_docker_group is changed
 
     - name: Reload docker if config was changed
       become: true
