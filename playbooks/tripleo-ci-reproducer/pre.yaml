@@ -1,4 +1,5 @@
 ---
+
 - hosts: primary
   tasks:
     - name: Gather needed facts
@@ -27,21 +28,35 @@
             name:
               - python-pip
 
-    - name: Install package dependencies
-      become: true
-      package:
-        name:
-          - "{{ docker_package | default('docker-1.13.1') }}"
-          - "{{ netaddr_package | default('python-netaddr') }}"
+    # top_working_dir evaluates to "top_working_dir":
+    - name: Set fact top_working_dir
+      set_fact:
+        top_working_dir: "{{ top_working_dir | default(playbook_dir + '/../..') }}"
 
     - name: Install python dependencies
       pip:
-        name:
-          - ansible==2.7.5
-          - openstacksdk==0.13.0
-          - docker==3.6.0
-          - docker-compose==1.23.2
-        extra_args: --user
+        requirements: "{{ top_working_dir }}/requirements.txt"
+        extra_args: --user --force
+
+    # Adding when to this command for linting error
+    # https://github.com/ansible/ansible-lint/issues/165
+    # Pipe true because bindep always returns code 1 (error)
+    # when packages are missing
+    - name: Discover packages that are not installed
+      shell: |
+        export PATH=$PATH:$HOME/.local/bin/
+        bindep -b -f {{ top_working_dir }}/bindep.txt
+      register: package_list
+      failed_when: false
+      changed_when: false
+
+    - name: Install rpms from bindep
+      become: true
+      package:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - "{{ package_list.stdout_lines }}"
 
     - name: Find out docker group name
       shell: grep docker /etc/group | cut -d":" -f1 | head -1
@@ -78,7 +93,16 @@
     - name: reset ssh connection to allow user changes to affect
       meta: reset_connection
 
-    - name: Create docker configuration file
+    # check if
+    #  1. empty file
+    #  2. {} in file, 3 chars
+    #  3. no file
+    - name: Check if docker configuration file already exists
+      stat:
+        path: /etc/docker/daemon.json
+      register: docker_daemon_file
+
+    - name: Create docker configuration if missing or empty
       become: true
       copy:
         content: |
@@ -87,13 +111,29 @@
           }
         dest: /etc/docker/daemon.json
       register: docker_config
+      when:
+        - not docker_daemon_file.stat.exists|bool
+        - docker_daemon_file.stat.size <= 3
+
+    # check if docker is configured in docker_daemon
+    - name: Fail if daemon file is incorrectly configured for the reproducer
+      shell: >-
+        if grep "group" /etc/docker/daemon.json; then
+            grep '\"{{ docker_group.stdout }}\"' /etc/docker/daemon.json
+        fi
+      failed_when: false
+      when:
+        - docker_daemon_file.stat.exists|bool
+        - docker_daemon_file.stat.size >= 3
 
     - name: Reload docker if config was changed
       become: true
       service:
         name: docker
         state: reloaded
-      when: docker_config is changed
+      when:
+        - docker_config is defined
+        - docker_config is changed
 
     - name: Start and enable docker
       become: true
