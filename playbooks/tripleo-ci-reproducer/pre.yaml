@@ -75,17 +75,18 @@
             append: true
           register: groupadd
 
-    - name: reset ssh connection to allow user changes to affect
-      meta: reset_connection
+        - name: reset ssh connection to allow user changes to affect
+          meta: reset_connection
 
     - name: Create docker configuration file
       become: true
-      copy:
-        content: |
+      blockinfile:
+        block: |
           {
           "group": "{{ docker_group.stdout }}",
           }
         dest: /etc/docker/daemon.json
+        create: yes
       register: docker_config
 
     - name: Reload docker if config was changed
