@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ad0253b_bc48c95c",
+        "filename": "tasks/install-packages.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 138
+      },
+      "writtenOn": "2019-02-01T17:35:35Z",
+      "side": 1,
+      "message": "your choice, an alternative implementation of the check could be to call bindep as well.. I don\u0027t care but want to share the how..\nbindep -b -f bindep_python2.txt will output a list of rpms missing from the bindep file\n\nfor i in `bindep -b -f bindep_$(python_cmd).txt`; do\n        sudo $(package_manager) -y install $i;\n    done",
+      "revId": "fee4b38fe261d27f20b7fc3068bde4e546e7a4c2",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
