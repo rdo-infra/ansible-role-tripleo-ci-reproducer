@@ -1,0 +1,8 @@
+gcc
+git
+libselinux-python
+python-netaddr
+python-setuptools
+python-virtualenv
+python-pip
+rsync
