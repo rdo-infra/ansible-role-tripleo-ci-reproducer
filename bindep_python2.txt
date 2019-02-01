@@ -1,0 +1,10 @@
+ansible
+gcc
+git
+python2-libselinux
+python2-netaddr
+python-netaddr
+python-setuptools
+python-virtualenv
+python-pip
+rsync
