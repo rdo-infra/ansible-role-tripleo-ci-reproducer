@@ -1,0 +1,4 @@
+ansible==2.7.5
+openstacksdk==0.13.0
+docker==3.6.0
+docker-compose==1.23.2
