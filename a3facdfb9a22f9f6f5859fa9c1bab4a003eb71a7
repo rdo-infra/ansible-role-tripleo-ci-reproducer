@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ad0253b_fccbe170",
+        "filename": "playbooks/tripleo-ci-reproducer/pre.yaml",
+        "patchSetId": 11
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 192
+      },
+      "writtenOn": "2019-02-04T08:00:16Z",
+      "side": 1,
+      "message": "are we assuming a centos host for the reproducer run otherwise we should deal with python3 too? (perhaps a comment  for now and a followup?)",
+      "range": {
+        "startLine": 32,
+        "startChar": 65,
+        "endLine": 32,
+        "endChar": 80
+      },
+      "revId": "a3facdfb9a22f9f6f5859fa9c1bab4a003eb71a7",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ad0253b_dcc82577",
+        "filename": "tasks/install-packages.yaml",
+        "patchSetId": 11
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 192
+      },
+      "writtenOn": "2019-02-04T08:00:16Z",
+      "side": 1,
+      "message": "where is this from please",
+      "range": {
+        "startLine": 4,
+        "startChar": 14,
+        "endLine": 4,
+        "endChar": 21
+      },
+      "revId": "a3facdfb9a22f9f6f5859fa9c1bab4a003eb71a7",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
