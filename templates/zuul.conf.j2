@@ -55,6 +55,8 @@ private_key_file=/var/ssh/id_rsa
 default_username=zuul
 trusted_rw_paths=/srv/static/logs
 log_config=/etc/zuul/executor-logging.yaml
+job_dir=/tmp/
+disk_limit_per_job=5000
 
 [merger]
 git_user_email="os-tripleo-ci@redhat.com"
