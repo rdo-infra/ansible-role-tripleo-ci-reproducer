@@ -68,6 +68,7 @@
           - "/var/projects/zuul-config/"
 
     - include_tasks: add_rdo_config.yml
+      when: not skip_rdo
 
     - name: Create test1 project
       include_role:

@@ -20,6 +20,7 @@ gitweb_url_template=https://git.openstack.org/cgit/{project.name}/commit/?id={sh
 user={{ upstream_gerrit_user }}
 sshkey=/var/ssh/upstream_gerrit_key
 
+{%if not skip_rdo %}
 # Add your rdo user to gerrit stream group, e.g.:
 # https://review.rdoproject.org/r/#/c/17581/
 [connection "rdoproject.org"]
@@ -30,6 +31,7 @@ port=29418
 baseurl=https://review.rdoproject.org/r
 user={{ rdo_gerrit_user }}
 sshkey=/var/ssh/rdo_gerrit_key
+{% endif %}
 
 [connection "gerrit"]
 name=gerrit

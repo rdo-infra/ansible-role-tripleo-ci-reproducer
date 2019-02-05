@@ -52,6 +52,7 @@ Role Variables
 * `user_pri_key` -- ssh private key to use for the user, default "id_rsa"
 * `user_pub_key` -- ssh public key to use for the user, default "id_rsa.pub"
 * `ssh_path` --  path where the ssh keys are present, default "~/.ssh"
+* `skip_rdo` -- don't try to connect RDO gerrit, default false
 
 Prerequisites
 -------------

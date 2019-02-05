@@ -28,6 +28,8 @@ mergers: "{{ ansible_processor_vcpus }}"
 
 nodepool_provider: openstack
 
+skip_rdo: false
+
 os_cloud_networks:
   rdo-cloud:
     - private

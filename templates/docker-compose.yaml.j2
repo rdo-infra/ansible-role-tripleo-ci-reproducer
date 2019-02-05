@@ -23,7 +23,7 @@ services:
       - "./playbooks/:/usr/src/:z"
       - "./projects/:/var/projects/:z"
     env_file: secrets.env
-    command: "ansible-playbook -vv inject-ssh-keys.yaml setup-gerrit.yaml"
+    command: "ansible-playbook -vv inject-ssh-keys.yaml setup-gerrit.yaml -e skip_rdo={{ skip_rdo }}"
   zk:
     image: "{{ zk_image }}"
   mysql:
