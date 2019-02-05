@@ -41,6 +41,7 @@
             - openstack/openstack-ansible-os_tempest
             - openstack/ansible-role-python_venv_build
             - openstack/ansible-config_template
+{% if not skip_rdo %}
       rdoproject.org:
         untrusted-projects:
           - exclude:
@@ -50,3 +51,4 @@
             - rdo-jobs
             - rdo-infra/ci-config
             - rdo-infra/ansible-role-tripleo-ci-reproducer
+{% endif %}

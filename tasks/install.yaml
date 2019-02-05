@@ -34,6 +34,11 @@
     - web-logging.yaml
     - merger-logging.yaml
 
+- name: Generate zuul-config jobs
+  template:
+    src: "zuul-config-jobs.yaml.j2"
+    dest: "{{ install_path }}/projects/zuul-config/zuul.d/jobs.yaml"
+
 - name: Generate secrets.env
   vars:
     id_rsa_b64: "{{ lookup('file', ssh_path + '/' +
