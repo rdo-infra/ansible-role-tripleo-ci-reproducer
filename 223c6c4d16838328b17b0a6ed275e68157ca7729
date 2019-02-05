@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "697a0d07_8b397e18",
+        "filename": "playbooks/tripleo-ci-reproducer/pre.yaml",
+        "patchSetId": 14
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 517
+      },
+      "writtenOn": "2019-02-05T07:36:46Z",
+      "side": 1,
+      "message": "Not needed if it\u0027s started it\u0027s ok, previous one is the one needed for idempotency.",
+      "revId": "223c6c4d16838328b17b0a6ed275e68157ca7729",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
