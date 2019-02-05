@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5bf5986a_75b002cb",
+        "filename": "playbooks/tripleo-ci-reproducer/pre.yaml",
+        "patchSetId": 16
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 138
+      },
+      "writtenOn": "2019-02-05T19:29:47Z",
+      "side": 1,
+      "message": "when:\n        - docker_config is defined\n        - docker_config is changed",
+      "revId": "8d9014af79780fd6ebf9c8df231baeeeca7acdd7",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
