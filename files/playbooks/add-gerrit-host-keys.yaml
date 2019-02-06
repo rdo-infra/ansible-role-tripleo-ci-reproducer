@@ -2,22 +2,17 @@
 - hosts: localhost
   gather_facts: false
   tasks:
-    - name: Create ssh dir
+    - name: Create .ssh dir
       file:
-        path: /var/ssh
+        path: ~/.ssh
         state: directory
-        mode: 0644
-    - name: Dump ssh keys
-      copy:
-        content: "{{ lookup('env', item) | b64decode }}"
-        dest: /var/ssh/{{ item }}
-        mode: 0600
+        mode: 0700
+    - name: Add gerrits to known_hosts
+      known_hosts:
+        name: "[{{ item }}]:29418"
+        key: "{{ lookup('pipe', 'ssh-keyscan
+          -t rsa -p 29418 {{ item }}') }}"
       with_items:
-        - id_rsa
-        - upstream_gerrit_key
-        - rdo_gerrit_key
-    - name: Generate pub key for id_rsa
-      copy:
-        content: "{{ lookup('pipe', 'ssh-keygen -y -f /var/ssh/id_rsa') }}"
-        dest: /var/ssh/id_rsa.pub
-        mode: 0600
+        - review.openstack.org
+        - review.rdoproject.org
+        - gerrit
