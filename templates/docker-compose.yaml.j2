@@ -63,7 +63,7 @@ services:
     privileged: true
     environment:
       no_proxy: "${no_proxy},gerrit"
-    command: "sh -c 'ansible-playbook -vv inject-ssh-keys.yaml && zuul-executor -d'"
+    command: "sh -c 'ansible-playbook -vv inject-ssh-keys.yaml wait-gerrit.yaml add-gerrit-host-keys.yaml && zuul-executor -d'"
     depends_on:
       - scheduler
     image: "{{ zuul_executor_image }}"
@@ -119,7 +119,7 @@ services:
       no_proxy: "${no_proxy},gerrit"
     command: |
         sh -c ' \
-            ansible-playbook inject-ssh-keys.yaml && \
+            ansible-playbook inject-ssh-keys.yaml wait-gerrit.yaml add-gerrit-host-keys.yaml && \
             zuul-merger -d'
     depends_on:
       - scheduler
