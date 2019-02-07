@@ -56,19 +56,31 @@
     nodeset: single-centos-7-node
 
 
+- job:
+    name: tripleo-ci-reproducer-centos-7-libvirt-1
+    parent: tripleo-ci-reproducer-libvirt
+    nodeset: single-centos-7-node
+
+- job:
+    name: tripleo-ci-reproducer-centos-7-libvirt-2
+    parent: tripleo-ci-reproducer-libvirt
+    nodeset: single-centos-7-node
+
+- job:
+    name: tripleo-ci-reproducer-centos-7-libvirt-3
+    parent: tripleo-ci-reproducer-libvirt
+    nodeset: single-centos-7-node
+
+- job:
+    name: tripleo-ci-reproducer-centos-7-libvirt-4
+    parent: tripleo-ci-reproducer-libvirt
+    nodeset: single-centos-7-node
+
 - project:
     name: rdo-infra/ansible-role-tripleo-ci-reproducer
     check:
       jobs:
-        - tox-linters
-        - tripleo-ci-reproducer-fedora-28-host
-        - tripleo-ci-reproducer-centos-7-host
-        - tripleo-ci-reproducer-fedora-28-libvirt
-        - tripleo-ci-reproducer-centos-7-libvirt
-    gate:
-      jobs:
-        - tox-linters
-        - tripleo-ci-reproducer-fedora-28-host
-        - tripleo-ci-reproducer-centos-7-host
-        - tripleo-ci-reproducer-fedora-28-libvirt
-        - tripleo-ci-reproducer-centos-7-libvirt
+        - tripleo-ci-reproducer-centos-7-libvirt-1
+        - tripleo-ci-reproducer-centos-7-libvirt-2
+        - tripleo-ci-reproducer-centos-7-libvirt-3
+        - tripleo-ci-reproducer-centos-7-libvirt-4
