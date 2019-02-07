@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3e34fa41_86962e12",
+        "filename": "playbooks/tripleo-ci-reproducer/pre.yaml",
+        "patchSetId": 40
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 517
+      },
+      "writtenOn": "2019-02-07T11:23:22Z",
+      "side": 1,
+      "message": "So maybe better to pollute this thing with zuul stuff, some alternatives:\n\nWhat about \u0027git rev-parse --show-toplevel\u0027 ? I know it depends on git\n\nOther option:\ntop_working_dir: \"{{ top_working_dir | default(aplybook_dir + \u0027/../..\u0027) }}\"\n\nAnd here [1] we set:\n\ntop_working_dir : \"{{  zuul.project.src_dir }}\"\n\n[1] https://github.com/rdo-infra/ansible-role-tripleo-ci-reproducer/blob/master/zuul.yaml#L16",
+      "revId": "e5089c39374a19f3cdf3d0bce3221a028e55960d",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
