@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a3b8ad6c_9471615a",
+        "filename": "templates/docker-compose.yaml.j2",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 371
+      },
+      "writtenOn": "2019-02-08T16:08:02Z",
+      "side": 1,
+      "message": "not really scalable approach if we start needing more and more variables but will do for the moment.\n\nwe can think for a better way once we have the 2nd/3rd variable to add.",
+      "range": {
+        "startLine": 26,
+        "startChar": 75,
+        "endLine": 26,
+        "endChar": 99
+      },
+      "revId": "c6345efb350777d3d317e7c63d60d3bc879ee2ee",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
