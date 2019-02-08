@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c43b304f_2241275b",
+        "filename": "playbooks/tripleo-ci-reproducer/post.yaml",
+        "patchSetId": 12
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 371
+      },
+      "writtenOn": "2019-02-08T16:00:57Z",
+      "side": 1,
+      "message": "I think somethink like this would be more appropiate:\n\ndocker system info \u0026| tee docker-system.log\n\nThis would not hide output from screen if something goes wrong. Also using a more standard filename (single extension).",
+      "revId": "efce6b385f88484cafdd5155976f0a4e511b46ef",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
