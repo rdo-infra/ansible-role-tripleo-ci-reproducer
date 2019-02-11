@@ -1,15 +1,18 @@
-ansible
-docker
-gcc
-git
+# epel-release is required for python-pip
+# epel is not installed on nodepool nodes.
+ansible [platform:rpm]
+docker [platform:rpm]
+gcc [platform:rpm]
+git [platform:rpm]
 python2-libselinux [platform:fedora]
 python2-netaddr [platform:fedora]
 python2-setuptools [platform:fedora]
 python2-virtualenv [platform:fedora]
 python2-pip [platform:fedora]
+epel-release [platform:centos]
 libselinux-python [platform:centos]
 python-netaddr [platform:centos]
 python-setuptools [platform:centos]
 python-virtualenv [platform:centos]
 python-pip [platform:centos]
-rsync
+rsync [platform:rpm]

@@ -90,8 +90,8 @@
             append: true
           register: groupadd
 
-    - name: reset ssh connection to allow user changes to affect
-      meta: reset_connection
+        - name: reset ssh connection to allow user changes to affect
+          meta: reset_connection
 
     # check if
     #  1. empty file
