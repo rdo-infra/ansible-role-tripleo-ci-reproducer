@@ -1,0 +1,9 @@
+Code-Review+2: Félix Enrique Llorente Pastora <quique.llorente@gmail.com>
+Code-Review+2: wes hayutin <weshayutin@gmail.com>
+Workflow+1: wes hayutin <weshayutin@gmail.com>
+Verified+2: Zuul CI <zuul@review.rdoproject.org>
+Submitted-by: Zuul CI <zuul@review.rdoproject.org>
+Submitted-at: Tue, 12 Feb 2019 13:33:05 +0000
+Reviewed-on: https://review.rdoproject.org/r/18804
+Project: rdo-infra/ansible-role-tripleo-ci-reproducer
+Branch: refs/heads/master
