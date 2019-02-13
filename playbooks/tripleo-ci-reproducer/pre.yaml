@@ -28,24 +28,19 @@
             name:
               - python-pip
 
-    # top_working_dir evaluates to "top_working_dir":
-    - name: Set fact top_working_dir
-      set_fact:
-        top_working_dir: "{{ top_working_dir | default(playbook_dir + '/../..') }}"
+    - name: Print top dir
+      debug:
+        var: reproducer_role_top_dir
 
     - name: Install python dependencies
       pip:
-        requirements: "{{ top_working_dir }}/requirements.txt"
+        requirements: "{{ default(playbook_dir + '/../..') }}/requirements.txt"
         extra_args: --user --force
 
-    # Adding when to this command for linting error
-    # https://github.com/ansible/ansible-lint/issues/165
-    # Pipe true because bindep always returns code 1 (error)
-    # when packages are missing
     - name: Discover packages that are not installed
       shell: |
         export PATH=$PATH:$HOME/.local/bin/
-        bindep -b -f {{ top_working_dir }}/bindep.txt
+        bindep -b -f {{ default(playbook_dir + '/../..') }}/bindep.txt
       register: package_list
       failed_when: false
       changed_when: false

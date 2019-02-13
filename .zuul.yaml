@@ -16,7 +16,6 @@
     vars:
       upstream_gerrit_user: os-tripleo-ci
       rdo_gerrit_user: os-tripleo-ci
-      top_working_dir: "/home/zuul/{{ zuul.project.src_dir }}"
 
 - job:
     name: tripleo-ci-reproducer-host
