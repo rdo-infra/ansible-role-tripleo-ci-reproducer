@@ -16,7 +16,10 @@
     vars:
       upstream_gerrit_user: os-tripleo-ci
       rdo_gerrit_user: os-tripleo-ci
-      top_working_dir: "/home/zuul/{{ zuul.project.src_dir }}"
+      reproducer_role_top_dir: >-
+        {{ ansible_user_dir }}/{{ zuul.projects[
+          'review.rdoproject.org/rdo-infra/ansible-role-tripleo-ci-reproducer'
+          ].src_dir }}
 
 - job:
     name: tripleo-ci-reproducer-host
