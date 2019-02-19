@@ -52,6 +52,12 @@
     commit: "{{ lookup('file', testproject.path + '/commit.txt') }}"
     change: "{{ lookup('file', testproject.path + '/change.txt') }}"
 
+- name: Point users at zuul and gerrit
+  debug:
+    msg: |
+      "As the job starts you can follow the progress by
+       navigating to http://localhost:9000 or http://<ip>:9000"
+
 - name: Wait for job to start
   uri:
     url: |
