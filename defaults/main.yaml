@@ -38,7 +38,7 @@ cloud_networks: "{{ os_cloud_networks[os_cloud_name]|default(['private']) }}"
 
 depends_on: []
 
-zuul_job: noop
+zuul_job: tripleo-ci-centos-7-standalone
 
 zuul_yaml:
   - project:
