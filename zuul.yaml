@@ -57,6 +57,7 @@
     name: tripleo-ci-reproducer-centos-7-libvirt
     parent: tripleo-ci-reproducer-libvirt
     nodeset: single-centos-7-node
+    voting: false
 
 
 - project:
@@ -74,4 +75,3 @@
         - tripleo-ci-reproducer-fedora-28-host
         - tripleo-ci-reproducer-centos-7-host
         - tripleo-ci-reproducer-fedora-28-libvirt
-        - tripleo-ci-reproducer-centos-7-libvirt
