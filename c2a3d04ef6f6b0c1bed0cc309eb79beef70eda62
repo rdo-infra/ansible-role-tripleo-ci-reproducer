@@ -1,0 +1,10 @@
+Code-Review+1: Sorin Sbarnea <sorin.sbarnea@gmail.com>
+Code-Review+2: User marios <marios@redhat.com>
+Code-Review+2: wes hayutin <weshayutin@gmail.com>
+Workflow+1: wes hayutin <weshayutin@gmail.com>
+Verified+2: Zuul CI <zuul@review.rdoproject.org>
+Submitted-by: Zuul CI <zuul@review.rdoproject.org>
+Submitted-at: Fri, 22 Feb 2019 19:18:19 +0000
+Reviewed-on: https://review.rdoproject.org/r/18951
+Project: rdo-infra/ansible-role-tripleo-ci-reproducer
+Branch: refs/heads/master
