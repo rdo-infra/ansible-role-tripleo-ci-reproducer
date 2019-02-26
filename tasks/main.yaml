@@ -35,7 +35,7 @@
       known_hosts:
         name: "[{{ item.name }}]:29418"
         key: "{{ lookup('pipe', 'ssh-keyscan
-          -t {{ item.type }} -p 29418 {{ item.name }}') }}"
+          -4 -t {{ item.type }} -p 29418 {{ item.name }}') }}"
       with_items:
         - name: localhost
           type: ecdsa-sha2-nistp256
