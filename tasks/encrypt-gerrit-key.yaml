@@ -42,6 +42,7 @@
         cmd: |
           set -e
           git remote add gerrit ssh://admin@localhost:29418/zuul-config
+          scp -p -P 29418 admin@localhost:hooks/commit-msg .git/hooks/
           git add zuul.d/tripleo_gerrit_key_secret.yaml
           git commit -m "Add secrets"
           git push origin HEAD:refs/for/master
