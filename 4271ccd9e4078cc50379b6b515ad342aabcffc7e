@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "270081c9_f87a8542",
+        "filename": "bindep.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 371
+      },
+      "writtenOn": "2019-02-28T15:26:37Z",
+      "side": 1,
+      "message": "Perfect! If needed by the code of this repo, that is the best place to write it.",
+      "range": {
+        "startLine": 8,
+        "startChar": 24,
+        "endLine": 8,
+        "endChar": 25
+      },
+      "revId": "4271ccd9e4078cc50379b6b515ad342aabcffc7e",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
