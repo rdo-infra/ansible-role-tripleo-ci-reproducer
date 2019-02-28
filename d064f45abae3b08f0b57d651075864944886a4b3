@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a6065fc8_93db89ac",
+        "filename": "tasks/encrypt-gerrit-key.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 517
+      },
+      "writtenOn": "2019-02-28T07:46:53Z",
+      "side": 1,
+      "message": "Let\u0027s just add the hooks I forgot about it at previous commits.\n\nscp -p -P 29418 admin@localhost:hooks/commit-msg zuul-config/.git/hooks/",
+      "revId": "d064f45abae3b08f0b57d651075864944886a4b3",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
