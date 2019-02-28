@@ -8,6 +8,13 @@
       when:
         - ansible_user_dir is not defined
         - ansible_distribution is not defined
+
+    - name: Install EPEL
+      become: true
+      package:
+        name: epel-release
+      when: ansible_distribution == "CentOS"
+
     - name: Check if pip is installed
       shell: command -v pip > /dev/null 2>&1
       ignore_errors: true
@@ -16,17 +23,10 @@
 
     - when: pip_exists.rc != 0
       name: Install pip
-      block:
-        - when: ansible_distribution == "CentOS"
-          name: Install EPEL
-          become: true
-          package:
-            name: epel-release
-        - name: Install pip
-          become: true
-          package:
-            name:
-              - python-pip
+      become: true
+      package:
+        name:
+          - python-pip
 
     # reproducer_role_top_dir evaluates to "reproducer_role_top_dir":
     - name: Set fact reproducer_role_top_dir
