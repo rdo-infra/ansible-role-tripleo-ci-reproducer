@@ -56,7 +56,8 @@
 - job:
     name: tripleo-ci-reproducer-centos-7-libvirt
     parent: tripleo-ci-reproducer-libvirt
-    nodeset: single-centos-7-node
+    # nodeset: single-centos-7-node
+    nodeset: upstream-centos-7-vexxhost
     voting: false
 
 
