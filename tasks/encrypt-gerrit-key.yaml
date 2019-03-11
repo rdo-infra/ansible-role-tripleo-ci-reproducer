@@ -41,12 +41,10 @@
         chdir: "{{ zuul_config.path }}"
         cmd: |
           set -e
-          git remote add gerrit ssh://admin@localhost:29418/zuul-config
+          git remote add gerrit http://admin:secret@localhost:8080/zuul-config
           git add zuul.d/tripleo_gerrit_key_secret.yaml
+          git config user.name "admin"
           git commit -m "Add secrets"
-          pip install --user git-review
-          git review
           alias gerrit='ssh -p 29418 admin@localhost gerrit'
-          gerrit review --workflow=+1 --verified=+2 --code-review=+2 --submit \
-          $(git rev-parse HEAD)
+          git push -f --set-upstream gerrit +HEAD:master
       changed_when: true
