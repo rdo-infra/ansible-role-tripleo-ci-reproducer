@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b394e207_5b1a8d2f",
+        "filename": "tasks/encrypt-gerrit-key.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 192
+      },
+      "writtenOn": "2019-03-13T07:58:28Z",
+      "side": 1,
+      "message": "bonus its also much simpler than git review :D",
+      "revId": "48a146bd4345d8a2a18bd5b932aa6456ac4c5ead",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
