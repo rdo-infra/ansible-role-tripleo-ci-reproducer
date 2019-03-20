@@ -47,6 +47,22 @@
             - openstack/ansible-role-container-registry
             - openstack/kolla
             - openstack/tripleo-repos
+            - openstack/heat-agents
+            - openstack-dev/devstack
+            - openstack-infra/devstack-gate
+            - openstack/cinder
+            - openstack/diskimage-builder
+            - openstack/glance
+            - openstack/horizon
+            - openstack/keystone
+            - openstack/kolla-ansible
+            - openstack/neutron
+            - openstack/nova
+            - openstack/packstack
+            - openstack/puppet-aodh
+            - openstack/python-openstackclient
+            - openstack/rpm-packaging
+            - openstack/swift
       rdoproject.org:
         untrusted-projects:
           - exclude:
@@ -56,3 +72,12 @@
             - rdo-jobs
             - rdo-infra/ci-config
             - rdo-infra/ansible-role-tripleo-ci-reproducer
+            - centos-opstools/opstools-ansible
+      # github.com:
+      #   untrusted-projects:
+      #     # Don't load any configuration from these projects because we
+      #     # don't gate them, so they could wedge our config.
+      #   - include: []
+      #     projects:
+      #     - ceph/ceph-ansible
+
