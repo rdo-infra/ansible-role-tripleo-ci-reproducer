@@ -10,14 +10,6 @@
         rdo_gerrit_key: "{{ tripleo_gerrit_key_name }}"
         control_vcpu: 4
         control_memory: 4096
-        zuul_yaml:
-          - job:
-              name: hello-reproducer
-              run: playbooks/run.yaml
-          - project:
-              check:
-                jobs:
-                  - hello-reproducer
       include_role:
         name: tripleo-ci-reproducer
     - name: Get zuul builds
