@@ -73,6 +73,14 @@
           - "--exclude=playbooks/rdo_config_repo"
           - "--exclude=playbooks/zuul_config_repo"
 
+    - name: Copy files from user dir to log
+      synchronize:
+        src: '{{ ansible_user_dir }}/ci-job.yaml'
+        dest: '{{ zuul.executor.log_root }}/tripleo-ci-reproducer/'
+        mode: pull
+        copy_links: true
+        verify_host: true
+
     - name: Copy files from /etc
       become: true
       synchronize:
