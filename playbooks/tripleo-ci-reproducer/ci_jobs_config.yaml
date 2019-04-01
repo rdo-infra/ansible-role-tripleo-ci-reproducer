@@ -1,0 +1,28 @@
+ci_jobs_config:
+  standalone:
+    zuul_yaml:
+      - project:
+          check:
+            jobs:
+              - tripleo-ci-centos-7-standalone-dlrn-hash-tag
+
+      - job:
+          name: tripleo-ci-centos-7-standalone-dlrn-hash-tag
+          parent: tripleo-ci-centos-7-standalone
+          vars:
+            mirror_fqdn: "{{ mirror_fqdn }}"
+            featureset_override:
+              tempest_format: container
+              dlrn_hash_tag:
+                187b0e6a4b44acac2ea4dd2aebc0567d48e65247_04eed6fb
+              dlrn_hash_tag_newest:
+                49e9de05ec1dcc8f696570b8eb7f7e683d977f66_6e306722
+  hello_job:
+    zuul_yaml:
+      - job:
+          name: hello-reproducer
+          run: playbooks/run.yaml
+      - project:
+          check:
+            jobs:
+              - hello-reproducer

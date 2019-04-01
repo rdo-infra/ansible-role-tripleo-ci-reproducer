@@ -11,13 +11,15 @@
         'review.rdoproject.org/rdo-infra/ansible-role-tripleo-ci-reproducer'
         ].src_dir }}
   tasks:
+
+    - name: Set facts for mirrors
+      set_fact:
+        mirror_fqdn: "mirror.{{ nodepool.region | lower }}.{{nodepool.cloud | lower }}.rdoproject.org"
     - name: Use RDO docker registry at RDO cloud
       when: "'rdo-cloud' in nodepool.cloud"
       vars:
-        mirror_fqdn: |
-          mirror.{{ nodepool.region | lower }}.{{
-            nodepool.cloud | lower }}.rdoproject.org
-        docker_registry: http://{{ mirror_fqdn }}:8081/registry-1.docker/
+        mirror_fqdn: "{{ mirror_fqdn }}"
+        docker_registry: "http://{{ mirror_fqdn }}:8081/registry-1.docker/"
       block:
         - name: Read docker daemon configuration
           become: true
@@ -54,6 +56,14 @@
       template:
         src: run.yaml.j2
         dest: "{{ ansible_user_dir }}/start.yaml"
+    - name: Load variables from defaults of tripleo-ci-reproducer
+      include_vars: "ci_jobs_config.yaml"
+    - name: Generate jobs config
+      blockinfile:
+        content: |
+          {{ ci_jobs_config[ci_job]|to_nice_yaml }}
+        path: "{{ ansible_user_dir }}/ci-job.yaml"
+        create: true
     - name: Generate run script
       template:
         src: run.sh.j2
