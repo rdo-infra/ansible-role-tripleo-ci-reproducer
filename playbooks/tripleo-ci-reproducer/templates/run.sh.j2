@@ -14,4 +14,4 @@ export ANSIBLE_STDOUT_CALLBACK=debug
 # At zuul images we don't have any .bash_profile or .profile
 export PATH=$PATH:$HOME/.local/bin
 
-ansible-playbook -vv ~/start.yaml
+ansible-playbook -vv ~/start.yaml {% if ci_zuul_yaml if defined %}-e zuul_yaml={{ ci_zuul_yaml|to_json }}{% endif %}
