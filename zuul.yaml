@@ -16,6 +16,7 @@
     vars:
       upstream_gerrit_user: os-tripleo-ci
       rdo_gerrit_user: os-tripleo-ci
+      ci_job: hello_job
       reproducer_role_top_dir: >-
         {{ ansible_user_dir }}/{{ zuul.projects[
           'review.rdoproject.org/rdo-infra/ansible-role-tripleo-ci-reproducer'
@@ -49,17 +50,18 @@
     nodeset: single-centos-7-node
 
 - job:
-    name: tripleo-ci-reproducer-fedora-28-libvirt
-    parent: tripleo-ci-reproducer-libvirt
-    nodeset: single-fedora-28-node
-    voting: false
-
-- job:
     name: tripleo-ci-reproducer-centos-7-libvirt
     parent: tripleo-ci-reproducer-libvirt
     nodeset: single-centos-7-node
     voting: false
 
+- job:
+    name: tripleo-ci-reproducer-fedora-28-libvirt-standalone-dryrun
+    parent: tripleo-ci-reproducer-libvirt
+    nodeset: single-fedora-28-node
+    voting: false
+    vars:
+      ci_job: standalone-dryrun
 
 - project:
     name: rdo-infra/ansible-role-tripleo-ci-reproducer
@@ -68,11 +70,10 @@
         - tox-linters
         - tripleo-ci-reproducer-fedora-28-host
         - tripleo-ci-reproducer-centos-7-host
-        - tripleo-ci-reproducer-fedora-28-libvirt
         - tripleo-ci-reproducer-centos-7-libvirt
+        - tripleo-ci-reproducer-fedora-28-libvirt-standalone-dryrun
     gate:
       jobs:
         - tox-linters
         - tripleo-ci-reproducer-fedora-28-host
         - tripleo-ci-reproducer-centos-7-host
-        - tripleo-ci-reproducer-fedora-28-libvirt
