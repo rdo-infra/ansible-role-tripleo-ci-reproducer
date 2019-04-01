@@ -1,0 +1,42 @@
+ci_jobs_config:
+  standalone:
+    zuul_yaml:
+      - project:
+          check:
+            jobs:
+              - tripleo-ci-centos-7-containers-multinode-dlrn-hash-tag
+
+      - job:
+          name: tripleo-ci-centos-7-containers-multinode-dlrn-hash-tag
+          parent: tripleo-ci-centos-7-containers-multinode
+          vars:
+            ready_releases_file: |
+              #!/bin/env bash
+              export UNDERCLOUD_INSTALL_RELEASE="master"
+              export UNDERCLOUD_INSTALL_HASH="591f43c8256ea27cd9de20269bbd5f5604874e0a_8e97d5e1"
+              export UNDERCLOUD_TARGET_RELEASE="master"
+              export UNDERCLOUD_TARGET_HASH="591f43c8256ea27cd9de20269bbd5f5604874e0a_8e97d5e1"
+              export OVERCLOUD_DEPLOY_RELEASE="master"
+              export OVERCLOUD_DEPLOY_HASH="591f43c8256ea27cd9de20269bbd5f5604874e0a_8e97d5e1"
+              export OVERCLOUD_TARGET_RELEASE="master"
+              export OVERCLOUD_TARGET_HASH="591f43c8256ea27cd9de20269bbd5f5604874e0a_8e97d5e1"
+              export STANDALONE_DEPLOY_RELEASE="master"
+              export STANDALONE_DEPLOY_HASH="591f43c8256ea27cd9de20269bbd5f5604874e0a_8e97d5e1"
+              export STANDALONE_DEPLOY_NEWEST_HASH="eaf6d8d95d4f3badb071ee9e4cdf9a6652ada69b_156a4cd0"
+              export STANDALONE_TARGET_RELEASE="master"
+              export STANDALONE_TARGET_NEWEST_HASH="eaf6d8d95d4f3badb071ee9e4cdf9a6652ada69b_156a4cd0"
+              export STANDALONE_TARGET_HASH="591f43c8256ea27cd9de20269bbd5f5604874e0a_8e97d5e1"
+            featureset_override:
+              dlrn_hash_tag:
+                591f43c8256ea27cd9de20269bbd5f5604874e0a_8e97d5e1
+              dlrn_hash_tag_newest:
+                eaf6d8d95d4f3badb071ee9e4cdf9a6652ada69b_156a4cd0
+  hello_job:
+    zuul_yaml:
+      - job:
+          name: hello-reproducer
+          run: playbooks/run.yaml
+      - project:
+          check:
+            jobs:
+              - hello-reproducer

@@ -45,7 +45,6 @@ zuul_yaml:
       check:
         jobs:
           - "{{ zuul_job }}"
-
 ##############
 # Docker images
 ###############
