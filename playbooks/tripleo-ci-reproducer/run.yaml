@@ -54,6 +54,14 @@
       template:
         src: run.yaml.j2
         dest: "{{ ansible_user_dir }}/start.yaml"
+    - name: Load variables from defaults of tripleo-ci-reproducer
+      include_vars: "{{ repro_role_path }}/defaults/main.yaml"
+    - name: Generate standalone job config
+      blockinfile:
+        content: |
+          {{ standalone_yaml|to_nice_yaml }}
+        path: "{{ ansible_user_dir }}/standalone-job.yaml"
+        create: true
     - name: Generate run script
       template:
         src: run.sh.j2
