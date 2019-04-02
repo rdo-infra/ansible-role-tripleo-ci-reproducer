@@ -64,9 +64,12 @@
         - "{{ package_list.stdout_lines }}"
 
     - name: Find out docker group name
-      shell: grep docker /etc/group | cut -d":" -f1 | head -1
+      shell: |
+        set -euo pipefail
+        grep docker /etc/group | cut -d":" -f1 | head -1
       register: docker_group
       changed_when: false
+      failed_when: false
 
     - when: not docker_group.stdout
       block:
