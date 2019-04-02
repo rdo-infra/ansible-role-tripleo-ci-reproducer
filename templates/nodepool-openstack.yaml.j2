@@ -13,7 +13,7 @@ providers:
     launch-retries: 3
     region-name: regionOne
     clean-floating-ips: true
-    boot-timeout: 240
+    boot-timeout: 600
     rate: 0.25
     cloud-images:
       - name: centos-7
@@ -38,16 +38,16 @@ providers:
             flavor-name: 'm1.large'
             cloud-image: centos-7
             console-log: true
-            {{ cloud_config | indent(12) }}
+            {{ cloud_config_centos | indent(12) }}
           - name: tripleo-ovb-centos-7
             min-ram: 8192
             flavor-name: 'm1.large'
             cloud-image: centos-7
             console-log: true
-            {{ cloud_config | indent(12) }}
+            {{ cloud_config_centos_ovb | indent(12) }}
           - name: fedora-28
             min-ram: 8192
             flavor-name: 'm1.large'
             cloud-image: fedora-28
             console-log: true
-            {{ cloud_config | indent(12) }}
+            {{ cloud_config_fedora | indent(12) }}
