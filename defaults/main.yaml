@@ -104,3 +104,7 @@ cloud_config: |
     - name: zuul
       ssh_authorized_keys:
         - {{ lookup('file', ssh_path + '/' + user_pub_key ) }}
+    runcmd:
+      - [ yum, remove, -y, cloud-init ]
+      - [ yum, update, -y ]
+      - reboot
