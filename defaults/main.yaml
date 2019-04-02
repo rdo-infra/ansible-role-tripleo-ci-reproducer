@@ -104,3 +104,23 @@ cloud_config: |
     - name: zuul
       ssh_authorized_keys:
         - {{ lookup('file', ssh_path + '/' + user_pub_key ) }}
+
+cloud_config_centos: |-
+  {{ cloud_config -}}
+    runcmd:
+    - [ yum, remove, -y, cloud-init ]
+    - [ yum, update, -y ]
+    - reboot
+cloud_config_fedora: |-
+  {{ cloud_config -}}
+    runcmd:
+    - [ dnf, remove, -y, cloud-init ]
+    - [ dnf, update, -y ]
+    - reboot
+cloud_config_centos_ovb: |-
+  {{ cloud_config -}}
+    runcmd:
+    - [ yum, remove, -y, cloud-init ]
+    - [ yum, update, -y ]
+    - echo "/dev/disk/by-label/config-2  /mnt/config" >> /etc/fstab
+    - reboot
