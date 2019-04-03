@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "632edf8a_9ae9995a",
+        "filename": "zuul.yaml",
+        "patchSetId": 24
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 517
+      },
+      "writtenOn": "2019-04-03T10:16:52Z",
+      "side": 1,
+      "message": "Let\u0027s just run standalone when it works before merge this.",
+      "revId": "f304a0a08ce7b17e0961409dfc8bcc85c962bb00",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
