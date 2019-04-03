@@ -9,6 +9,7 @@
       - screen
       - vim
       - wget
+      - lvm2
       - "{% if ansible_python.version.major == 3 -%}python3-virtualenv{%-
           else -%}python-virtualenv{%- endif -%}"
   tasks:
