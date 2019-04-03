@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1756d026_1eebd344",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 192
+      },
+      "writtenOn": "2019-04-03T10:47:40Z",
+      "side": 1,
+      "message": "13:43 \u003c quiquell\u003e marios_|ruck: let\u0027s merge this so we can adapt reproducer script\n13:44 \u003c quiquell\u003e marios_|ruck: the story https://tree.taiga.io/project/tripleo-ci-board/task/933?kanban-status\u003d1447275",
+      "revId": "2b1ea3471848197ccec693ae27f272544c6968c3",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9897d2da_6bde0e4d",
+        "filename": "README.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 192
+      },
+      "writtenOn": "2019-04-03T10:47:40Z",
+      "side": 1,
+      "message": "nit",
+      "range": {
+        "startLine": 55,
+        "startChar": 41,
+        "endLine": 55,
+        "endChar": 42
+      },
+      "revId": "2b1ea3471848197ccec693ae27f272544c6968c3",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
