@@ -46,6 +46,8 @@ zuul_yaml:
         jobs:
           - "{{ zuul_job }}"
 
+launch_job_branch: master
+
 ##############
 # Docker images
 ###############

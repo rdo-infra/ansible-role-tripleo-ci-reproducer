@@ -32,13 +32,14 @@
       git config --local user.name Admin
       git config --local user.email admin@example.com
       git remote add gerrit ssh://admin@localhost:29418/test1
+      git checkout -t origin {{ launch_job_branch }}
       git add zuul.yaml
       git commit -m 'Add job to launch
       {% for review in depends_on %}
       Depends-On: {{ review }}
       {% endfor %}
       '
-      git push origin HEAD:refs/for/master 2>&1 | tee push.log
+      git push origin HEAD:refs/for/{{ launch_job_branch }} 2>&1 | tee push.log
       grep "remote:.*http" push.log | awk '{print $2}' | tee url.txt
       sed "s/.*\/\([0-9]*\)$/\1/" url.txt| tee review.txt
       git rev-parse HEAD | tee commit.txt
