@@ -11,7 +11,6 @@ ci_jobs_config:
           parent: tripleo-ci-centos-7-standalone
           vars:
             mirror_fqdn: "{{ mirror_fqdn }}"
-            dryrun: true
             featureset_override:
               tempest_format: container
 
