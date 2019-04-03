@@ -70,10 +70,15 @@
     - include_tasks: add_rdo_config.yml
 
     - name: Create test1 project
-      include_role:
-        name: create_project
       vars:
         project: test1
+        branches:
+          - stable/stein
+          - stable/rocky
+          - stable/queens
+          - stable/pike
+      include_role:
+        name: create_project
     - name: Create test2 project
       include_role:
         name: create_project

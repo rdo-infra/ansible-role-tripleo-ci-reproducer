@@ -40,3 +40,8 @@
           git commit -m "Initial commit"
           git remote add gerrit http://admin:secret@gerrit:8080/{{ project }}
           git push -f --set-upstream gerrit +HEAD:master
+
+    - name: Create branches
+      command: ssh -i /var/ssh/id_rsa -p 29418 admin@gerrit gerrit create-branch {{ project }} {{ item }} master
+      changed_when: true
+      with_items: "{{ branches }}"
