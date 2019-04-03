@@ -69,6 +69,30 @@
     vars:
       ci_job: standalone-dryrun
 
+- job:
+    name: tripleo-ci-reproducer-centos-7-libvirt-standalone-dryrun
+    parent: tripleo-ci-reproducer-libvirt
+    nodeset: single-centos-7-node
+    voting: false
+    vars:
+      ci_job: standalone-dryrun
+
+- job:
+    name: tripleo-ci-reproducer-fedora-28-libvirt-standalone
+    parent: tripleo-ci-reproducer-libvirt
+    nodeset: single-fedora-28-node
+    voting: false
+    vars:
+      ci_job: standalone
+
+- job:
+    name: tripleo-ci-reproducer-centos-7-libvirt-standalone
+    parent: tripleo-ci-reproducer-libvirt
+    nodeset: single-centos-7-node
+    voting: false
+    vars:
+      ci_job: standalone
+
 - project:
     name: rdo-infra/ansible-role-tripleo-ci-reproducer
     check:
@@ -78,6 +102,9 @@
         - tripleo-ci-reproducer-centos-7-host
         - tripleo-ci-reproducer-centos-7-libvirt
         - tripleo-ci-reproducer-fedora-28-libvirt-standalone-dryrun
+        - tripleo-ci-reproducer-centos-7-libvirt-standalone-dryrun
+        - tripleo-ci-reproducer-centos-7-libvirt-standalone
+        - tripleo-ci-reproducer-fedora-28-libvirt-standalone
     gate:
       jobs:
         - tox-linters
