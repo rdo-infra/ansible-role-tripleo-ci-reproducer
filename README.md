@@ -52,6 +52,7 @@ Role Variables
 * `user_pri_key` -- ssh private key to use for the user, default "id_rsa"
 * `user_pub_key` -- ssh public key to use for the user, default "id_rsa.pub"
 * `ssh_path` --  path where the ssh keys are present, default "~/.ssh"
+* `launch_job_branch` -- branch to launch the job from, default "master"
 
 Prerequisites
 -------------
@@ -96,6 +97,21 @@ Run standalone without tempest towards a noop change
         name: ci-reproducer
     - ci-reproducer
 ```
+Run standalone job over stable/rocky
+
+```yaml
+---
+- name: Start reproducer
+  hosts: virthost
+  vars:
+    zuul_job: tripleo-ci-centos-7-standalone
+    launch_job_branch: stable/rocky
+  tasks:
+    - include_role:
+        name: ci-reproducer
+```
+
+
 License
 -------
 
