@@ -12,6 +12,16 @@
         ].src_dir }}
   tasks:
 
+    #- name: Create 8G swap
+    #  become: true
+    #  shell: |
+    #    dd if=/dev/zero of=/swapfile bs=1024 count=8388608
+    #    mkswap /swapfile
+    #    chmod 600 /swapfile
+    #    swapon /swapfile
+    #    swapon --show
+    #    free -h
+
     - name: Set facts for mirrors
       set_fact:
         mirror_fqdn: "mirror.{{ nodepool.region | lower }}.{{nodepool.cloud | lower }}.rdoproject.org"
