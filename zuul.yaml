@@ -84,6 +84,15 @@
     nodeset: single-centos-7-node
     voting: false
 
+- job:
+    name: tripleo-ci-reproducer-centos-7-libvirt-standalone-vexxhost
+    parent: tripleo-ci-reproducer-libvirt
+    nodeset: upstream-centos-7-vexxhost
+    voting: false
+    timeout: 15300
+    vars:
+      ci_job: standalone
+
 - project:
     name: rdo-infra/ansible-role-tripleo-ci-reproducer
     check:
@@ -94,6 +103,7 @@
         - tripleo-ci-reproducer-centos-7-libvirt-vexxhost
         - tripleo-ci-reproducer-fedora-28-libvirt-standalone-dryrun
         - tripleo-ci-reproducer-centos-7-openstack
+        - tripleo-ci-reproducer-centos-7-libvirt-standalone-vexxhost
 
     gate:
       jobs:
