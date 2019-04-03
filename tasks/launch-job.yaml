@@ -100,11 +100,12 @@
     body_format: json
   register: zuul_status
   # Three hours
-  retries: 180
+  retries: 75
   # One minute
-  delay: 60
+  delay: 129
   until: zuul_status.json | length == 0
   changed_when: false
+  ignore_errors: true
 
 - name: Get zuul builds
   uri:
