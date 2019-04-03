@@ -13,6 +13,14 @@
     append: true
 - name: reset ssh connection to allow user changes to affect
   meta: reset_connection
+
+- name: Set up debug for libvirt
+  shell: |
+    echo "log_level=1" >> /etc/libvirt/libvirtd.conf
+    echo 'log_outputs="1:file:/tmp/libvirtd.log"' >> /etc/libvirt/libvirtd.conf
+    systemctl restart libvirtd
+  become: true
+
 - name: Restore a libvirt snapshot
   when: restore_snapshot
   vars:
@@ -40,6 +48,9 @@
         - name: Set up nodes
           include_role:
             name: libvirt/setup/overcloud
+          vars:
+            libvirt_wait_retries: 40
+            libvirt_wait_delay: 20
 
         - name: Set up tripleo inventory
           include_role:
