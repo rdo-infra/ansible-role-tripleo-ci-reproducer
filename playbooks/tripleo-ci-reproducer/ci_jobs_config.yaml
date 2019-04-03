@@ -14,6 +14,21 @@ ci_jobs_config:
             dryrun: true
             featureset_override:
               tempest_format: container
+  standalone:
+    zuul_yaml:
+      - project:
+          check:
+            jobs:
+              - tripleo-ci-centos-7-standalone-dlrn-hash-tag
+
+      - job:
+          name: tripleo-ci-centos-7-standalone-dlrn-hash-tag
+          parent: tripleo-ci-centos-7-standalone
+          vars:
+            mirror_fqdn: "{{ mirror_fqdn }}"
+            featureset_override:
+              tempest_format: container
+
 
   hello_job:
     zuul_yaml:
