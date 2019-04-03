@@ -9,6 +9,7 @@
       - screen
       - vim
       - wget
+      - lvm2
       - "{% if ansible_python.version.major == 3 -%}python3-virtualenv{%-
           else -%}python-virtualenv{%- endif -%}"
   tasks:
@@ -41,6 +42,11 @@
       tags:
         # We really want to install latest
         - skip_ansible_lint
+
+    - name: Get cirros image
+      shell: |
+        mkdir -p $(dirname {{ tempest_test_image_path }});
+        curl "{{ tempest_test_url_path }}" -o {{ tempest_test_image_path }};
 
     - name: Scan SSH keys from subnodes
       shell: |
