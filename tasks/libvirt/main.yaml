@@ -29,6 +29,8 @@
     working_dir: "{{ install_path }}"
     non_root_user: "{{ ansible_user }}"
     non_root_group: "{{ ansible_user }}"
+    libvirt_wait_retries: 30
+    libvirt_wait_delay: 20
 
   block:
     - name: Start nodes
