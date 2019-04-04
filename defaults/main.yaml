@@ -108,21 +108,24 @@ cloud_config: |
         - {{ lookup('file', ssh_path + '/' + user_pub_key ) }}
 
 cloud_config_centos: |-
-  {{ cloud_config -}}
-    runcmd:
+  {{ cloud_config }}
+  {% raw %}  runcmd:
     - [ yum, remove, -y, cloud-init ]
     - [ yum, update, -y ]
     - reboot
+  {% endraw %}
 cloud_config_fedora: |-
-  {{ cloud_config -}}
-    runcmd:
+  {{ cloud_config }}
+  {% raw %}  runcmd:
     - [ dnf, remove, -y, cloud-init ]
     - [ dnf, update, -y ]
     - reboot
+  {% endraw %}
 cloud_config_centos_ovb: |-
-  {{ cloud_config -}}
-    runcmd:
+  {{ cloud_config }}
+  {% raw %}  runcmd:
     - [ yum, remove, -y, cloud-init ]
     - [ yum, update, -y ]
     - echo "/dev/disk/by-label/config-2  /mnt/config" >> /etc/fstab
     - reboot
+  {% endraw %}
