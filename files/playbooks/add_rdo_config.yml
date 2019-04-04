@@ -15,10 +15,16 @@
 
 - name: Execute script
   shell: |
+    echo "Removing secrets";
     for i in $(grep "secrets:" -r -l .); do
     echo $i;
     python ../zuul_config_repo/remove_secrets.py $i;
-    done
+    done;
+    echo "Replacing config repo name";
+    for i in $(grep "review.rdoproject.org/config" -r -l .); do
+    echo $i;
+    sed -i "s@review.rdoproject.org/config@zuul-config@g" $i;
+    done;
   args:
     chdir: rdo_config_repo
   tags:
@@ -28,12 +34,14 @@
   shell: >-
     cp -RT rdo_config_repo/{{ item }} zuul_config_repo/{{ item }}
   with_items:
+    - ci-scripts
     - roles
     - playbooks/tripleo-rdo-base
     - playbooks/tripleo-ci-periodic-base
     - playbooks/tripleo-ci-periodic-base-upload
     - playbooks/tripleo-ci-base-promote-consistent-to-tripleo-ci-testing
     - zuul.d/tripleo-rdo-base.yaml
+    - zuul.d/tripleoci.yaml
   tags:
     - skip_ansible_lint
 
