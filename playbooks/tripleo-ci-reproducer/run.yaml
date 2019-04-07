@@ -52,7 +52,31 @@
         src: "{{ repro_role_path }}"
         dest: "{{ ansible_user_dir }}/roles/tripleo-ci-reproducer"
         state: link
+    - name: Discover dependencies
+      set_fact:
+        depends_on1: "{{ zuul.items }}"
+    - debug: var=depends_on1
+    - name: Discover dependencies
+      set_fact:
+        depends_on2: "{{ zuul['items'] |
+          rejectattr('project.name', 'match', 'rdo-infra/ansible-role-tripleo-ci-reproducer') }}"
+    - debug: var=depends_on2
+    - name: Discover dependencies
+      set_fact:
+        depends_on3: "{{ zuul['items'] |
+          rejectattr('project.name', 'match', 'rdo-infra/ansible-role-tripleo-ci-reproducer') |
+          selectattr('change_url') }}"
+    - debug: var=depends_on3
+    - name: Discover dependencies
+      set_fact:
+        depends_on: "{{ zuul['items'] |
+          rejectattr('project.name', 'match', 'rdo-infra/ansible-role-tripleo-ci-reproducer') |
+          selectattr('change_url') |
+          list }}"
+    - debug: var=depends_on
     - name: Generate reproducer playbook
+      vars:
+        depends_on: "{{ depends_on }}"
       template:
         src: run.yaml.j2
         dest: "{{ ansible_user_dir }}/start.yaml"
