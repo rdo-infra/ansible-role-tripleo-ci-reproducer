@@ -53,6 +53,8 @@
         dest: "{{ ansible_user_dir }}/roles/tripleo-ci-reproducer"
         state: link
     - name: Generate reproducer playbook
+      vars:
+        zuul_items: "{{ zuul['items'] }}"
       template:
         src: run.yaml.j2
         dest: "{{ ansible_user_dir }}/start.yaml"
