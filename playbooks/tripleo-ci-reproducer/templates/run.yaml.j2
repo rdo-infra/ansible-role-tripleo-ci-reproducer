@@ -1,6 +1,7 @@
 ---
 - hosts: localhost
   tasks:
+
     - name: Start {{ nodepool_provider }} reproducer
       vars:
         nodepool_provider: "{{ nodepool_provider }}"
@@ -11,6 +12,7 @@
         control_vcpu: 4
         control_memory: 4096
         mirror_fqdn:  "{{ mirror_fqdn }}"
+        depends_on: "{{ depends_on }}"
       include_role:
         name: tripleo-ci-reproducer
     - name: Get zuul builds

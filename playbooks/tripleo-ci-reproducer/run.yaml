@@ -64,7 +64,15 @@
           {{ ci_jobs_config[ci_job]|to_nice_yaml }}
         path: "{{ ansible_user_dir }}/ci-job.yaml"
         create: true
+    - name: Discover dependencies
+      set_fact:
+        depends_on: "{{ zuul.items |
+          rejectattr('project.name', 'match', 'rdo-infra/ansible-role-tripleo-ci-reproducer') |
+          map(attribute='change_url') |
+          list }}"
     - name: Generate run script
+      vars:
+        depends_on: "{{ depends_on }}"
       template:
         src: run.sh.j2
         dest: "{{ ansible_user_dir }}/run.sh"
