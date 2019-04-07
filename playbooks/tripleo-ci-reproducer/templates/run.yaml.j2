@@ -1,6 +1,17 @@
 ---
 - hosts: localhost
   tasks:
+
+    - name: Discover dependencies
+      set_fact:
+        depends_on: "{{ zuul.items |
+          rejectattr('project.name', 'match', 'rdo-infra/ansible-role-tripleo-ci-reproducer') |
+          map(attribute='change_url') |
+          list }}"
+      when:
+        - zuul.items is defined
+        - zuul.items|length > 0
+
     - name: Start {{ nodepool_provider }} reproducer
       vars:
         nodepool_provider: "{{ nodepool_provider }}"
@@ -11,6 +22,7 @@
         control_vcpu: 4
         control_memory: 4096
         mirror_fqdn:  "{{ mirror_fqdn }}"
+        depends_on: "{{ depends_on|default([]) }}"
       include_role:
         name: tripleo-ci-reproducer
     - name: Get zuul builds
