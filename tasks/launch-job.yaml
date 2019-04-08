@@ -83,6 +83,16 @@
   debug:
     msg: 'finger {{ zuul_status.json.0.jobs.0.uuid }}@localhost'
 
+- name: Do autohold to have the nodes in case of job failure
+  command: |
+    docker-compose exec scheduler autohold
+      --project test1
+      --tenant tripleo-ci-reproducer
+      --job {{ zuul_status.json.0.jobs.0.name }}
+      --reason reproducer_forensics
+  args:
+    chdir: ~/tripleo-ci-reproducer
+
 - name: Wait for job to finish
   uri:
     url: |
