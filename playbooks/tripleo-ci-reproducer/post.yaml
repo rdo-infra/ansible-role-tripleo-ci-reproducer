@@ -94,6 +94,18 @@
         copy_links: true
         verify_host: true
 
+    - name: Copy libvirtd log
+      become: true
+      synchronize:
+        src: '/tmp/libvirtd.log'
+        dest: '{{ zuul.executor.log_root }}/tripleo-ci-reproducer/libvirtd-debug.log'
+        mode: pull
+        copy_links: true
+        verify_host: true
+        rsync_opts:
+          - "--chown={{ ansible_user }}:{{ ansible_user }}"
+      ignore_errors: true
+
     - name: Copy files from /etc
       become: true
       synchronize:

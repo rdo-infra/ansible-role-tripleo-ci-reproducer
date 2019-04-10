@@ -62,9 +62,31 @@
     voting: false
 
 - job:
+    name: tripleo-ci-reproducer-centos-7-libvirt-vexxhost
+    parent: tripleo-ci-reproducer-libvirt
+    nodeset: upstream-centos-7-vexxhost
+    voting: false
+
+- job:
     name: tripleo-ci-reproducer-fedora-28-libvirt-standalone-dryrun
     parent: tripleo-ci-reproducer-libvirt
     nodeset: single-fedora-28-node
+    voting: false
+    vars:
+      ci_job: standalone-dryrun
+
+- job:
+    name: tripleo-ci-reproducer-centos-7-libvirt-standalone-dryrun
+    parent: tripleo-ci-reproducer-libvirt
+    nodeset: single-centos-7-node
+    voting: false
+    vars:
+      ci_job: standalone-dryrun
+
+- job:
+    name: tripleo-ci-reproducer-centos-7-libvirt-standalone-dryrun-vexxhost
+    parent: tripleo-ci-reproducer-libvirt
+    nodeset: upstream-centos-7-vexxhost
     voting: false
     vars:
       ci_job: standalone-dryrun
@@ -78,6 +100,9 @@
         - tripleo-ci-reproducer-centos-7-host
         - tripleo-ci-reproducer-centos-7-libvirt
         - tripleo-ci-reproducer-fedora-28-libvirt-standalone-dryrun
+        - tripleo-ci-reproducer-centos-7-libvirt-standalone-dryrun
+        - tripleo-ci-reproducer-centos-7-libvirt-vexxhost
+        - tripleo-ci-reproducer-centos-7-libvirt-standalone-dryrun-vexxhost
     gate:
       jobs:
         - tox-linters
