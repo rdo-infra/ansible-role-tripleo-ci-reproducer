@@ -40,6 +40,9 @@
         - name: Set up nodes
           include_role:
             name: libvirt/setup/overcloud
+          vars:
+            libvirt_wait_retries: 20
+            libvirt_wait_delay: 30
 
         - name: Set up tripleo inventory
           include_role:
