@@ -94,6 +94,15 @@
         copy_links: true
         verify_host: true
 
+    - name: Copy libvirtd log
+      synchronize:
+        src: '/tmp/libvirtd.log'
+        dest: '{{ zuul.executor.log_root }}/tripleo-ci-reproducer/libvirtd-debug.log'
+        mode: pull
+        copy_links: true
+        verify_host: true
+      ignore_errors: true
+
     - name: Copy files from /etc
       become: true
       synchronize:
@@ -114,4 +123,24 @@
           - "--include=*journal*"
           - "--include=*docker*"
           - "--include=*docker/*"
+          - "--include=*libvirt/*"
+          - "--include=*qemu/*"
           - "--exclude=*"
+      ignore_errors: true
+
+    - name: Set var log
+      file:
+        path: '{{ zuul.executor.log_root }}/var_log'
+        state: directory
+
+    - name: Copy files from /var/log
+      become: true
+      synchronize:
+        src: '/var/log/'
+        dest: '{{ zuul.executor.log_root }}/var_log/'
+        mode: pull
+        copy_links: true
+        verify_host: true
+        rsync_opts:
+          - "--chown={{ ansible_user }}:{{ ansible_user }}"
+      ignore_errors: true
