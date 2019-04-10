@@ -115,3 +115,23 @@
           - "--include=*docker*"
           - "--include=*docker/*"
           - "--exclude=*"
+
+    - name: Set var log
+      file:
+        path: '{{ zuul.executor.log_root }}/var_log'
+        state: directory
+
+    - name: Copy files from /var/log
+      become: true
+      synchronize:
+        src: '/var/log/'
+        dest: '{{ zuul.executor.log_root }}/var_log/'
+        mode: pull
+        copy_links: true
+        verify_host: true
+        rsync_opts:
+          - "--chown={{ ansible_user }}:{{ ansible_user }}"
+          - "--include=*libvirtd/*"
+          - "--include=*libvirt*/*"
+          - "--exclude=*"
+      ignore_errors: true
