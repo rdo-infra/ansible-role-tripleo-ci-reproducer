@@ -1,4 +1,7 @@
 ---
+- name: Load variables for libvirt tasks
+  include_vars: settings.yaml
+
 - name: Install libvirt packages
   include_role:
     name: parts/libvirt
