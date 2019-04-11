@@ -82,7 +82,6 @@ libvirt_volume_path: /opt/vm_images
 libvirt_uri: qemu:///system
 overcloud_nodes:
   - name: subnode-0
-  - name: subnode-1
 libvirt_nodepool: true
 local_working_dir: "{{ install_path }}"
 working_dir: "{{ install_path }}"
