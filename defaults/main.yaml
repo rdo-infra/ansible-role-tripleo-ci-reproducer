@@ -77,20 +77,6 @@ logs_image: rdoci/httpd:stable
 # To control nodepool setup
 setup_nodepool: true
 
-# For libvirt
-libvirt_volume_path: /opt/vm_images
-libvirt_uri: qemu:///system
-overcloud_nodes:
-  - name: subnode-0
-  - name: subnode-1
-libvirt_nodepool: true
-local_working_dir: "{{ install_path }}"
-working_dir: "{{ install_path }}"
-non_root_user: "{{ ansible_user }}"
-non_root_group: "{{ ansible_user }}"
-restore_snapshot: false
-create_snapshot: false
-
 # SSH with password is not allowed: 'ssh_pwauth: False'
 cloud_config: |
   userdata: |
