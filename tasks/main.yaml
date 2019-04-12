@@ -23,11 +23,13 @@
       refspec: "{{ build_nodepool.refspec }}"
   include_tasks: build-pbrx-container.yaml
 
+- name: Installing at ~/tripleo-ci-reproducer
+  include_tasks: install.yaml
+  tags:
+    - install
+
 - name: Install and start reproducer
   block:
-    - name: Install it
-      include_tasks: install.yaml
-
     - name: Start it
       include_tasks: start.yaml
 

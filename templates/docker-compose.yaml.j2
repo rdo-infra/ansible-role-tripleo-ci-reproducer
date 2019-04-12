@@ -99,7 +99,7 @@ services:
     volumes:
       - "./etc_nodepool/:/etc/nodepool/:z"
       - "~/.config/openstack/:/etc/openstack/:z"
-      - "/etc/pki/:/etc/pki/:z"
+      - "./etc/pki/:/etc/pki/:z"
     ports:
       - "8022:8022"
       - "8005:8005"
