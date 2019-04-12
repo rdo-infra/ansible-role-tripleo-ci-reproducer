@@ -47,6 +47,11 @@
     dest: "{{ install_path }}/secrets.env"
     mode: 0600
 
+- name: Install pki
+  copy:
+    src: /etc/pki/tls/certs/ca-bundle.crt
+    dest: "{{ install_path }}/etc/pki/tls/certs/ca-bundle.crt"
+
 - name: Setup nodepool provider
   include_tasks: "{{ nodepool_provider }}/main.yaml"
   when: nodepool_provider != "host" and setup_nodepool
