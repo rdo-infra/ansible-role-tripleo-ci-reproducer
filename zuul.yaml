@@ -69,6 +69,44 @@
     vars:
       ci_job: standalone-dryrun
 
+- job:
+    name: tripleo-ci-reproducer-fedora-28-libvirt-promotion
+    parent: tripleo-ci-reproducer-libvirt
+    nodeset: single-fedora-28-node
+    voting: false
+    vars:
+      gerrit_image: gerritcodereview/gerrit
+      zk_image: zookeeper
+      mariadb_image: mariadb
+      zuul_image: zuul/zuul
+      zuul_scheduler_image: zuul/zuul-scheduler
+      zuul_web_image: zuul/zuul-web
+      zuul_executor_image: zuul/zuul-executor
+      nodepool_launcher_image: zuul/nodepool-launcher
+      zuul_merger_image: zuul/zuul-merger
+      zuul_fingergw_image: zuul/zuul-fingergw
+      logs_image: httpd
+
+- job:
+    name: tripleo-ci-reproducer-fedora-28-libvirt-standalone-dryrun-promotion
+    parent: tripleo-ci-reproducer-libvirt
+    nodeset: single-fedora-28-node
+    voting: false
+    vars:
+      ci_job: standalone-dryrun
+      gerrit_image: gerritcodereview/gerrit
+      zk_image: zookeeper
+      mariadb_image: mariadb
+      zuul_image: zuul/zuul
+      zuul_scheduler_image: zuul/zuul-scheduler
+      zuul_web_image: zuul/zuul-web
+      zuul_executor_image: zuul/zuul-executor
+      nodepool_launcher_image: zuul/nodepool-launcher
+      zuul_merger_image: zuul/zuul-merger
+      zuul_fingergw_image: zuul/zuul-fingergw
+      logs_image: httpd
+
+
 - project:
     name: rdo-infra/ansible-role-tripleo-ci-reproducer
     check:
@@ -78,6 +116,8 @@
         - tripleo-ci-reproducer-centos-7-host
         - tripleo-ci-reproducer-centos-7-libvirt
         - tripleo-ci-reproducer-fedora-28-libvirt-standalone-dryrun
+        - tripleo-ci-reproducer-fedora-28-libvirt-promotion
+        - tripleo-ci-reproducer-fedora-28-libvirt-standalone-dryrun-promotion
     gate:
       jobs:
         - tox-linters
