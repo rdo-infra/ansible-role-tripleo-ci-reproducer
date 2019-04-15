@@ -13,7 +13,7 @@
   blockinfile:
     content: |
       {{ zuul_yaml }}
-    path: "{{ testproject.path }}/zuul.yaml"
+    dest: "{{ testproject.path }}/zuul.yaml"
     create: true
     mode: 0644
 
@@ -58,14 +58,12 @@
 - name: Point users at zuul and gerrit
   debug:
     msg: |
-      "As the job starts you can follow the progress by
-       navigating to http://localhost:9000 or http://<ip>:9000"
+      As the job starts you can follow the progress by
+      navigating to http://localhost:9000 or http://<ip>:9000
 
 - name: Wait for job to start
   uri:
-    url: |
-      http://localhost:9000/api/tenant/tripleo-ci-reproducer/status/change/{{
-        change }}
+    url: http://localhost:9000/api/tenant/tripleo-ci-reproducer/status/change/{{ change }}
     method: GET
     return_content: true
     status_code: 200
@@ -95,9 +93,7 @@
 
 - name: Wait for job to finish
   uri:
-    url: |
-      http://localhost:9000/api/tenant/tripleo-ci-reproducer/status/change/{{
-        change }}
+    url: http://localhost:9000/api/tenant/tripleo-ci-reproducer/status/change/{{ change }}
     method: GET
     return_content: true
     status_code: 200
@@ -107,15 +103,12 @@
   retries: 180
   # One minute
   delay: 60
-  until: |
-    zuul_status.json | length == 0
+  until: zuul_status.json | length == 0
   changed_when: false
 
 - name: Get zuul builds
   uri:
-    url: |
-      http://localhost:9000/api/tenant/tripleo-ci-reproducer/builds?change={{
-        change }}
+    url: http://localhost:9000/api/tenant/tripleo-ci-reproducer/builds?change={{ change }}
     method: GET
     return_content: true
     status_code: 200
