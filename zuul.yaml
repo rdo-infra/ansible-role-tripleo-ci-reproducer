@@ -56,9 +56,9 @@
     voting: false
 
 - job:
-    name: tripleo-ci-reproducer-centos-7-libvirt
+    name: tripleo-ci-reproducer-centos-7-libvirt-vexxhost
     parent: tripleo-ci-reproducer-libvirt
-    nodeset: single-centos-7-node
+    nodeset: upstream-centos-7-vexxhost
     voting: false
 
 - job:
@@ -76,7 +76,7 @@
         - tox-linters
         - tripleo-ci-reproducer-fedora-28-host
         - tripleo-ci-reproducer-centos-7-host
-        - tripleo-ci-reproducer-centos-7-libvirt
+        - tripleo-ci-reproducer-centos-7-libvirt-vexxhost
         - tripleo-ci-reproducer-fedora-28-libvirt-standalone-dryrun
     gate:
       jobs:
