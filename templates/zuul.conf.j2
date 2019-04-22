@@ -11,12 +11,12 @@ hosts=zk
 tenant_config=/etc/zuul/main.yaml
 log_config=/etc/zuul/scheduler-logging.yaml
 
-[connection "git.openstack.org"]
-name=git.openstack.org
+[connection "opendev.org"]
+name=opendev.org
 driver=gerrit
-server=review.openstack.org
-canonical_hostname=git.openstack.org
-gitweb_url_template=https://git.openstack.org/cgit/{project.name}/commit/?id={sha}
+server=review.opendev.org
+canonical_hostname=git.opendev.org
+gitweb_url_template=https://git.opendev.org/cgit/{project.name}/commit/?id={sha}
 user={{ upstream_gerrit_user }}
 sshkey=/var/ssh/upstream_gerrit_key
 
