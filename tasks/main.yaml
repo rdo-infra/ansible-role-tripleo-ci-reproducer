@@ -8,7 +8,7 @@
   vars:
     project:
       name: zuul
-      repo: https://git.openstack.org/openstack-infra/zuul
+      repo: https://git.opendev.org/openstack-infra/zuul
       version: "{{ build_zuul.version }}"
       refspec: "{{ build_zuul.refspec }}"
   include_tasks: build-pbrx-container.yaml
@@ -18,7 +18,7 @@
   vars:
     project:
       name: nodepool
-      repo: https://git.openstack.org/openstack-infra/nodepool
+      repo: https://git.opendev.org/openstack-infra/nodepool
       version: "{{ build_nodepool.version }}"
       refspec: "{{ build_nodepool.refspec }}"
   include_tasks: build-pbrx-container.yaml
@@ -41,7 +41,7 @@
       with_items:
         - name: localhost
           type: ecdsa-sha2-nistp256
-        - name: review.openstack.org
+        - name: review.opendev.org
           type: ssh-rsa
         - name: review.rdoproject.org
           type: ssh-rsa
