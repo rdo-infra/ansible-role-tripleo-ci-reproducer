@@ -2,6 +2,75 @@
   "comments": [
     {
       "key": {
+        "uuid": "08443714_70203b49",
+        "filename": "files/projects/zuul-config/playbooks/base/pre.yaml",
+        "patchSetId": 8
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 155
+      },
+      "writtenOn": "2019-04-22T14:35:00Z",
+      "side": 1,
+      "message": "it didn\u0027t change",
+      "range": {
+        "startLine": 5,
+        "startChar": 21,
+        "endLine": 5,
+        "endChar": 44
+      },
+      "revId": "9a8626578b4362deee57e6840a4c13890272776c",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e367fdc7_3f081bc1",
+        "filename": "files/projects/zuul-config/zuul.d/jobs.yaml",
+        "patchSetId": 8
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 155
+      },
+      "writtenOn": "2019-04-22T14:35:00Z",
+      "side": 1,
+      "message": "openstack/  ?",
+      "range": {
+        "startLine": 21,
+        "startChar": 14,
+        "endLine": 21,
+        "endChar": 19
+      },
+      "revId": "9a8626578b4362deee57e6840a4c13890272776c",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "08a019d8_d3fba796",
+        "filename": "files/projects/zuul-config/zuul.d/jobs.yaml",
+        "patchSetId": 8
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 155
+      },
+      "writtenOn": "2019-04-22T14:35:00Z",
+      "side": 1,
+      "message": "ditto",
+      "range": {
+        "startLine": 58,
+        "startChar": 14,
+        "endLine": 58,
+        "endChar": 18
+      },
+      "revId": "9a8626578b4362deee57e6840a4c13890272776c",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "39c11c73_983bbf65",
         "filename": "tasks/openstack/main.yaml",
         "patchSetId": 8
@@ -19,6 +88,29 @@
     },
     {
       "key": {
+        "uuid": "7e0156b3_74bfd774",
+        "filename": "tasks/openstack/main.yaml",
+        "patchSetId": 8
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 155
+      },
+      "writtenOn": "2019-04-22T14:35:00Z",
+      "side": 1,
+      "message": "didn\u0027t change",
+      "range": {
+        "startLine": 25,
+        "startChar": 6,
+        "endLine": 25,
+        "endChar": 38
+      },
+      "revId": "9a8626578b4362deee57e6840a4c13890272776c",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "460e9722_5049aeb8",
         "filename": "templates/main.yaml.j2",
         "patchSetId": 8
@@ -30,6 +122,52 @@
       "writtenOn": "2019-04-22T14:33:20Z",
       "side": 1,
       "message": "why x?",
+      "revId": "9a8626578b4362deee57e6840a4c13890272776c",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7b0d4bdf_50afebc0",
+        "filename": "templates/main.yaml.j2",
+        "patchSetId": 8
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 155
+      },
+      "writtenOn": "2019-04-22T14:35:00Z",
+      "side": 1,
+      "message": "what\u0027s that?",
+      "range": {
+        "startLine": 39,
+        "startChar": 14,
+        "endLine": 39,
+        "endChar": 15
+      },
+      "revId": "9a8626578b4362deee57e6840a4c13890272776c",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5268c1d9_f6882460",
+        "filename": "templates/zuul.conf.j2",
+        "patchSetId": 8
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 155
+      },
+      "writtenOn": "2019-04-22T14:35:00Z",
+      "side": 1,
+      "message": "I think just opendev.org, without \"git\"",
+      "range": {
+        "startLine": 19,
+        "startChar": 28,
+        "endLine": 19,
+        "endChar": 43
+      },
       "revId": "9a8626578b4362deee57e6840a4c13890272776c",
       "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
       "unresolved": false
