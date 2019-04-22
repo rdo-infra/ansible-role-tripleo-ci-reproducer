@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "39c11c73_983bbf65",
+        "filename": "tasks/openstack/main.yaml",
+        "patchSetId": 8
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 242
+      },
+      "writtenOn": "2019-04-22T14:33:20Z",
+      "side": 1,
+      "message": "https://nb02.opendev.org/images/ does not resolve\nImages are still at https://nb02.openstack.org/images/",
+      "revId": "9a8626578b4362deee57e6840a4c13890272776c",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "460e9722_5049aeb8",
+        "filename": "templates/main.yaml.j2",
+        "patchSetId": 8
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 242
+      },
+      "writtenOn": "2019-04-22T14:33:20Z",
+      "side": 1,
+      "message": "why x?",
+      "revId": "9a8626578b4362deee57e6840a4c13890272776c",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
