@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "95f2c2f2_ae981c48",
+        "filename": "defaults/main.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 155
+      },
+      "writtenOn": "2019-04-22T14:53:27Z",
+      "side": 1,
+      "message": "comments should remain",
+      "range": {
+        "startLine": 54,
+        "startChar": 0,
+        "endLine": 65,
+        "endChar": 56
+      },
+      "revId": "1f6a7946ac104add5060fb40cf977daaf496f770",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
