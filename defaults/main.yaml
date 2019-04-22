@@ -51,28 +51,29 @@ launch_job_branch: master
 ##############
 # Docker images
 ###############
-# gerrit_image: gerritcodereview/gerrit
-gerrit_image: rdoci/gerrit:stable
-# zuul_image: zuul/zuul
-zuul_image: rdoci/zuul:stable
-# zk_image:  zookeeper
-zk_image: rdoci/zookeeper:stable
-# mariadb_image: mariadb
-mariadb_image: rdoci/mariadb:stable
-# zuul_scheduler_image: zuul/zuul-scheduler
-zuul_scheduler_image: rdoci/zuul-scheduler:stable
-# zuul_web_image: zuul/zuul-web
-zuul_web_image: rdoci/zuul-web:stable
-# zuul_executor_image: zuul/zuul-executor
-zuul_executor_image: rdoci/zuul-executor:stable
-# nodepool_launcher_image: zuul/nodepool-launcher
-nodepool_launcher_image: rdoci/nodepool-launcher:44ae87c
-# zuul_merger_image: zuul/zuul-merger
-zuul_merger_image: rdoci/zuul-merger:stable
-zuul_fingergw_image: rdoci/zuul-fingergw:stable
+
+# gerrit_image: rdoci/gerrit:stable
+gerrit_image: gerritcodereview/gerrit:2.16.7-centos7
+# zk_image: rdoci/zookeeper:stable
+zk_image: zookeeper:3.4.14
+# mariadb_image: rdoci/mariadb:stable
+mariadb_image: mariadb:10.3.14-bionic
+# logs_image: rdoci/httpd:stable
+logs_image: httpd:2.4.39-alpine
+# zuul_image: rdoci/zuul:stable
+zuul_image: rdoci/zuul:6afa22c9
+# zuul_scheduler_image: rdoci/zuul-scheduler:stable
+zuul_scheduler_image: rdoci/zuul-scheduler:6afa22c9
+# zuul_web_image: rdoci/zuul-web:stable
+zuul_web_image: rdoci/zuul-web:6afa22c9
+# zuul_executor_image: rdoci/zuul-executor:stable
+zuul_executor_image: rdoci/zuul-executor:6afa22c9
+# zuul_merger_image: rdoci/zuul-merger:stable
+zuul_merger_image: rdoci/zuul-merger:6afa22c9
 # zuul_fingergw_image: rdoci/zuul-fingergw:stable
-# logs_image: httpd
-logs_image: rdoci/httpd:stable
+zuul_fingergw_image: rdoci/zuul-fingergw:6afa22c9
+# nodepool_launcher_image: rdoci/nodepool-launcher:stable
+nodepool_launcher_image: rdoci/nodepool-launcher:f8ac796
 
 # To control nodepool setup
 setup_nodepool: true
