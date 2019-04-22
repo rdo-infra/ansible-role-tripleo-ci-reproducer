@@ -22,7 +22,7 @@
   fail:
     msg: |
       Cannot find {{ item }} at the openstack cloud, you can upload one from
-      https://nb02.openstack.org/images/ and add your ssh pub key with
+      https://nb02.opendev.org/images/ and add your ssh pub key with
       virt-edit and upload it to your openstack cloud.
   when: |
     openstack_image|selectattr( 'name', 'equalto', item )|list|length == 0
