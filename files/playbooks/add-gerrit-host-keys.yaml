@@ -13,6 +13,6 @@
         key: "{{ lookup('pipe', 'ssh-keyscan
           -t rsa -p 29418 {{ item }}') }}"
       with_items:
-        - review.openstack.org
+        - review.opendev.org
         - review.rdoproject.org
         - gerrit

@@ -1,7 +1,7 @@
 ---
 # Introduced for the reproducer. Forcing the job to fail in post will allow the
 # zuul autohold command to hold the node.
-# can be removed if https://review.openstack.org/632498 is merged.
+# can be removed if https://review.opendev.org/632498 is merged.
 - hosts: all
   tasks:
     - name: fail if force flag is set
