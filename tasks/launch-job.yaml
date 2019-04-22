@@ -27,7 +27,7 @@
       #       hooks so we get them from upstream
       mkdir -p .git/hooks/
       scp -p -P 29418 -i {{ ssh_path }}/{{ upstream_gerrit_key }} \
-      {{ upstream_gerrit_user }}@review.openstack.org:hooks/commit-msg \
+      {{ upstream_gerrit_user }}@review.opendev.org:hooks/commit-msg \
         .git/hooks/
       git config --local user.name Admin
       git config --local user.email admin@example.com
