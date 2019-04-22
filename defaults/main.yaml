@@ -52,27 +52,27 @@ launch_job_branch: master
 # Docker images
 ###############
 # gerrit_image: gerritcodereview/gerrit
-gerrit_image: rdoci/gerrit:stable
+gerrit_image: rdoci/gerrit:latest
 # zuul_image: zuul/zuul
-zuul_image: rdoci/zuul:stable
+zuul_image: rdoci/zuul:latest
 # zk_image:  zookeeper
-zk_image: rdoci/zookeeper:stable
+zk_image: rdoci/zookeeper:latest
 # mariadb_image: mariadb
-mariadb_image: rdoci/mariadb:stable
+mariadb_image: rdoci/mariadb:latest
 # zuul_scheduler_image: zuul/zuul-scheduler
-zuul_scheduler_image: rdoci/zuul-scheduler:stable
+zuul_scheduler_image: rdoci/zuul-scheduler:latest
 # zuul_web_image: zuul/zuul-web
-zuul_web_image: rdoci/zuul-web:stable
+zuul_web_image: rdoci/zuul-web:latest
 # zuul_executor_image: zuul/zuul-executor
-zuul_executor_image: rdoci/zuul-executor:stable
+zuul_executor_image: rdoci/zuul-executor:latest
 # nodepool_launcher_image: zuul/nodepool-launcher
 nodepool_launcher_image: rdoci/nodepool-launcher:44ae87c
 # zuul_merger_image: zuul/zuul-merger
-zuul_merger_image: rdoci/zuul-merger:stable
-zuul_fingergw_image: rdoci/zuul-fingergw:stable
-# zuul_fingergw_image: rdoci/zuul-fingergw:stable
+zuul_merger_image: rdoci/zuul-merger:latest
+zuul_fingergw_image: rdoci/zuul-fingergw:latest
+# zuul_fingergw_image: rdoci/zuul-fingergw:latest
 # logs_image: httpd
-logs_image: rdoci/httpd:stable
+logs_image: rdoci/httpd:latest
 
 # To control nodepool setup
 setup_nodepool: true
