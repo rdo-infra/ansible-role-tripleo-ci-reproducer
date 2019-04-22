@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4d5c6cca_f344181c",
+        "filename": "templates/main.yaml.j2",
+        "patchSetId": 9
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 242
+      },
+      "writtenOn": "2019-04-22T14:55:11Z",
+      "side": 1,
+      "message": "openstack/browbeat?",
+      "revId": "537989bc772735699d455fc6e0f971a1a883df9e",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
