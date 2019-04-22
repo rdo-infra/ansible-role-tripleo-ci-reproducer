@@ -83,6 +83,24 @@
     },
     {
       "key": {
+        "uuid": "18b9e83b_5f4675d1",
+        "filename": "templates/main.yaml.j2",
+        "patchSetId": 9
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 155
+      },
+      "writtenOn": "2019-04-22T22:40:21Z",
+      "side": 1,
+      "message": "ok, seems like this is right",
+      "parentUuid": "08e72293_8574cfa4",
+      "revId": "537989bc772735699d455fc6e0f971a1a883df9e",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2291b805_0b3126ff",
         "filename": "templates/zuul.conf.j2",
         "patchSetId": 9
