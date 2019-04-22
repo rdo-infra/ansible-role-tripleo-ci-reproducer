@@ -1,8 +1,8 @@
 #!/bin/bash -ex
 
-{% if 'git.openstack.org/openstack/tripleo-quickstart' in zuul.projects %}
+{% if 'git.opendev.org/openstack/tripleo-quickstart' in zuul.projects %}
 
-tq={{ ansible_user_dir }}/{{ zuul.projects['git.openstack.org/openstack/tripleo-quickstart'].src_dir }}
+tq={{ ansible_user_dir }}/{{ zuul.projects['git.opendev.org/openstack/tripleo-quickstart'].src_dir }}
 export ANSIBLE_LIBRARY="${tq}/library"
 export ANSIBLE_ROLES_PATH="${tq}/roles"
 
