@@ -22,7 +22,7 @@ Role Variables
   default value is penstack-infra-centos-7
 * `os_fedora28_image` -- Image to use at fedora-28 nodesets,
   default value is penstack-infra-centos-7
-* `upstream_gerrit_user` -- User clone repos from review.openstack.org,
+* `upstream_gerrit_user` -- User clone repos from review.opendev.org,
 * `rdo_gerrit_user` -- User clone repos from review.rdoproject.org,
   default value is ansible_user
 * `install_path` -- Path to install reproducer, after installation
@@ -72,7 +72,7 @@ Run standalone job over tripleo noop change
   vars:
     zuul_job: tripleo-ci-centos-7-standalone
     depends_on:
-        - https://review.openstack.org/#/c/622261/
+        - https://review.opendev.org/#/c/622261/
   tasks:
     - include_role:
         name: ci-reproducer

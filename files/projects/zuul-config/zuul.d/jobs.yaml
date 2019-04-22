@@ -17,10 +17,10 @@
       - playbooks/base/post-logs.yaml
       - playbooks/base/post-failure.yaml
     roles:
-      - zuul: openstack-infra/project-config
-      - zuul: openstack-infra/zuul-jobs
-      - zuul: openstack-infra/openstack-zuul-jobs
-      - zuul: rdo-jobs
+      - zuul: opendev.org/openstack/project-config
+      - zuul: opendev.org/zuul/zuul-jobs
+      - zuul: opendev.org/openstack/openstack-zuul-jobs
+      - zuul: review.rdoproject.org/rdo-jobs
     vars:
       ara_report_type: database
       ara_report_path: ara-report
@@ -55,7 +55,7 @@
       - playbooks/base/post-ssh.yaml
       - playbooks/base/post-logs.yaml
     roles:
-      - zuul: openstack-infra/zuul-jobs
+      - zuul: opendev.org/zuul/zuul-jobs
     vars:
       ara_report_type: database
       ara_report_path: ara-report

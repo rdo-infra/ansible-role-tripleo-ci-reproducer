@@ -18,8 +18,8 @@
   block:
     - name: Download encryption tool
       get_url:
-        url: https://raw.githubusercontent.com/{{
-          "openstack-infra/zuul/master/tools/encrypt_secret.py"
+        url: https://opendev.org/zuul/{{ 
+          "zuul/raw/branch/master/tools/encrypt_secret.py" 
           }}
         dest: "{{ install_path }}/encrypt_secret.py"
         mode: 0766
