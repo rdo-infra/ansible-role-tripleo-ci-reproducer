@@ -121,6 +121,30 @@
       "revId": "537989bc772735699d455fc6e0f971a1a883df9e",
       "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ac4a507_65eaf93a",
+        "filename": "templates/zuul.conf.j2",
+        "patchSetId": 9
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 517
+      },
+      "writtenOn": "2019-04-23T06:23:09Z",
+      "side": 1,
+      "message": "Looks it has to be just opendev.org\n\nAt #openstack-infra:\n08:17 \u003cquiquell|rover\u003e hello, what\u0027s the replacement for https://git.openstack.org/cgit/... with opendev ?\n08:21 \u003cicey\u003e quiquell|rover: opendev.org seems to be",
+      "parentUuid": "2291b805_0b3126ff",
+      "range": {
+        "startLine": 19,
+        "startChar": 20,
+        "endLine": 19,
+        "endChar": 80
+      },
+      "revId": "537989bc772735699d455fc6e0f971a1a883df9e",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
     }
   ]
 }
