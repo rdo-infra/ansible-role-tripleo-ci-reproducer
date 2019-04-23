@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f69b83c1_207649f4",
+        "filename": "README.md",
+        "patchSetId": 11
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 403
+      },
+      "writtenOn": "2019-04-23T06:55:30Z",
+      "side": 1,
+      "message": "not moved",
+      "range": {
+        "startLine": 11,
+        "startChar": 41,
+        "endLine": 11,
+        "endChar": 65
+      },
+      "revId": "240bcc8c723708feee37d31ba018b39398c3c358",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "eabb7e12_cc33d966",
+        "filename": "README.md",
+        "patchSetId": 11
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 403
+      },
+      "writtenOn": "2019-04-23T06:55:30Z",
+      "side": 1,
+      "message": "not moved.",
+      "range": {
+        "startLine": 12,
+        "startChar": 35,
+        "endLine": 12,
+        "endChar": 67
+      },
+      "revId": "240bcc8c723708feee37d31ba018b39398c3c358",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6e8485ae_bc6176a2",
+        "filename": "README.md",
+        "patchSetId": 11
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 403
+      },
+      "writtenOn": "2019-04-23T06:55:30Z",
+      "side": 1,
+      "message": "not moved",
+      "range": {
+        "startLine": 13,
+        "startChar": 43,
+        "endLine": 13,
+        "endChar": 77
+      },
+      "revId": "240bcc8c723708feee37d31ba018b39398c3c358",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9be61928_e58d0804",
+        "filename": "files/projects/zuul-config/zuul.d/jobs.yaml",
+        "patchSetId": 11
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 403
+      },
+      "writtenOn": "2019-04-23T06:55:30Z",
+      "side": 1,
+      "message": "also good to use canonical names so it\u0027s clear from where it\u0027s used like being done in https://review.rdoproject.org/r/#/c/20416",
+      "revId": "240bcc8c723708feee37d31ba018b39398c3c358",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "54434bd5_206c0f10",
+        "filename": "tasks/encrypt-gerrit-key.yaml",
+        "patchSetId": 11
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 403
+      },
+      "writtenOn": "2019-04-23T06:55:30Z",
+      "side": 1,
+      "message": "use opendev specific url, github sync might go in future.",
+      "range": {
+        "startLine": 21,
+        "startChar": 13,
+        "endLine": 21,
+        "endChar": 46
+      },
+      "revId": "240bcc8c723708feee37d31ba018b39398c3c358",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "aa4ab43f_5cf79c99",
+        "filename": "templates/zuul.conf.j2",
+        "patchSetId": 11
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 403
+      },
+      "writtenOn": "2019-04-23T06:55:30Z",
+      "side": 1,
+      "message": "i think this is wrong, for last what i heard is gitweb is not working yet after migration.",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 80
+      },
+      "revId": "240bcc8c723708feee37d31ba018b39398c3c358",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
