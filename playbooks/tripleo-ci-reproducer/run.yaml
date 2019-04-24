@@ -15,34 +15,15 @@
     - name: Set facts for mirrors
       set_fact:
         mirror_fqdn: "mirror.{{ nodepool.region | lower }}.{{nodepool.cloud | lower }}.rdoproject.org"
-    - name: Use RDO docker registry at RDO cloud
+    - name: Use RDO container registry at RDO cloud
+      become: true
+      ini_file:
+        path: /etc/containers/registries.conf
+        section: registries.search
+        option: registries
+        value: ["{{ mirror_fqdn }}"]
+        backup: true
       when: "'rdo-cloud' in nodepool.cloud"
-      vars:
-        mirror_fqdn: "{{ mirror_fqdn }}"
-        docker_registry: "http://{{ mirror_fqdn }}:8081/registry-1.docker/"
-      block:
-        - name: Read docker daemon configuration
-          become: true
-          slurp:
-            src: /etc/docker/daemon.json
-          register: docker
-        - name: Compose docker registry mirror config
-          set_fact:
-            mirrored_docker_registry: "{{
-              docker.content | b64decode | from_json | combine({
-                'registry-mirrors': [docker_registry]
-            }) }}"
-        - name: Write modified docker daemon config
-          become: true
-          copy:
-            content: "{{ mirrored_docker_registry | to_nice_json }}"
-            dest: /etc/docker/daemon.json
-        - name: Reload docker to set mirrors
-          become: true
-          service:
-            name: docker
-            state: reloaded
-
     - name: Create roles directory
       file:
         path: "{{ ansible_user_dir }}/roles"
