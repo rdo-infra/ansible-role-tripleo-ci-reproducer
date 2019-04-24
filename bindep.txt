@@ -1,7 +1,7 @@
 # epel-release is required for python-pip
 # epel is not installed on nodepool nodes.
 ansible [platform:rpm]
-docker [platform:rpm]
+podman [platform:rpm]
 epel-release [platform:centos]
 gcc [platform:rpm]
 git [platform:rpm]
