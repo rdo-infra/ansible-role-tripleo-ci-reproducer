@@ -8,10 +8,10 @@
     - projects
     - httpd.conf
 
-- name: Generate docker compose config
+- name: Generate paunch config
   template:
-    src: docker-compose.yaml.j2
-    dest: "{{ install_path }}/docker-compose.yaml"
+    src: paunch.yaml.j2
+    dest: "{{ install_path }}/paunch.yaml"
 
 - name: Create directories
   file:
@@ -20,6 +20,8 @@
   with_items:
     - etc_nodepool
     - etc_zuul
+    - logs
+    - var/lib/zuul
 
 - name: Generate zuul configuration
   template:
