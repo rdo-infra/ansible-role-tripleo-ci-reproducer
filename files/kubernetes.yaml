@@ -1,0 +1,36 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tripleo-ci-reproducer
+spec:
+  selector:
+    matchLabels:
+      run: tripleo-ci-reproducer
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: tripleo-ci-reproducer
+    spec:
+      containers:
+      - name: gerrit
+        image: gerritcodereview/gerrit:2.16.7-centos7
+        ports:
+        - containerPort: 8080
+        - containerPort: 29418
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tripleo-ci-reproducer
+  labels:
+    run: tripleo-ci-reproducer
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+  - port: 29418
+    protocol: TCP
+  selector:
+    run: tripleo-ci-reproducer
