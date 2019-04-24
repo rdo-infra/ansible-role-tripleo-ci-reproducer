@@ -1,0 +1,141 @@
+gerrit:
+  image: "{{ gerrit_image }}"
+  name: gerrit
+  hostname: gerrit
+  net: host
+  command:
+    - "/bin/sh"
+    - "-c"
+    - "git config -f /var/gerrit/etc/gerrit.config gerrit.canonicalWebUrl http://localhost:8080/ && git config -f /var/gerrit/etc/gerrit.config gerrit.ui POLYGERRIT && git config -f /var/gerrit/etc/gerrit.config gerrit.ui POLYGERRIT && git config -f /var/gerrit/etc/gerrit.config sendemail.enable false && git config -f /var/gerrit/etc/gerrit.config noteDb.changes.autoMigrate true && /var/gerrit/bin/gerrit.sh run"
+
+gerritconfig:
+  net: host
+  image: "{{ zuul_image }}"
+  command:
+    - "/bin/sh"
+    - "-c"
+    - "cd /usr/src/ && pip install ansible && ansible-playbook -vv inject-ssh-keys.yaml setup-gerrit.yaml"
+  env_file: {{ install_path }}/secrets.env
+  extra_hosts:
+    - "gerrit:127.0.0.1"
+  volumes:
+    - "{{ install_path }}/playbooks/:/usr/src/:z"
+    - "{{ install_path }}/projects/:/var/projects/:z"
+
+zk:
+  image: "{{ zk_image }}"
+  name: zk
+  net: host
+
+mariadb:
+  image: "{{ mariadb_image }}"
+  name: mariadb
+  net: host
+  environment:
+    - "MYSQL_ROOT_PASSWORD=rootpassword"
+    - "MYSQL_DATABASE=zuul"
+    - "MYSQL_USER=zuul"
+    - "MYSQL_PASSWORD=secret"
+
+scheduler:
+  command:
+    - "/bin/sh"
+    - "-c"
+    - "pip install ansible && cd /usr/src && ansible-playbook -vv inject-ssh-keys.yaml wait-gerrit.yaml add-gerrit-host-keys.yaml && zuul-scheduler -d"
+  image: {{ zuul_scheduler_image }}
+  net: host
+  hostname: scheduler
+  extra_hosts:
+    - "gerrit:127.0.0.1"
+    - "mysql:127.0.0.1"
+    - "zk:127.0.0.1"
+    - "scheduler:127.0.0.1"
+  volumes:
+    - "{{ install_path }}/etc_zuul/:/etc/zuul/:z"
+    - "{{ install_path }}/playbooks/:/usr/src/:z"
+    - "{{ install_path }}/projects/:/var/projects/:z"
+    - "{{ install_path }}/var/lib/zuul/:/var/lib/zuul/:z"
+  env_file: {{ install_path }}/secrets.env
+web:
+  name: web
+  command:
+    - "sh"
+    - "-c"
+    - "pip install ansible && cd /usr/src && ansible-playbook -vv wait-mysql.yaml && zuul-web -d"
+  image: {{ zuul_web_image }}
+  net: host
+  extra_hosts:
+    - "scheduler:127.0.0.1"
+    - "mysql:127.0.0.1"
+    - "zk:127.0.0.1"
+  volumes:
+    - "{{ install_path }}/etc_zuul/:/etc/zuul/:z"
+    - "{{ install_path }}/playbooks/:/usr/src/:z"
+executor:
+  name: executor
+  privileged: true
+  command:
+    - "/bin/sh"
+    - "-c"
+    - "cd /usr/src && ansible-playbook -vv inject-ssh-keys.yaml wait-gerrit.yaml add-gerrit-host-keys.yaml && zuul-executor -d"
+  image: {{ zuul_executor_image }}
+  net: host
+  extra_hosts:
+    - "zk:127.0.0.1"
+    - "gerrit:127.0.0.1"
+    - "scheduler:127.0.0.1"
+  volumes:
+    - "{{ install_path }}/etc_zuul/:/etc/zuul/:z"
+    - "{{ install_path }}/playbooks/:/usr/src/:z"
+    - "{{ install_path }}/logs/:/srv/static/logs:z"
+    - "{{ install_path }}/projects/:/var/projects/:z"
+  env_file: {{ install_path }}/secrets.env
+launcher:
+  name: launcher
+  net: host
+  command: "nodepool-launcher -d -l /etc/nodepool/launcher-logging.yaml"
+  image: {{ nodepool_launcher_image }}
+  extra_hosts:
+    - "zk:127.0.0.1"
+  volumes:
+    - "{{ install_path }}/etc_nodepool/:/etc/nodepool/:z"
+    - "{{ ansible_user_dir }}/.config/openstack/:/etc/openstack/:z"
+    - "{{ install_path }}/etc/pki/:/etc/pki/:z"
+  environment:
+    - REQUESTS_CA_BUNDLE=/etc/pki/tls/certs/ca-bundle.crt
+logs:
+  name: logs
+  image: {{ logs_image }}
+  net: host
+  volumes:
+    - "{{ install_path }}/logs:/usr/local/apache2/htdocs:z"
+    - "{{ install_path }}/httpd.conf:/usr/local/apache2/conf/httpd.conf:z"
+
+fingergw:
+  name: fingergw
+  command: "zuul-fingergw -d"
+  image: "{{ zuul_fingergw_image }}"
+  volumes:
+    - "{{ install_path }}/etc_nodepool/:/etc/nodepool/:z"
+    - "{{ install_path }}/var/lib/zuul/:/var/lib/zuul/:z"
+
+{% for i in range(mergers) %}
+merger{{ i }}:
+  name: merger{{ i }}
+  net: host
+  extra_hosts:
+    - "gerrit:127.0.0.1"
+    - "zk:127.0.0.1"
+    - "scheduler:127.0.0.1"
+  command:
+    - "sh"
+    - "-c"
+    - "pip install ansible && cd /usr/src && ansible-playbook inject-ssh-keys.yaml wait-gerrit.yaml add-gerrit-host-keys.yaml && zuul-merger -d"
+  image: {{ zuul_merger_image }}
+  env_file: {{ install_path }}/secrets.env
+  volumes:
+    - "{{ install_path }}/etc_zuul/:/etc/zuul/:z"
+    - "{{ install_path }}/logs:/srv/static/logs:z"
+    - "{{ install_path }}/playbooks/:/usr/src/:z"
+
+{% endfor %}
