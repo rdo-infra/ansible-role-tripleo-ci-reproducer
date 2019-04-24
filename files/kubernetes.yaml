@@ -1,0 +1,53 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tripleo-ci-reproducer
+spec:
+  selector:
+    matchLabels:
+      run: tripleo-ci-reproducer
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: tripleo-ci-reproducer
+    spec:
+      volumes:
+        - name: playbooks
+          hostPath:
+            path: ~/tripleo-ci-reproducer/playbooks
+            type: Directory
+      containers:
+      - name: gerrit
+        image: gerritcodereview/gerrit:2.16.7-centos7
+        ports:
+        - containerPort: 8080
+        - containerPort: 29418
+        command: ["/bin/sh"]
+        args: ["-c", "git config -f /var/gerrit/etc/gerrit.config gerrit.canonicalWebUrl http://localhost:8080/ && git config -f /var/gerrit/etc/gerrit.config gerrit.ui POLYGERRIT && git config -f /var/gerrit/etc/gerrit.config sendemail.enable false && git config -f /var/gerrit/etc/gerrit.config noteDb.changes.autoMigrate true && /var/gerrit/bin/gerrit.sh run"]
+      - name: gerritconfig
+        image: rdoci/zuul:6afa22c9
+        volumeMounts:
+          - mountPath: /usr/src/
+            name: playbooks
+        command: ["/bin/sh"]
+        args: ["-c", "pip install ansible && ansible-playbook -vv /usr/src/inject-ssh-keys.yaml /usr/src/setup-gerrit.yaml && while true; do sleep 30; done;"]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tripleo-ci-reproducer
+  labels:
+    run: tripleo-ci-reproducer
+spec:
+  ports:
+  - name: http
+    port: 8080
+    protocol: TCP
+  - name: gerrit
+    port: 29418
+    protocol: TCP
+  type: NodePort
+  selector:
+    run: tripleo-ci-reproducer

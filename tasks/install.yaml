@@ -13,6 +13,11 @@
     src: docker-compose.yaml.j2
     dest: "{{ install_path }}/docker-compose.yaml"
 
+- name: Generate paunch config
+  template:
+    src: paunch.yaml.j2
+    dest: "{{ install_path }}/paunch.yaml"
+
 - name: Create directories
   file:
     name: "{{ install_path }}/{{ item }}"
