@@ -11,7 +11,8 @@
     post-run:
       - playbooks/tripleo-ci-reproducer/post.yaml
     required-projects:
-      - rdo-infra/ansible-role-tripleo-ci-reproducer
+      - review.rdoproject.org/rdo-infra/ansible-role-tripleo-ci-reproducer
+      - opendev.org/openstack/paunch
     timeout: 3600
     vars:
       upstream_gerrit_user: os-tripleo-ci
