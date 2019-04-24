@@ -4,9 +4,6 @@
     path: "{{ install_path }}"
   register: reproducer_path
 
-- name: Stop zuul and friends
-  docker_service:
-    project_src: "{{ install_path }}"
-    state: absent
-    remove_volumes: true
-  when: reproducer_path.stat.exists and reproducer_path.stat.isdir
+- name: Stop up zuul and friends
+  become: true
+  command: "{{ ansible_user_dir }}/.local/bin/paunch delete tripleo-ci-reproducer"
