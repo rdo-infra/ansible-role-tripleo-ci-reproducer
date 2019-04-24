@@ -8,6 +8,15 @@
       when:
         - ansible_user_dir is not defined
         - ansible_distribution is not defined
+    - name: Install fedora-28 CRI repo to get newest podman
+      become: true
+      get_rul:
+        url: https://copr.fedorainfracloud.org/coprs/baude/Upstream_CRIO_Family/repo/fedora-28/baude-Upstream_CRIO_Family-fedora-28.repo
+        dest: /etc/yum.repos.d/baude-Upstream_CRIO_Family-fedora-28.repo
+      when:
+        - ansible_distribution == "Fedora"
+        - ansible_distribution_major_version == "28"
+
     - name: Check if pip is installed
       shell: command -v pip > /dev/null 2>&1
       ignore_errors: true
@@ -42,7 +51,6 @@
       pip:
         requirements: "{{ reproducer_role_top_dir }}/requirements.txt"
         extra_args: --user --force
-
     # Adding when to this command for linting error
     # https://github.com/ansible/ansible-lint/issues/165
     # Pipe true because bindep always returns code 1 (error)
@@ -62,89 +70,9 @@
         state: present
       with_items:
         - "{{ package_list.stdout_lines }}"
-
-    - name: Find out docker group name
-      shell: |
-        set -euo pipefail
-        grep docker /etc/group | cut -d":" -f1 | head -1
-      register: docker_group
-      changed_when: false
-      failed_when: false
-
-    - when: not docker_group.stdout
-      block:
-        - name: Create docker group
-          become: true
-          group:
-            name: docker
-            state: present
-        - name: Storing new created docker group
-          set_fact:
-            docker_group:
-              stdout: docker
-
-    - name: Check if user is in docker group
-      command: "groups {{ ansible_user }}"
-      register: user_groups
-      changed_when: false
-
-    - when: "docker_group.stdout not in user_groups.stdout"
-      block:
-        - name: Add user to docker group
-          become: true
-          user:
-            name: '{{ ansible_user }}'
-            groups: '{{ docker_group.stdout }}'
-            append: true
-          register: groupadd
-
-    - name: reset ssh connection to allow user changes to affect
-      meta: reset_connection
-
-    # check if
-    #  1. empty file
-    #  2. {} in file, 3 chars
-    #  3. no file
-    - name: Check if docker configuration file already exists
-      stat:
-        path: /etc/docker/daemon.json
-      register: docker_daemon_file
-
-    - name: Create docker configuration if missing or empty
+    
+    - name: Install paunch as root
       become: true
-      copy:
-        content: |
-          {
-          "group": "{{ docker_group.stdout }}",
-          }
-        dest: /etc/docker/daemon.json
-      register: docker_config
-      when:
-        - (not docker_daemon_file.stat.exists|bool) or ("docker_daemon_file.stat.size <= 3")
-
-    # check if docker is configured in docker_daemon
-    - name: Fail if daemon file is incorrectly configured for the reproducer
-      shell: >-
-        if grep "group" /etc/docker/daemon.json; then
-            grep '\"{{ docker_group.stdout }}\"' /etc/docker/daemon.json
-        fi
-      failed_when: false
-      when:
-        - docker_daemon_file.stat.exists|bool
-        - "docker_daemon_file.stat.size >= 3"
-
-    - name: Reload docker if config was changed
-      become: true
-      service:
-        name: docker
-        state: reloaded
-      when:
-        - docker_config is defined
-        - docker_config is changed
-
-    - name: Start and enable docker
-      become: true
-      service:
-        name: docker
-        state: started
-        enabled: true
+      pip:
+        name: git+https://opendev.org/openstack/paunch
+        extra_args: --force
