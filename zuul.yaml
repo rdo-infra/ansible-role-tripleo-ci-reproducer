@@ -1,4 +1,16 @@
 ---
+- nodeset:
+    name: single-cloud-centos-7-node
+    nodes:
+      - name: primary
+        label: cloud-centos-7
+    groups:
+      - name: switch
+        nodes:
+          - primary
+      - name: peers
+        nodes: []
+
 - job:
     name: tripleo-ci-reproducer
     parent: tripleo-ci-reproducer-base
@@ -11,7 +23,8 @@
     post-run:
       - playbooks/tripleo-ci-reproducer/post.yaml
     required-projects:
-      - rdo-infra/ansible-role-tripleo-ci-reproducer
+      - review.rdoproject.org/rdo-infra/ansible-role-tripleo-ci-reproducer
+      - opendev.org/openstack/paunch
     timeout: 3600
     vars:
       upstream_gerrit_user: os-tripleo-ci
@@ -56,7 +69,7 @@
 - job:
     name: tripleo-ci-reproducer-centos-7-host
     parent: tripleo-ci-reproducer-host
-    nodeset: single-centos-7-node
+    nodeset: single-cloud-centos-7-node
 
 - job:
     name: tripleo-ci-reproducer-fedora-28-libvirt
@@ -81,7 +94,7 @@
 - job:
     name: tripleo-ci-reproducer-centos-7-openstack
     parent: tripleo-ci-reproducer-openstack
-    nodeset: single-centos-7-node
+    nodeset: single-cloud-centos-7-node
     voting: false
 
 - job:
