@@ -40,6 +40,14 @@
       - openstack/tripleo-quickstart
 
 - job:
+    name: tripleo-ci-reproducer-openstack
+    abstract: true
+    parent: tripleo-ci-reproducer
+    vars:
+      nodepool_provider: openstack
+      os_cloud_name: ovb-test
+
+- job:
     name: tripleo-ci-reproducer-fedora-28-host
     parent: tripleo-ci-reproducer-host
     nodeset: single-fedora-28-node
@@ -69,6 +77,12 @@
     vars:
       ci_job: standalone-dryrun
 
+- job:
+    name: tripleo-ci-reproducer-centos-7-openstack
+    parent: tripleo-ci-reproducer-openstack
+    nodeset: single-centos-7-node
+
+
 - project:
     name: rdo-infra/ansible-role-tripleo-ci-reproducer
     check:
@@ -78,8 +92,10 @@
         - tripleo-ci-reproducer-centos-7-host
         - tripleo-ci-reproducer-centos-7-libvirt-vexxhost
         - tripleo-ci-reproducer-fedora-28-libvirt-standalone-dryrun
+        - tripleo-ci-reproducer-centos-7-openstack
     gate:
       jobs:
         - tox-linters
         - tripleo-ci-reproducer-fedora-28-host
         - tripleo-ci-reproducer-centos-7-host
+        - tripleo-ci-reproducer-centos-7-openstack
