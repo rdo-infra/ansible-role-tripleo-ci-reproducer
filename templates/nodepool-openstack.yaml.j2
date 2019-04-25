@@ -8,7 +8,7 @@ labels:
   - name: tripleo-ovb-centos-7
 
 providers:
-  - name: {{ os_cloud_name }}
+  - name: {{ ansible_hostname }}-{{ os_cloud_name }}
     cloud: {{ os_cloud_name }}
     launch-retries: 3
     region-name: regionOne
