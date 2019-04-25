@@ -90,7 +90,7 @@
       --reason reproducer_forensics
   args:
     chdir: ~/tripleo-ci-reproducer
-
+  when: os_autohold_node
 - name: Wait for job to finish
   uri:
     url: http://localhost:9000/api/tenant/tripleo-ci-reproducer/status/change/{{ change }}
