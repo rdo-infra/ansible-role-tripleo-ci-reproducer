@@ -79,10 +79,21 @@
       ci_job: standalone-dryrun
 
 - job:
-    name: tripleo-ci-reproducer-centos-7-openstack
+    name: tripleo-ci-reproducer-centos-7-openstack-standalone-dryrun
     parent: tripleo-ci-reproducer-openstack
     nodeset: single-centos-7-node
     voting: false
+    vars:
+      ci_job: standalone-dryrun
+
+- job:
+    name: tripleo-ci-reproducer-fedora-28-openstack-standalone-dryrun
+    parent: tripleo-ci-reproducer-openstack
+    nodeset: single-fedora-28-node
+    voting: false
+    vars:
+      ci_job: standalone-dryrun
+
 
 - project:
     name: rdo-infra/ansible-role-tripleo-ci-reproducer
@@ -93,7 +104,8 @@
         - tripleo-ci-reproducer-centos-7-host
         - tripleo-ci-reproducer-centos-7-libvirt-vexxhost
         - tripleo-ci-reproducer-fedora-28-libvirt-standalone-dryrun
-        - tripleo-ci-reproducer-centos-7-openstack
+        - tripleo-ci-reproducer-centos-7-openstack-standalone-dryrun
+        - tripleo-ci-reproducer-fedora-28-openstack-standalone-dryrun
 
     gate:
       jobs:
