@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a0cfceb9_7101e9be",
+        "filename": "playbooks/tripleo-ci-reproducer/post.yaml",
+        "patchSetId": 22
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 547
+      },
+      "writtenOn": "2019-04-30T13:06:48Z",
+      "side": 1,
+      "message": "Maybe create a \"block\" in order to set the \"become: true\" instead of multiple inserts.. ?",
+      "revId": "558bace34b828bd130a4a96607914490e157031c",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6203ae9a_2b7014fe",
+        "filename": "playbooks/tripleo-ci-reproducer/post.yaml",
+        "patchSetId": 22
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 547
+      },
+      "writtenOn": "2019-04-30T13:06:48Z",
+      "side": 1,
+      "message": "maybe \"podman ps -a\" in order to get potentially failed containers (and stopped ones)?",
+      "range": {
+        "startLine": 21,
+        "startChar": 8,
+        "endLine": 21,
+        "endChar": 17
+      },
+      "revId": "558bace34b828bd130a4a96607914490e157031c",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9397d85b_38215822",
+        "filename": "playbooks/tripleo-ci-reproducer/pre.yaml",
+        "patchSetId": 22
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 547
+      },
+      "writtenOn": "2019-04-30T13:06:48Z",
+      "side": 1,
+      "message": "trailing spaces",
+      "range": {
+        "startLine": 73,
+        "startChar": 0,
+        "endLine": 73,
+        "endChar": 4
+      },
+      "revId": "558bace34b828bd130a4a96607914490e157031c",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
