@@ -1,6 +1,7 @@
 # epel-release is required for python-pip
 # epel is not installed on nodepool nodes.
 ansible [platform:rpm]
+podman [platform:fedora]
 docker [platform:rpm]
 epel-release [platform:centos]
 gcc [platform:rpm]
@@ -10,7 +11,7 @@ python3-netaddr [platform:fedora]
 python3-setuptools [platform:fedora]
 python3-virtualenv [platform:fedora]
 python3-pip [platform:fedora]
-python3-devel [platform:fedora]
+python3-devel [!platform:centos-7]
 python3-libvirt [platform:fedora]
 libvirt [platform:fedora]
 python3-lxml [platform:fedora]
