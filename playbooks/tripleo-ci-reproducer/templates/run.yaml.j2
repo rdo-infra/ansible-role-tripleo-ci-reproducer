@@ -4,6 +4,7 @@
 
     - name: Start {{ nodepool_provider }} reproducer
       vars:
+        container_mode: {{ container_mode }}
         nodepool_provider: "{{ nodepool_provider }}"
         upstream_gerrit_user: "{{ upstream_gerrit_user }}"
         upstream_gerrit_key: "{{ tripleo_gerrit_key_name }}"
