@@ -9,4 +9,15 @@
     project_src: "{{ install_path }}"
     state: absent
     remove_volumes: true
-  when: reproducer_path.stat.exists and reproducer_path.stat.isdir
+  when:
+    - reproducer_path.stat.exists and reproducer_path.stat.isdir
+    - container_mode == 'docker'
+
+
+- name: Stop up zuul and friends
+  become: true
+  command: "{{ install_path }}/tripleo-ci-reproducer.sh --stop"
+  ignore_errors: true
+  when:
+    - reproducer_path.stat.exists and reproducer_path.stat.isdir
+    - container_mode == 'podman'
