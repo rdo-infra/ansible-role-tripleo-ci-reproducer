@@ -1,0 +1,167 @@
+#!/bin/bash -e
+
+pod_name=tripleo-ci-reproducer
+
+create_pod () {
+    podman pod create \
+        --name $pod_name \
+        -p 8000:80 \
+        -p 8080:8080 \
+        -p 8005:8005 \
+        -p 29418:29418 \
+        -p 9000:9000 \
+        -p 79:79 \
+        -p 7900:7900
+}
+
+create_containers () {
+    podman create \
+        --pod $pod_name \
+        --name gerrit --hostname gerrit {{ gerrit_image }} \
+        /bin/sh -c 'git config -f /var/gerrit/etc/gerrit.config gerrit.canonicalWebUrl http://localhost:8080/ &&         git config -f /var/gerrit/etc/gerrit.config gerrit.ui POLYGERRIT &&         git config -f /var/gerrit/etc/gerrit.config sendemail.enable false &&         git config -f /var/gerrit/etc/gerrit.config noteDb.changes.autoMigrate true &&         /var/gerrit/bin/gerrit.sh run'
+
+    podman create \
+        --pod $pod_name \
+        --name gerritconfig \
+        --add-host gerrit:127.0.0.1 \
+        -v {{ install_path }}/playbooks/:/usr/src/:z \
+        -v {{ install_path }}/projects/:/var/projects/:z \
+        --env-file={{ install_path }}/secrets.env  \
+        {{ zuul_image }} \
+        /bin/sh -c 'pip install ansible && ansible-playbook -vv /usr/src/inject-ssh-keys.yaml /usr/src/setup-gerrit.yaml'
+
+    podman create \
+        --pod $pod_name \
+        --name mysql --hostname mysql \
+        --env MYSQL_ROOT_PASSWORD=rootpassword \
+        --env MYSQL_DATABASE=zuul \
+        --env MYSQL_USER=zuul \
+        --env MYSQL_PASSWORD=secret {{ mariadb_image }}
+
+    podman create \
+        --pod $pod_name \
+        --name scheduler --hostname scheduler \
+        -v {{ install_path }}/etc_zuul/:/etc/zuul/:z  \
+        -v {{ install_path }}/playbooks/:/usr/src/:z \
+        -v {{ install_path }}/projects/:/var/projects/:z \
+        -v {{ install_path }}/zuul:/var/lib/zuul:z \
+        --env-file={{ install_path }}/secrets.env \
+        --add-host gerrit:127.0.0.1 \
+        --add-host scheduler:127.0.0.1 \
+        --add-host mysql:127.0.0.1 \
+        --add-host zk:127.0.0.1 \
+        {{ zuul_scheduler_image }} \
+        sh -c 'pip install ansible && cd /usr/src/ &&  ansible-playbook -vv inject-ssh-keys.yaml wait-gerrit.yaml add-gerrit-host-keys.yaml; zuul-scheduler -d'
+
+    podman create \
+        --pod $pod_name \
+        --name web --hostname web \
+        -v {{ install_path }}/etc_zuul/:/etc/zuul/:z \
+        -v {{ install_path }}/playbooks/:/usr/src/:z \
+        --add-host scheduler:127.0.0.1 \
+        --add-host mysql:127.0.0.1 \
+        --add-host zk:127.0.0.1 \
+    {% for i in range(mergers) %}
+        --add-host merger{{ i }}:127.0.0.1 \
+    {% endfor %}
+        {{ zuul_web_image }} \
+        sh -c 'pip install ansible && cd /usr/src/ && ansible-playbook -vv wait-mysql.yaml; zuul-web -d'
+
+    podman create \
+        --pod $pod_name \
+        --name executor --hostname executor --privileged=true  \
+        --add-host scheduler:127.0.0.1 \
+        --add-host gerrit:127.0.0.1 \
+        --add-host zk:127.0.0.1 \
+        --env-file={{ install_path }}/secrets.env \
+        -v {{ install_path }}/etc_zuul/:/etc/zuul/:z  \
+        -v {{ install_path }}/playbooks/:/usr/src/:z \
+        -v {{ install_path }}/projects/:/var/projects/:z \
+        -v {{ install_path }}/logs:/srv/static/logs:z \
+        {{ zuul_executor_image }} \
+        sh -c 'cd /usr/src/; ansible-playbook -vv inject-ssh-keys.yaml wait-gerrit.yaml add-gerrit-host-keys.yaml && zuul-executor -d'
+
+    podman create \
+        --pod $pod_name \
+        --name fingergw --hostname fingergw \
+        --add-host scheduler:127.0.0.1 \
+        --add-host executor:127.0.0.1 \
+    {% for i in range(mergers) %}
+        --add-host merger{{ i }}:127.0.0.1 \
+    {% endfor %}
+        -v {{ install_path }}/zuul:/var/lib/zuul:z \
+        -v {{ install_path }}/etc_zuul/:/etc/zuul/:z \
+        {{ zuul_fingergw_image }} zuul-fingergw -d
+
+    podman create \
+        --pod $pod_name \
+        --name launcher --hostname launcher \
+        -v {{ install_path }}/etc_nodepool/:/etc/nodepool/:z \
+        -v {{ ansible_user_dir }}/.config/openstack/:/etc/openstack/:z \
+        -v {{ install_path }}/etc/pki/:/etc/pki/:z \
+        --add-host zk:127.0.0.1 \
+        --user root \
+        {{ nodepool_launcher_image }} \
+        nodepool-launcher -d -l /etc/nodepool/launcher-logging.yaml
+
+    {% for i in range(mergers) %}
+    podman create \
+        --pod $pod_name \
+        --name merger{{ i }} --hostname merger{{ i }} \
+        --add-host scheduler:127.0.0.1  \
+        --add-host zk:127.0.0.1  \
+        --add-host gerrit:127.0.0.1  \
+        -v {{ install_path }}/etc_zuul/:/etc/zuul/:z  \
+        -v {{ install_path }}/playbooks/:/usr/src/:z \
+        -v {{ install_path }}/logs:/srv/static/logs:z \
+        --env-file={{ install_path }}/secrets.env \
+        {{ zuul_merger_image }} \
+        sh -c ' cd /usr/src/;  pip install ansible &&  ansible-playbook inject-ssh-keys.yaml wait-gerrit.yaml add-gerrit-host-keys.yaml && zuul-merger -d'
+    {% endfor %}
+
+    podman create \
+        --pod $pod_name \
+        --name zk --hostname zk {{ zk_image }}
+
+    podman create \
+        --pod $pod_name \
+        --name logs --hostname logs \
+        -v {{ install_path }}/httpd.conf:/usr/local/apache2/conf/httpd.conf:z \
+        -v {{ install_path }}/logs:/usr/local/apache2/htdocs:z {{ logs_image }}
+}
+
+start_pod () {
+    podman pod start $pod_name
+}
+
+run_reproducer () {
+    create_pod
+    create_containers
+    start_pod
+}
+
+stop_reproducer () {
+    if podman pod exists $pod_name; then
+        podman pod rm -f $pod_name
+    fi
+}
+
+usage () {
+    echo "Usage: $0 [-r, --run|-s, --stop]"
+}
+
+
+case "$1" in
+    --run|-r)
+        run_reproducer
+        ;;
+    --stop|-s)
+        stop_reproducer
+        ;;
+    -*) echo "ERROR: unknown option: $1" >&2
+        usage >&2
+        exit 2
+        ;;
+    *)  break
+        ;;
+esac
