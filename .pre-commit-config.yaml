@@ -1,7 +1,7 @@
 ---
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v2.1.0
+    rev: v2.2.1
     hooks:
       - id: trailing-whitespace
       - id: mixed-line-ending
@@ -26,4 +26,7 @@ repos:
     hooks:
       - id: ansible-lint
         files: \.(yaml|yml)$
-        entry: ansible-lint --force-color -v
+        entry: ansible-lint --force-color -vvv
+        additional_dependencies:
+          # Workaround for https://github.com/yaml/pyyaml/issues/297
+          - pyyaml<5.0
