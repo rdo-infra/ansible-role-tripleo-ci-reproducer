@@ -14,9 +14,11 @@
 
     - name: Set facts for mirrors
       set_fact:
-        mirror_fqdn: "mirror.{{ nodepool.region | lower }}.{{nodepool.cloud | lower }}.rdoproject.org"
+        mirror_fqdn: "mirror.{{ nodepool.region | lower }}.{{ nodepool.cloud | lower }}.rdoproject.org"
     - name: Use RDO docker registry at RDO cloud
-      when: "'rdo-cloud' in nodepool.cloud"
+      when:
+        - "'rdo-cloud' in nodepool.cloud"
+        - container_mode == 'docker'
       vars:
         mirror_fqdn: "{{ mirror_fqdn }}"
         docker_registry: "http://{{ mirror_fqdn }}:8081/registry-1.docker/"
@@ -42,6 +44,18 @@
           service:
             name: docker
             state: reloaded
+
+    - name: Use RDO container registry at RDO cloud
+      become: true
+      ini_file:
+        path: /etc/containers/registries.conf
+        section: registries.search
+        option: registries
+        value: ["docker.io"]
+        backup: true
+      when:
+        - "'rdo-cloud' in nodepool.cloud"
+        - container_mode == 'podman'
 
     - name: Create roles directory
       file:
