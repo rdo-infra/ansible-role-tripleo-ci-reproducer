@@ -58,6 +58,8 @@
     name: tripleo-ci-reproducer-fedora-28-host
     parent: tripleo-ci-reproducer-host
     nodeset: single-fedora-28-node
+    vars:
+      container_mode: docker
 
 - job:
     name: tripleo-ci-reproducer-fedora-29-host
@@ -70,9 +72,9 @@
     nodeset: single-centos-7-node
 
 - job:
-    name: tripleo-ci-reproducer-fedora-28-libvirt
+    name: tripleo-ci-reproducer-fedora-29-libvirt
     parent: tripleo-ci-reproducer-libvirt
-    nodeset: single-fedora-28-node
+    nodeset: single-cloud-fedora-29-node
     voting: false
 
 - job:
@@ -80,6 +82,14 @@
     parent: tripleo-ci-reproducer-libvirt
     nodeset: upstream-centos-7-vexxhost
     voting: false
+
+- job:
+    name: tripleo-ci-reproducer-fedora-29-libvirt-standalone-dryrun
+    parent: tripleo-ci-reproducer-libvirt
+    nodeset: single-cloud-fedora-29-node
+    voting: false
+    vars:
+      ci_job: standalone-dryrun
 
 - job:
     name: tripleo-ci-reproducer-fedora-28-libvirt-standalone-dryrun
@@ -98,9 +108,9 @@
       ci_job: standalone-dryrun
 
 - job:
-    name: tripleo-ci-reproducer-fedora-28-openstack-standalone-dryrun
+    name: tripleo-ci-reproducer-fedora-29-openstack-standalone-dryrun
     parent: tripleo-ci-reproducer-openstack
-    nodeset: single-fedora-28-node
+    nodeset: single-cloud-fedora-29-node
     voting: false
     vars:
       ci_job: standalone-dryrun
@@ -120,18 +130,16 @@
     check:
       jobs:
         - tox-linters
-        - tripleo-ci-reproducer-fedora-28-host
         - tripleo-ci-reproducer-fedora-29-host
         - tripleo-ci-reproducer-centos-7-host
         - tripleo-ci-reproducer-centos-7-libvirt-vexxhost
-        - tripleo-ci-reproducer-fedora-28-libvirt-standalone-dryrun
+        - tripleo-ci-reproducer-fedora-29-libvirt-standalone-dryrun
         - tripleo-ci-reproducer-centos-7-libvirt-standalone-vexxhost
         - tripleo-ci-reproducer-centos-7-openstack-standalone-dryrun
-        - tripleo-ci-reproducer-fedora-28-openstack-standalone-dryrun
+        - tripleo-ci-reproducer-fedora-29-openstack-standalone-dryrun
 
     gate:
       jobs:
         - tox-linters
-        - tripleo-ci-reproducer-fedora-28-host
         - tripleo-ci-reproducer-fedora-29-host
         - tripleo-ci-reproducer-centos-7-host
