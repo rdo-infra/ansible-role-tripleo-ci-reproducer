@@ -1,31 +1,34 @@
 ---
 - hosts: primary
   tasks:
-    - name: Get docker system info
+    - name: Ensure reproducer dir is there
+      file:
+        path: "{{ ansible_user_dir }}/tripleo-ci-reproducer"
+        state: directory
+
+    - name: Get podman system info
+      become: true
       shell: |
-        docker system info > docker.system.log 2>&1
+        {{ container_mode }} --version > {{ container_mode }}.system.log 2>&1
+        {{ container_mode }} system info >> {{ container_mode }}.system.log 2>&1
+        {{ container_mode }} ps -a 2>&1 > {{ container_mode }}.ps.log
       args:
         chdir: "{{ ansible_user_dir }}/tripleo-ci-reproducer"
       changed_when: true
+      ignore_errors: true
 
-
-    - name: Get docker-compose ps
+    - name: Get reproducer services logs
+      become: true
       shell: |
-        ~/.local/bin/docker-compose ps 2>&1 > ps.log
-      args:
-        chdir: "{{ ansible_user_dir }}/tripleo-ci-reproducer"
-      changed_when: true
-
-    - name: Get docker-compose services logs
-      shell: |
-        ~/.local/bin/docker-compose logs --no-color {{ item }} 2>&1 > \
+        {{ container_mode if container_mode == 'podman' else 'docker-compose' }} logs {{ item }} 2>&1 > \
           {{ item }}.log
       args:
         chdir: "{{ ansible_user_dir }}/tripleo-ci-reproducer"
       changed_when: true
+      ignore_errors: true
       with_items:
         - zk
-        - mysql
+        - mariadb
         - gerrit
         - logs
         - launcher
@@ -35,21 +38,31 @@
         - executor
         - fingergw
 
-    - name: Get docker-compose mergers logs
+    - name: Get reproducer mergers logs
+      become: true
       shell: |
-        ~/.local/bin/docker-compose logs --no-color {{ item }} 2>&1 > \
+        {{ container_mode }} logs {{ item }} 2>&1 > \
           {{ item }}.log
       args:
         chdir: "{{ ansible_user_dir }}/tripleo-ci-reproducer"
       changed_when: true
+      ignore_errors: true
       with_sequence: |
         start=0 count={{ ansible_processor_vcpus }} format='merger%d'
+
+    - name: Shut down reproducer
+      become: true
+      command: "{{ ansible_user_dir }}/tripleo-ci-reproducer/tripleo-ci-reproducer.sh --stop"
+      changed_when: true
+      ignore_errors: true
+      when: container_mode == 'podman'
 
     - name: Shut down docker-compose
       command: ~/.local/bin/docker-compose down -v
       args:
         chdir: "{{ ansible_user_dir }}/tripleo-ci-reproducer"
       changed_when: true
+      when: container_mode == 'docker'
 
     - name: Dump journalctl
       become: true
@@ -60,7 +73,23 @@
         chdir: "{{ ansible_user_dir }}/tripleo-ci-reproducer"
       changed_when: true
 
+    - name: Get general system info
+      become: true
+      shell: |
+        dnf list installed > rpms.log || yum list installed > rpms.log
+        free -m > system.log
+        pip freeze > pip.log
+      args:
+        chdir: "{{ ansible_user_dir }}/tripleo-ci-reproducer"
+      changed_when: false
+      ignore_errors: true
+
+    - name: Get local pip info
+      shell: pip freeze > pip-user.log
+      changed_when: true
+
     - name: Copy files from reproducer on node to log
+      become: true
       synchronize:
         src: '{{ ansible_user_dir }}/tripleo-ci-reproducer/'
         dest: '{{ zuul.executor.log_root }}/tripleo-ci-reproducer/'
@@ -68,6 +97,7 @@
         copy_links: true
         verify_host: true
         rsync_opts:
+          - "--chown={{ ansible_user }}:{{ ansible_user }}"
           - "--exclude=secrets.env"
           - "--exclude=*.qcow2"
           - "--exclude=playbooks/rdo_config_repo"
@@ -107,16 +137,31 @@
           - "--include=*mirror*"
           - "--include=*yum*"
           - "--include=*yum/*"
+          - "--include=*yum.repos.d/*"
           - "--include=*ci/*"
           - "--include=*dnf*"
           - "--include=*dnf/*"
           - "--include=*pip*"
           - "--include=*journal*"
+          - "--include=*containers/*"
           - "--include=*docker*"
           - "--include=*docker/*"
           - "--include=*libvirt/*"
           - "--include=*qemu/*"
           - "--exclude=*"
+
+    - name: Copy containers config
+      become: true
+      ignore_errors: true
+      synchronize:
+        src: '/usr/share/containers/'
+        dest: '{{ zuul.executor.log_root }}/usr/share/containers/'
+        mode: pull
+        copy_links: true
+        verify_host: true
+        rsync_opts:
+          - "--chown={{ ansible_user }}:{{ ansible_user }}"
+
 
     - name: Copy libvirtd debug log if exists
       become: true
