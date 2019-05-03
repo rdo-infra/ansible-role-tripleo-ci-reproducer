@@ -20,6 +20,26 @@
   with_items:
     - etc_nodepool
     - etc_zuul
+    - zuul
+
+- name: Create log directory
+  become: true
+  file:
+    name: "{{ install_path }}/logs"
+    state: directory
+    owner: root
+    group: root
+
+- name: Create logs directory
+  become: true
+  file:
+    name: "{{ install_path }}/logs"
+    state: directory
+
+- name: Ensure cloud config dir
+  file:
+    name: "{{ ansible_user_dir }}/.config/openstack"
+    state: directory
 
 - name: Generate zuul configuration
   template:
