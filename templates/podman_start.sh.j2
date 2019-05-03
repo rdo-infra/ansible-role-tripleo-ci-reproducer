@@ -1,0 +1,118 @@
+#!/bin/bash
+
+sudo podman pod create \
+    --name test \
+    -p 8000:80 \
+    -p 8080:8080 \
+    -p 29418:29418 \
+    -p 9000:9000 \
+    -p 79:79
+sudo podman create \
+    --pod test \
+    --name gerrit gerritcodereview/gerrit:2.16.7-centos7 \
+    /bin/sh -c 'git config -f /var/gerrit/etc/gerrit.config gerrit.canonicalWebUrl http://localhost:8080/ &&         git config -f /var/gerrit/etc/gerrit.config gerrit.ui POLYGERRIT &&         git config -f /var/gerrit/etc/gerrit.config sendemail.enable false &&         git config -f /var/gerrit/etc/gerrit.config noteDb.changes.autoMigrate true &&         /var/gerrit/bin/gerrit.sh run'
+sudo podman create \
+    --pod test \
+    --name gerritconfig \
+    --add-host gerrit:127.0.0.1 \
+    -v {{ install_path }}/playbooks/:/usr/src/:z \
+    -v {{ install_path }}/projects/:/var/projects/:z \
+    --env-file={{ install_path }}/secrets.env  \
+    rdoci/zuul-executor:6afa22c9 \
+    /bin/sh -c 'pip install ansible && ansible-playbook -vv /usr/src/inject-ssh-keys.yaml /usr/src/setup-gerrit.yaml'
+sudo podman create \
+    --pod test \
+    --name mysql \
+    --env MYSQL_ROOT_PASSWORD=rootpassword \
+    --env MYSQL_DATABASE=zuul \
+    --env MYSQL_USER=zuul \
+    --env MYSQL_PASSWORD=secret mariadb:10.3.14-bionic
+sudo podman create \
+    --pod test \
+    --name scheduler \
+    -v {{ install_path }}/etc_zuul/:/etc/zuul/:z  \
+    -v {{ install_path }}/playbooks/:/usr/src/:z \
+    -v {{ install_path }}/projects/:/var/projects/:z \
+    -v {{ install_path }}/zuul:/var/lib/zuul:z \
+    --env-file={{ install_path }}/secrets.env \
+    --add-host gerrit:127.0.0.1 \
+    --add-host scheduler:127.0.0.1 \
+    --add-host mysql:127.0.0.1 \
+    --add-host zk:127.0.0.1 \
+    rdoci/zuul-executor:6afa22c9 \
+    sh -c 'pip install ansible && cd /usr/src/ &&  ansible-playbook -vv inject-ssh-keys.yaml wait-gerrit.yaml add-gerrit-host-keys.yaml; zuul-scheduler -d'
+sudo podman create \
+    --pod test \
+    --name web  \
+    -v {{ install_path }}/etc_zuul/:/etc/zuul/:z \
+    -v {{ install_path }}/playbooks/:/usr/src/:z \
+    --add-host scheduler:127.0.0.1 \
+    --add-host mysql:127.0.0.1 \
+    --add-host zk:127.0.0.1 \
+    rdoci/zuul-executor:6afa22c9 \
+    sh -c 'pip install ansible && cd /usr/src/ && ansible-playbook -vv wait-mysql.yaml; zuul-web -d'
+sudo podman create \
+    --pod test \
+    --name executor --privileged=true  \
+    --add-host scheduler:127.0.0.1 \
+    --add-host gerrit:127.0.0.1 \
+    --add-host zk:127.0.0.1 \
+    --env-file={{ install_path }}/secrets.env \
+    -v {{ install_path }}/etc_zuul/:/etc/zuul/:z  \
+    -v {{ install_path }}/playbooks/:/usr/src/:z \
+    -v {{ install_path }}/projects/:/var/projects/:z \
+    -v {{ install_path }}/logs:/srv/static/logs:z \
+    rdoci/zuul-executor:6afa22c9 \
+    sh -c 'cd /usr/src/; ansible-playbook -vv inject-ssh-keys.yaml wait-gerrit.yaml add-gerrit-host-keys.yaml && zuul-executor -d'
+sudo podman create \
+    --pod test \
+    --name fingergw \
+    --add-host scheduler:127.0.0.1 \
+    --add-host executor:127.0.0.1 \
+    -v {{ install_path }}/zuul:/var/lib/zuul:z \
+    -v {{ install_path }}/etc_zuul/:/etc/zuul/:z \
+    rdoci/zuul-executor:6afa22c9 zuul-fingergw -d
+sudo podman create \
+    --pod test \
+    --name launcher \
+    -v {{ install_path }}/etc_nodepool/:/etc/nodepool/:z \
+    -v /home/sshnaidm/.config/openstack/:/etc/openstack/:z \
+    -v {{ install_path }}/etc/pki/:/etc/pki/:z \
+    --add-host zk:127.0.0.1 \
+    rdoci/nodepool-launcher:f8ac796 \
+    nodepool-launcher -d -l /etc/nodepool/launcher-logging.yaml
+sudo podman create \
+    --pod test \
+    --name merger0 \
+    --add-host scheduler:127.0.0.1  \
+    --add-host zk:127.0.0.1  \
+    --add-host gerrit:127.0.0.1  \
+    -v {{ install_path }}/etc_zuul/:/etc/zuul/:z  \
+    -v {{ install_path }}/playbooks/:/usr/src/:z \
+    -v {{ install_path }}/logs:/srv/static/logs:z \
+    --env-file={{ install_path }}/secrets.env \
+    rdoci/zuul-executor:6afa22c9 \
+    sh -c ' cd /usr/src/;  pip install ansible &&  ansible-playbook inject-ssh-keys.yaml wait-gerrit.yaml add-gerrit-host-keys.yaml && zuul-merger -d'
+sudo podman create \
+    --pod test \
+    --name merger1 \
+    --add-host scheduler:127.0.0.1  \
+    --add-host zk:127.0.0.1  \
+    --add-host gerrit:127.0.0.1  \
+    -v {{ install_path }}/etc_zuul/:/etc/zuul/:z  \
+    -v {{ install_path }}/playbooks/:/usr/src/:z \
+    -v {{ install_path }}/logs:/srv/static/logs:z \
+    --env-file={{ install_path }}/secrets.env \
+    rdoci/zuul-executor:6afa22c9 \
+    sh -c ' cd /usr/src/;  pip install ansible &&  ansible-playbook inject-ssh-keys.yaml wait-gerrit.yaml add-gerrit-host-keys.yaml && zuul-merger -d'
+sudo podman create \
+    --pod test \
+    --name zk zookeeper:3.4.14
+sudo podman create \
+    --pod test \
+    --name logs  \
+    -v {{ install_path }}/httpd.conf:/usr/local/apache2/conf/httpd.conf:z \
+    -v {{ install_path }}/logs:/usr/local/apache2/htdocs:z httpd:2.4.39-alpine
+sudo podman pod start test
+
+

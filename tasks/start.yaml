@@ -7,16 +7,14 @@
 # ansible module does not support removal of anon volumes at restart
 # so we do a stop/start
 #
-- name: Stop up zuul and friends
-  docker_service:
-    project_src: "{{ install_path }}"
-    state: absent
-    remove_volumes: true
-- name: Start up zuul and friends
-  docker_service:
-    project_src: "{{ install_path }}"
-    state: present
-    pull: "{{ pull | default(false) | bool }}"
+- name: Crete template script with podman
+  template:
+    src: podman_start.sh.j2
+    dest: "{{ install_path }}/podman_start.sh"
+    mode: 777
+
+- name: Start podman pod
+  command: "{{ install_path }}/podman_start.sh"
 
 - name: Wait for zuul tenant
   uri:
