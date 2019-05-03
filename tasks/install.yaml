@@ -20,6 +20,20 @@
   with_items:
     - etc_nodepool
     - etc_zuul
+    - zuul
+
+- name: Create log directory
+  become: true
+  file:
+    name: "{{ install_path }}/logs"
+    state: directory
+    owner: root
+    group: root
+
+- name: Ensure cloud config dir
+  file:
+    name: "{{ ansible_user_dir }}/.config/openstack"
+    state: directory
 
 - name: Generate zuul configuration
   template:
@@ -56,6 +70,12 @@
   copy:
     src: /etc/pki/tls/certs/ca-bundle.crt
     dest: "{{ install_path }}/etc/pki/tls/certs/ca-bundle.crt"
+
+- name: Create reproducer control script
+  template:
+    src: tripleo-ci-reproducer.sh.j2
+    dest: "{{ install_path }}/tripleo-ci-reproducer.sh"
+    mode: 0777
 
 - name: Setup nodepool provider
   include_tasks: "{{ nodepool_provider }}/main.yaml"

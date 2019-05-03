@@ -1,6 +1,6 @@
 ---
 log_level: DEBUG
-
+container_mode: podman
 ##############
 # Configuration for openstack nodepool
 ###############

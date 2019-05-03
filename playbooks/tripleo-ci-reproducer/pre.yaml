@@ -8,6 +8,18 @@
       when:
         - ansible_user_dir is not defined
         - ansible_distribution is not defined
+
+    - name: Install centos-7 virt7-container repo
+      become: true
+      yum_repository:
+        name: virt7-container
+        description: virtsig repo with newer podman
+        baseurl: https://cbs.centos.org/repos/virt$releasever-container-common-candidate/$basearch/os/
+        gpgcheck: false
+      when:
+        - ansible_distribution == 'CentOS'
+        - container_mode == 'podman'
+
     - name: Check if pip is installed
       shell: command -v pip > /dev/null 2>&1
       ignore_errors: true
@@ -67,33 +79,35 @@
       with_items:
         - "{{ package_list.stdout_lines }}"
 
-    - name: Find out docker group name
-      shell: |
-        set -euo pipefail
-        grep docker /etc/group | cut -d":" -f1 | head -1
-      register: docker_group
-      changed_when: false
-      failed_when: false
-
-    - when: not docker_group.stdout
+    - when: container_mode == 'docker'
       block:
-        - name: Create docker group
-          become: true
-          group:
-            name: docker
-            state: present
-        - name: Storing new created docker group
-          set_fact:
-            docker_group:
-              stdout: docker
 
-    - name: Check if user is in docker group
-      command: "groups {{ ansible_user }}"
-      register: user_groups
-      changed_when: false
+        - name: Find out docker group name
+          shell: |
+            set -euo pipefail
+            grep docker /etc/group | cut -d":" -f1 | head -1
+          register: docker_group
+          changed_when: false
+          failed_when: false
 
-    - when: "docker_group.stdout not in user_groups.stdout"
-      block:
+        - when: not docker_group.stdout
+          block:
+            - name: Create docker group
+              become: true
+              group:
+                name: docker
+                state: present
+
+            - name: Storing new created docker group
+              set_fact:
+                docker_group:
+                  stdout: docker
+
+        - name: Check if user is in docker group
+          command: "groups {{ ansible_user }}"
+          register: user_groups
+          changed_when: false
+
         - name: Add user to docker group
           become: true
           user:
@@ -101,54 +115,55 @@
             groups: '{{ docker_group.stdout }}'
             append: true
           register: groupadd
+          when: "docker_group.stdout not in user_groups.stdout"
 
-    - name: reset ssh connection to allow user changes to affect
-      meta: reset_connection
+        - name: reset ssh connection to allow user changes to affect
+          meta: reset_connection
 
-    # check if
-    #  1. empty file
-    #  2. {} in file, 3 chars
-    #  3. no file
-    - name: Check if docker configuration file already exists
-      stat:
-        path: /etc/docker/daemon.json
-      register: docker_daemon_file
+        # check if
+        #  1. empty file
+        #  2. {} in file, 3 chars
+        #  3. no file
+        - name: Check if docker configuration file already exists
+          stat:
+            path: /etc/docker/daemon.json
+          register: docker_daemon_file
 
-    - name: Create docker configuration if missing or empty
-      become: true
-      copy:
-        content: |
-          {
-          "group": "{{ docker_group.stdout }}",
-          }
-        dest: /etc/docker/daemon.json
-      register: docker_config
-      when:
-        - (not docker_daemon_file.stat.exists|bool) or ("docker_daemon_file.stat.size <= 3")
+        - name: Create docker configuration if missing or empty
+          become: true
+          copy:
+            content: |
+              {
+              "group": "{{ docker_group.stdout }}",
+              }
+            dest: /etc/docker/daemon.json
+          register: docker_config
+          when:
+            - (not docker_daemon_file.stat.exists|bool) or ("docker_daemon_file.stat.size <= 3")
 
-    # check if docker is configured in docker_daemon
-    - name: Fail if daemon file is incorrectly configured for the reproducer
-      shell: >-
-        if grep "group" /etc/docker/daemon.json; then
-            grep '\"{{ docker_group.stdout }}\"' /etc/docker/daemon.json
-        fi
-      failed_when: false
-      when:
-        - docker_daemon_file.stat.exists|bool
-        - "docker_daemon_file.stat.size >= 3"
+        # check if docker is configured in docker_daemon
+        - name: Fail if daemon file is incorrectly configured for the reproducer
+          shell: >-
+            if grep "group" /etc/docker/daemon.json; then
+                grep '\"{{ docker_group.stdout }}\"' /etc/docker/daemon.json
+            fi
+          failed_when: false
+          when:
+            - docker_daemon_file.stat.exists|bool
+            - "docker_daemon_file.stat.size >= 3"
 
-    - name: Reload docker if config was changed
-      become: true
-      service:
-        name: docker
-        state: reloaded
-      when:
-        - docker_config is defined
-        - docker_config is changed
+        - name: Reload docker if config was changed
+          become: true
+          service:
+            name: docker
+            state: reloaded
+          when:
+            - docker_config is defined
+            - docker_config is changed
 
-    - name: Start and enable docker
-      become: true
-      service:
-        name: docker
-        state: started
-        enabled: true
+        - name: Start and enable docker
+          become: true
+          service:
+            name: docker
+            state: started
+            enabled: true
