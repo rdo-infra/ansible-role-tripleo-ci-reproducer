@@ -30,6 +30,8 @@
         status_code: 201
         headers:
           Content-Type: "application/octet-stream"
+      tags:
+        - skip_ansible_lint
     - name: Create temp dir for Gerrit config update
       tempfile:
         state: directory
