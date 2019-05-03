@@ -1,6 +1,6 @@
 ---
 log_level: DEBUG
-
+container_mode: docker
 ##############
 # Configuration for openstack nodepool
 ###############
