@@ -1,22 +1,35 @@
 ---
-- name: Start docker
-  service:
-    name: docker
-    state: started
+- when: container_mode == 'docker'
+  block:
+    - name: Start docker
+      service:
+        name: docker
+        state: started
 
-# ansible module does not support removal of anon volumes at restart
-# so we do a stop/start
-#
-- name: Stop up zuul and friends
-  docker_service:
-    project_src: "{{ install_path }}"
-    state: absent
-    remove_volumes: true
-- name: Start up zuul and friends
-  docker_service:
-    project_src: "{{ install_path }}"
-    state: present
-    pull: "{{ pull | default(false) | bool }}"
+    # ansible module does not support removal of anon volumes at restart
+    # so we do a stop/start
+    #
+    - name: Stop up zuul and friends
+      docker_service:
+        project_src: "{{ install_path }}"
+        state: absent
+        remove_volumes: true
+    - name: Start up zuul and friends
+      docker_service:
+        project_src: "{{ install_path }}"
+        state: present
+        pull: "{{ pull | default(false) | bool }}"
+
+- when: container_mode == 'podman'
+  block:
+    - name: Stop up zuul and friends with podman
+      become: true
+      command: "{{ install_path }}/tripleo-ci-reproducer.sh --stop"
+      ignore_errors: true
+
+    - name: Start podman pod
+      become: true
+      command: "{{ install_path }}/tripleo-ci-reproducer.sh --run"
 
 - name: Wait for zuul tenant
   uri:
@@ -39,6 +52,17 @@
   args:
     chdir: "{{ install_path }}"
   changed_when: false
+  when: container_mode == 'docker'
+
+- name: Check that all services are with correct state
+  shell: |
+    ! podman ps | grep -v gerritconfig | grep ' exited '
+    podman ps -a |grep gerritconfig |grep ' Exited (0) '
+  args:
+    chdir: "{{ install_path }}"
+  become: true
+  changed_when: false
+  when: container_mode == 'podman'
 
 - name: Check we have nodes to run jobs on
   when: nodepool_provider != "openstack"
