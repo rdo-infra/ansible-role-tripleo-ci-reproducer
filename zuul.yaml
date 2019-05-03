@@ -14,6 +14,7 @@
       - rdo-infra/ansible-role-tripleo-ci-reproducer
     timeout: 3600
     vars:
+      container_mode: podman
       upstream_gerrit_user: os-tripleo-ci
       rdo_gerrit_user: os-tripleo-ci
       ci_job: hello_job
@@ -49,12 +50,14 @@
       os_autohold_node: false
 
 - job:
-    name: tripleo-ci-reproducer-fedora-28-host
+    name: tripleo-ci-reproducer-fedora-29-host-docker
     parent: tripleo-ci-reproducer-host
-    nodeset: single-fedora-28-node
+    nodeset: single-fedora-29-node
+    vars:
+      container_mode: docker
 
 - job:
-    name: tripleo-ci-reproducer-fedora-29-host
+    name: tripleo-ci-reproducer-fedora-29-host-podman
     parent: tripleo-ci-reproducer-host
     nodeset: single-fedora-29-node
 
@@ -67,11 +70,21 @@
     name: tripleo-ci-reproducer-centos-7-host
     parent: tripleo-ci-reproducer-host
     nodeset: single-centos-7-node
+    vars:
+      container_mode: docker
 
 - job:
-    name: tripleo-ci-reproducer-fedora-28-libvirt
+    name: tripleo-ci-reproducer-fedora-29-libvirt-standalone-dryrun
     parent: tripleo-ci-reproducer-libvirt
-    nodeset: single-fedora-28-node
+    nodeset: single-fedora-29-node
+    voting: false
+    vars:
+      ci_job: standalone-dryrun
+
+- job:
+    name: tripleo-ci-reproducer-fedora-29-libvirt
+    parent: tripleo-ci-reproducer-libvirt
+    nodeset: single-fedora-29-node
     voting: false
 
 - job:
@@ -79,11 +92,13 @@
     parent: tripleo-ci-reproducer-libvirt
     nodeset: upstream-centos-7-vexxhost
     voting: false
+    vars:
+      container_mode: docker
 
 - job:
-    name: tripleo-ci-reproducer-fedora-28-libvirt-standalone-dryrun
+    name: tripleo-ci-reproducer-fedora-30-libvirt-standalone-dryrun
     parent: tripleo-ci-reproducer-libvirt
-    nodeset: single-fedora-28-node
+    nodeset: single-fedora-30-node
     voting: false
     vars:
       ci_job: standalone-dryrun
@@ -95,6 +110,7 @@
     voting: false
     vars:
       ci_job: standalone-dryrun
+      container_mode: docker
 
 - job:
     name: tripleo-ci-reproducer-centos-7-openstack-standalone
@@ -104,11 +120,12 @@
     timeout: 15300
     vars:
       ci_job: standalone
+      container_mode: docker
 
 - job:
-    name: tripleo-ci-reproducer-fedora-28-openstack-standalone-dryrun
+    name: tripleo-ci-reproducer-fedora-29-openstack-standalone-dryrun
     parent: tripleo-ci-reproducer-openstack
-    nodeset: single-fedora-28-node
+    nodeset: single-fedora-29-node
     voting: false
     vars:
       ci_job: standalone-dryrun
@@ -122,31 +139,40 @@
     timeout: 15300
     vars:
       ci_job: standalone
+      container_mode: docker
 
 - job:
     name: periodic-tripleo-ci-reproducer-centos-7-libvirt-standalone-vexxhost
     parent: tripleo-ci-reproducer-centos-7-libvirt-standalone-vexxhost
+    vars:
+      container_mode: docker
 
 - job:
     name: periodic-tripleo-ci-reproducer-centos-7-openstack-standalone
     parent: tripleo-ci-reproducer-centos-7-openstack-standalone
+    vars:
+      container_mode: docker
 
 - project:
     name: rdo-infra/ansible-role-tripleo-ci-reproducer
     check:
       jobs:
         - tox-linters
-        - tripleo-ci-reproducer-fedora-28-host
-        - tripleo-ci-reproducer-fedora-29-host
+        - tripleo-ci-reproducer-fedora-29-host-docker
+        - tripleo-ci-reproducer-fedora-29-host-podman
         - tripleo-ci-reproducer-fedora-30-host
         - tripleo-ci-reproducer-centos-7-host
-        - tripleo-ci-reproducer-fedora-28-libvirt-standalone-dryrun
+        - tripleo-ci-reproducer-fedora-29-libvirt
+        - tripleo-ci-reproducer-fedora-30-libvirt-standalone-dryrun
+        - tripleo-ci-reproducer-fedora-29-libvirt-standalone-dryrun
+        - tripleo-ci-reproducer-fedora-29-openstack-standalone-dryrun
+        - tripleo-ci-reproducer-centos-7-libvirt-vexxhost
         - tripleo-ci-reproducer-centos-7-openstack-standalone-dryrun
-        - tripleo-ci-reproducer-fedora-28-openstack-standalone-dryrun
+        - tripleo-ci-reproducer-centos-7-libvirt-standalone-vexxhost
 
     gate:
       jobs:
         - tox-linters
-        - tripleo-ci-reproducer-fedora-28-host
-        - tripleo-ci-reproducer-fedora-29-host
+        - tripleo-ci-reproducer-fedora-29-host-docker
+        - tripleo-ci-reproducer-fedora-29-host-podman
         - tripleo-ci-reproducer-centos-7-host
