@@ -39,9 +39,13 @@
         var: reproducer_role_top_dir
 
     - name: Install python dependencies
+      register: result
+      until: result.failed == false
       pip:
         requirements: "{{ reproducer_role_top_dir }}/requirements.txt"
         extra_args: --user --force
+      retries: 3
+      delay: 5
 
     # Adding when to this command for linting error
     # https://github.com/ansible/ansible-lint/issues/165
