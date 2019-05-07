@@ -1,0 +1,16 @@
+FROM centos:7
+
+RUN yum install -y https://softwarefactory-project.io/repos/sf-release-3.2.rpm && \
+    yum update -y && \
+    yum install -y \
+    rh-python35-nodepool \
+    rh-python35-nodepool-launcher \
+    rh-python35-zuul \
+    rh-python35-zuul-executor \
+    rh-python35-zuul-merger \
+    rh-python35-zuul-scheduler \
+    rh-python35-zuul-fingergw \
+    rh-python35-zuul-web
+
+ENTRYPOINT ["scl","enable","rh-python35","--"]
+CMD ["/opt/rh/rh-python35/root/bin/zuul"]
