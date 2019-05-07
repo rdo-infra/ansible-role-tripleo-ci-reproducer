@@ -3,6 +3,10 @@
   setup:
     gather_subset: "!min,processor,user_dir"
 
+- name: Test gerrit keys
+  when: not skip_ssh_check|bool
+  include_tasks: ssh-keys-test.yaml
+
 - name: Build zuul container
   when: build_zuul is defined
   vars:

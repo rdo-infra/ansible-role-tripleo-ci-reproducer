@@ -13,6 +13,8 @@ user_pri_key: "id_rsa"
 user_pub_key: "{{ user_pri_key }}.pub"
 ssh_path: "{{ ansible_user_dir }}/.ssh"
 
+skip_ssh_check: false
+
 upstream_gerrit_user: "{{ ansible_user }}"
 upstream_gerrit_key: "{{ user_pri_key }}"
 
