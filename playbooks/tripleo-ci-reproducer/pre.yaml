@@ -42,6 +42,10 @@
       pip:
         requirements: "{{ reproducer_role_top_dir }}/requirements.txt"
         extra_args: --user --force
+      retries: 3
+      delay: 5
+      register: result
+      until: result.rc == 0
 
     # Adding when to this command for linting error
     # https://github.com/ansible/ansible-lint/issues/165
