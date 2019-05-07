@@ -1,8 +1,23 @@
 version: '3.5'
 
 services:
+  sf:
+    build:
+      dockerfile: sf-dockerfile
+      context: ./
+      args:
+        http_proxy: "${http_proxy}"
+        https_proxy: "${http_proxy}"
+    image: sf
+    environment:
+      no_proxy: "${no_proxy}"
+    volumes:
+      - "./etc_zuul/:/etc/zuul/:z"
+      - "~/.ssh/:/var/ssh/:z"
+      - /var/lib/zuul
+    command: "true"
   gerrit:
-    image: "{{ gerrit_image }}"
+    image: {{ gerrit_image }}
     ports:
       - "8080:8080"
       - "29418:29418"
@@ -14,25 +29,21 @@ services:
         git config -f /var/gerrit/etc/gerrit.config noteDb.changes.autoMigrate true && \
         /var/gerrit/bin/gerrit.sh run'
   gerritconfig:
-    image: "{{ zuul_image }}"
+    image: sf
     environment:
       no_proxy: "${no_proxy},gerrit"
     depends_on:
       - gerrit
+      - sf
     volumes:
       - "./playbooks/:/usr/src/:z"
       - "./projects/:/var/projects/:z"
     env_file: secrets.env
-    command: |
-      /bin/sh -c '\
-        pip install ansible &&
-        ansible-playbook -vv \
-            /usr/src/inject-ssh-keys.yaml \
-            /usr/src/setup-gerrit.yaml'
+    command: "ansible-playbook /usr/src/inject-ssh-keys.yaml /usr/src/setup-gerrit.yaml"
   zk:
-    image: "{{ zk_image }}"
+    image: {{ zk_image }}
   mysql:
-    image: "{{ mariadb_image }}"
+    image: {{ mariadb_image }}
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: zuul
@@ -43,36 +54,36 @@ services:
       - gerritconfig
       - zk
       - mysql
+      - sf
     environment:
       no_proxy: "${no_proxy},gerrit"
+    env_file: secrets.env
     command: |
         sh -c '\
-          pip install ansible && \
           cd /usr/src/ && \
           ansible-playbook -vv \
             inject-ssh-keys.yaml \
             wait-gerrit.yaml \
-            add-gerrit-host-keys.yaml; \
-            zuul-scheduler -d'
-    image: "{{ zuul_scheduler_image }}"
+            add-gerrit-host-keys.yaml && \
+            /opt/rh/rh-python35/root/bin/zuul-scheduler -d'
+    image: sf
     volumes:
       - "./etc_zuul/:/etc/zuul/:z"
       - "./playbooks/:/usr/src/:z"
       - /var/lib/zuul
       - "./projects:/var/projects/:z"
-    env_file: secrets.env
   web:
     command: |
-        sh -c '\
-          pip install ansible && \
-          cd /usr/src/ && \
-          ansible-playbook -vv wait-mysql.yaml; zuul-web -d'
+      sh -c '\
+        cd /usr/src/ && \
+        ansible-playbook -vv wait-mysql.yaml && zuul-web -d'
     depends_on:
       - scheduler
       - mysql
+      - sf
     ports:
       - "9000:9000"
-    image: "{{ zuul_web_image }}"
+    image: sf
     volumes:
       - "./etc_zuul/:/etc/zuul/:z"
       - "./playbooks/:/usr/src/:z"
@@ -80,10 +91,12 @@ services:
     privileged: true
     environment:
       no_proxy: "${no_proxy},gerrit"
-    command: "sh -c 'cd /usr/src/; ansible-playbook -vv inject-ssh-keys.yaml wait-gerrit.yaml add-gerrit-host-keys.yaml && zuul-executor -d'"
+    command: "/opt/rh/rh-python35/root/bin/zuul-executor -d"
+    command: "sh -c 'cd /usr/src/; ansible-playbook -vv inject-ssh-keys.yaml wait-gerrit.yaml add-gerrit-host-keys.yaml && /opt/rh/rh-python35/root/bin/zuul-executor -d'"
     depends_on:
       - scheduler
-    image: "{{ zuul_executor_image }}"
+      - sf
+    image: sf
     sysctls:
       net.ipv4.tcp_keepalive_time: 600
       net.ipv4.tcp_keepalive_intvl: 75
@@ -98,10 +111,10 @@ services:
   fingergw:
     environment:
       no_proxy: "${no_proxy}"
-    command: "zuul-fingergw -d"
+    command: "/opt/rh/rh-python35/root/bin/zuul-fingergw -d"
     depends_on:
       - executor
-    image: "{{ zuul_fingergw_image }}"
+    image: sf
     volumes:
       - "./etc_zuul/:/etc/zuul/:z"
       - /var/lib/zuul
@@ -109,10 +122,11 @@ services:
       - "79:79"
 
   launcher:
-    command: "nodepool-launcher -d -l /etc/nodepool/launcher-logging.yaml"
+    command: "/opt/rh/rh-python35/root/bin/nodepool-launcher -d -l /etc/nodepool/launcher-logging.yaml"
     depends_on:
       - zk
-    image: "{{ nodepool_launcher_image }}"
+      - sf
+    image: sf
     volumes:
       - "./etc_nodepool/:/etc/nodepool/:z"
       - "~/.config/openstack/:/etc/openstack/:z"
@@ -122,13 +136,15 @@ services:
       - "8005:8005"
     environment:
       - REQUESTS_CA_BUNDLE=/etc/pki/tls/certs/ca-bundle.crt
+
   logs:
-    image: "{{ logs_image }}"
+    image: {{ logs_image }}
     ports:
       - "8000:80"
     volumes:
       - "{{ logs_path }}:/usr/local/apache2/htdocs:z"
       - "./httpd.conf:/usr/local/apache2/conf/httpd.conf:z"
+
 
 {% for i in range(mergers) %}
   merger{{ i }}:
@@ -136,15 +152,16 @@ services:
       no_proxy: "${no_proxy},gerrit"
     command: |
         sh -c ' cd /usr/src/; \
-            pip install ansible && \
             ansible-playbook \
                 inject-ssh-keys.yaml \
                 wait-gerrit.yaml \
                 add-gerrit-host-keys.yaml && \
-            zuul-merger -d'
+            /opt/rh/rh-python35/root/bin/zuul-merger -d'
+
     depends_on:
       - scheduler
-    image: "{{ zuul_merger_image }}"
+      - sf
+    image: sf
     env_file: secrets.env
     volumes:
       - "./etc_zuul/:/etc/zuul/:z"
