@@ -1,0 +1,29 @@
+---
+# using multiple lines seems be problematic
+- name: Check ssh connection with opendev
+  command: 'ssh -i {{ssh_path}}/{{ upstream_gerrit_key }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null {{ upstream_gerrit_user }}@review.opendev.org -p 29418'  # noqa 204
+  register: ssh_upstream_output
+  ignore_errors: true
+
+# using multiple lines seems be problematic
+- name: Check ssh connection with rdoproject
+  command: 'ssh -i {{ ssh_path }}/{{ rdo_gerrit_key }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null {{ rdo_gerrit_user }}@review.rdoproject.org -p 29418'  # noqa 204
+  register: ssh_gerrit_output
+  ignore_errors: true
+
+- name: debug ssh key connection
+  debug:
+    var: "{{ item }}"
+  with_items:
+    - ssh_upstream_output
+    - ssh_gerrit_output
+
+- name: Fail if ssh connection fails
+  fail:
+    msg: "It seems the key you provide are not in your gerrit account. You can skip this failure with skip_ssh_check=true option"
+  changed_when:
+    - ssh_upstream_output is defined
+    - ssh_gerrit_output is defined
+  failed_when:
+    - ssh_upstream_output is defined and ssh_upstream_output.rc != 127
+    - ssh_gerrit_output is defined and ssh_gerrit_output.rc != 127
