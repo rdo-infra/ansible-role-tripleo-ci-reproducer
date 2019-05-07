@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c169c6b7_879275ef",
+        "filename": "tasks/main.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 138
+      },
+      "writtenOn": "2019-05-07T20:20:12Z",
+      "side": 1,
+      "message": "I think this needs to move to pre.yaml\n\nansible-role-tripleo-ci-reproducer/playbooks/tripleo-ci-reproducer/pre.yaml\n\nSo we hit it as early as possible.",
+      "revId": "0312f69756c464c2ec07ff22af1d044e1e57adf5",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
