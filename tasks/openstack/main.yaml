@@ -14,7 +14,7 @@
 - name: Get installed images names
   os_image_facts:
     cloud: "{{ os_cloud_name }}"
-  until: openstack_image|list|length > 0
+  until: openstack_image is defined and openstack_image|list|length > 0
   retries: 3
   delay: 5
 
