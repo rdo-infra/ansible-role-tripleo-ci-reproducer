@@ -1,0 +1,17 @@
+---
+- name: Check ssh connection with opendev
+  command: 'ssh -i {{ssh_path}}/{{ upstream_gerrit_key }} {{ upstream_gerrit_user }}@review.opendev.org -p 29418'
+  register: ssh_upstream_output
+  ignore_errors: yes
+  when: rdo_gerrit_key != 'id_rsa'
+
+- name: Check ssh connection with rdoproject
+  command: 'ssh -i {{ ssh_path }}/{{ rdo_gerrit_key }} {{ rdo_gerrit_user }}@review.rdoproject.org -p 29418'
+  register: ssh_gerrit_output
+  ignore_errors: yes
+  when: rdo_gerrit_key != 'id_rsa'
+
+- name: Fail if ssh connection fails
+  fail:
+    msg: "It seems the key you provide are not in your gerrit account. You can skip this failure with skip_ssh_check=true option"
+  when: ssh_upstream_output.rc != 127 or ssh_gerrit_output.rc != 127
