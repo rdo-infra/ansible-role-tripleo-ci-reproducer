@@ -7,6 +7,7 @@
 - name: Clone zuul-config project
   git:
     repo: ssh://admin@localhost:29418/zuul-config
+    key_file: "{{ install_path }}/zuul_ssh_rsa"
     dest: "{{ zuul_config.path }}"
 
 - name: Check if we already have the secret

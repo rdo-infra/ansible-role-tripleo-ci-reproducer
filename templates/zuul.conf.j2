@@ -14,22 +14,25 @@ log_config=/etc/zuul/scheduler-logging.yaml
 [connection "opendev.org"]
 name=opendev.org
 driver=gerrit
-server=review.opendev.org
+server=gerrit
 canonical_hostname=opendev.org
-gitweb_url_template=https://opendev.org/{project.name}/commit/{sha}
-user={{ upstream_gerrit_user }}
-sshkey=/var/ssh/upstream_gerrit_key
+user=zuul
+password=secret
+sshkey=/var/ssh/id_rsa
+baseurl=http://gerrit:8080
+auth_type=basic
 
 # Add your rdo user to gerrit stream group, e.g.:
 # https://review.rdoproject.org/r/#/c/17581/
 [connection "rdoproject.org"]
 name=rdoproject.org
 driver=gerrit
-server=review.rdoproject.org
-port=29418
-baseurl=https://review.rdoproject.org/r
-user={{ rdo_gerrit_user }}
-sshkey=/var/ssh/rdo_gerrit_key
+server=gerrit
+user=zuul
+password=secret
+sshkey=/var/ssh/id_rsa
+baseurl=http://gerrit:8080
+auth_type=basic
 
 [connection "gerrit"]
 name=gerrit
