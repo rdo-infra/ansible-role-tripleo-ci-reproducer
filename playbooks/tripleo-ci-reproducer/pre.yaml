@@ -14,6 +14,27 @@
       changed_when: false
       register: pip_exists
 
+      # To get newer git so we can use SSH_GIT_COMMAND
+    - when:
+        - ansible_distribution == "CentOS"
+        - ansible_distribution_major_version <= "7"
+      block:
+        - name: Uninstall old git
+          become: true
+          package:
+            name: git
+            state: absent
+
+        - name: Install ius centos7 repo
+          become: true
+          package:
+            name: https://centos7.iuscommunity.org/ius-release.rpm
+
+        - name: Install newer git
+          become: true
+          package:
+            name: git2u-all
+
     - when: pip_exists.rc != 0
       name: Install pip
       block:
