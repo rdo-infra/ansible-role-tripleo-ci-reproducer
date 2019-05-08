@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c86fa0cd_829843a3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 192
+      },
+      "writtenOn": "2019-05-08T06:33:41Z",
+      "side": 1,
+      "message": "wow that is incredible. and only 1 line of code ! \n\n(the \u0027cyprus issue\u0027 is like saying \u0027the middle east problem\u0027 :D. I\u0027ve got to go call the papers!)\n\nEDIT: joking aside, I don\u0027t think my network connection has anything to do with this. I was running these things on either beaker, or rdo cloud and not on my laptop. I was just ssh\u0027d into those vms.",
+      "range": {
+        "startLine": 9,
+        "startChar": 14,
+        "endLine": 9,
+        "endChar": 26
+      },
+      "revId": "be44e2494cdd0ee3bcb987933b43d505a7cafa0a",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "62fc914b_fd584e8a",
+        "filename": "tasks/openstack/main.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 192
+      },
+      "writtenOn": "2019-05-08T06:33:41Z",
+      "side": 1,
+      "message": "The issues I hit yesterday are like [1] - in one case I hit an \u0027image\u0027 related issue but it wasn\u0027t network related its the known \u0027no test named equalto\u0027 for jinja 2.8\n\nThe other network issue I hit was github being down.\n\nI don\u0027t see the harm in adding this check but don\u0027t think its related to something i saw.\n\n[1]\n* reproducer test day: (going for multinode containers on rdo cloud) get beaker box - Centos7 - fails like http://paste.openstack.org/raw/750872/ - known issue 1 @ https://tree.taiga.io/project/tripleo-ci-board/task/765 , instead try fedora30 beaker box, fails like http://paste.openstack.org/raw/750873/ (transient... github was down), try rdo cloud centos7 vm, gets further but fails like http://paste.openstack.org/raw/750874/ keys issue, ping \u0026 call quiquell re --firstboot script/play? \u0026 added note to https://docs.google.com/document/d/17WOTM5kbtfoTP4HQQB135-AC9Rwuvs59ogWQsPdgHRs/edit# , also try fedora rdo cloud - fails zuul tenant like http://paste.openstack.org/raw/750877/ \u0026 rerun fails no space left on device... so need bigger vm (minimum requirements?) .. http://paste.openstack.org/raw/750878 , dig into --firstboot script,",
+      "range": {
+        "startLine": 17,
+        "startChar": 9,
+        "endLine": 17,
+        "endChar": 35
+      },
+      "revId": "be44e2494cdd0ee3bcb987933b43d505a7cafa0a",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
