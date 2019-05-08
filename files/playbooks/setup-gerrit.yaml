@@ -64,8 +64,6 @@
         name: create_project
       vars:
         project: zuul-config
-        contents:
-          - "/var/projects/zuul-config/"
 
     - include_tasks: add_rdo_config.yml
 
@@ -84,6 +82,23 @@
         name: create_project
       vars:
         project: test2
+
+    - name: Get external projects
+      find:
+        path: /var/projects/external/
+        patterns: '.git'
+        hidden: true
+        file_type: directory
+        recurse: true
+      register: external_projects
+    
+    - name: Create external project
+      include_role:
+        name: create_project
+      vars:
+        path: "{{ item.path.split('/.git')[0].replace('/var/projects/','') }}"
+        project: "{{ item.path.split('external/')[1].split('/.git')[0] }}"
+      with_items: "{{ external_projects.files }}"
 
     # The Zuul user is created last because it is an atomic operation
     # which signals that Gerrit is ready for use and it is safe for
