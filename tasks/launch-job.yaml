@@ -7,6 +7,7 @@
 - name: Clone testproject project
   git:
     repo: ssh://admin@localhost:29418/test1
+    key_file: "{{ install_path }}/zuul_ssh_rsa"
     dest: "{{ testproject.path }}"
 
 - name: Dump zuul.yaml
@@ -23,12 +24,7 @@
     chdir: "{{ testproject.path }}"
     cmd: |
       set -e
-      #FIXME: for centos7 the git version is too old for the local gerrit
-      #       hooks so we get them from upstream
-      mkdir -p .git/hooks/
-      scp -p -P 29418 -i {{ ssh_path }}/{{ upstream_gerrit_key }} \
-      {{ upstream_gerrit_user }}@review.opendev.org:hooks/commit-msg \
-        .git/hooks/
+      scp -i {{ install_path }}/zuul_ssh_rsa -p -P 29418 admin@localhost:hooks/commit-msg .git/hooks/
       git config --local user.name Admin
       git config --local user.email admin@example.com
       git remote add gerrit ssh://admin@localhost:29418/test1
@@ -41,7 +37,11 @@
       Depends-On: {{ review }}
       {% endfor %}
       '
-      git push origin HEAD:refs/for/{{ launch_job_branch }} 2>&1 | tee push.log
+      export GIT_SSH_COMMAND="ssh -i {{ install_path }}/zuul_ssh_rsa" 
+      if ! git push origin HEAD:refs/for/{{ launch_job_branch }} > push.log 2>&1; then
+        cat push.log
+        exit 1
+      fi
       grep "remote:.*http" push.log | awk '{print $2}' | tee url.txt
       sed "s/.*\/\([0-9]*\)$/\1/" url.txt| tee review.txt
       git rev-parse HEAD | tee commit.txt
@@ -49,11 +49,24 @@
   changed_when: true
   register: git_output
 
+- name: Slurp review.txt
+  slurp:
+    path: "{{ testproject.path }}/review.txt"
+  register: review_slurp
+- name: Slurp commit.txt
+  slurp:
+    path: "{{ testproject.path }}/commit.txt"
+  register: commit_slurp
+- name: Slurp change.txt
+  slurp:
+    path: "{{ testproject.path }}/change.txt"
+  register: change_slurp
+
 - name: Set facts about review
   set_fact:
-    review: "{{ lookup('file', testproject.path + '/review.txt') }}"
-    commit: "{{ lookup('file', testproject.path + '/commit.txt') }}"
-    change: "{{ lookup('file', testproject.path + '/change.txt') }}"
+    review: "{{ review_slurp.content | b64decode }}"
+    commit: "{{ commit_slurp.content | b64decode }}"
+    change: "{{ change_slurp.content | b64decode }}"
 
 - name: Point users at zuul and gerrit
   debug:
@@ -82,14 +95,15 @@
     msg: 'finger {{ zuul_status.json.0.jobs.0.uuid }}@localhost'
 
 - name: Do autohold to have the nodes in case of job failure
-  command: |
-    docker-compose exec -T scheduler zuul autohold
-      --project test1
-      --tenant tripleo-ci-reproducer
-      --job {{ zuul_status.json.0.jobs.0.name }}
-      --reason reproducer_forensics
+  shell: |
+    export PATH=~/.local/bin:$PATH 
+    docker-compose exec -T scheduler zuul autohold \
+      --project test1 \
+      --tenant tripleo-ci-reproducer \
+      --job {{ zuul_status.json.0.jobs.0.name }} \
+      --reason reproducer_forensics \
   args:
-    chdir: ~/tripleo-ci-reproducer
+    chdir: "{{ ansible_user_dir }}/tripleo-ci-reproducer"
   when: os_autohold_node
 - name: Wait for job to finish
   uri:
@@ -123,7 +137,7 @@
 
 - name: Get gerrit info
   command: |
-    ssh -p 29418 admin@localhost
+    ssh -p 29418 -i {{ install_path }}/zuul_ssh_rsa admin@localhost
       gerrit query --comments "commit:{{ commit }}"
   register: gerrit_info
 
