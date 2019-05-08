@@ -32,20 +32,13 @@
   block:
     - name: Start it
       include_tasks: start.yaml
-
-    - name: Add gerrits to known_hosts
+    - name: Do a ssh-keyscan on localhost 
+      command: ssh-keyscan -4 -t ecdsa-sha2-nistp256 -p 29418 localhost 
+      register: local_gerrit_keyscan
+    - name: Add local gerrit to known_hosts
       known_hosts:
-        name: "[{{ item.name }}]:29418"
-        key: "{{ lookup('pipe', 'ssh-keyscan
-          -4 -t {{ item.type }} -p 29418 {{ item.name }}') }}"
-      with_items:
-        - name: localhost
-          type: ecdsa-sha2-nistp256
-        - name: review.opendev.org
-          type: ssh-rsa
-        - name: review.rdoproject.org
-          type: ssh-rsa
-
+        name: "[localhost]:29418"
+        key: "{{ local_gerrit_keyscan.stdout }}"
     - name: Check if we have a gerrit key for tripleo
       stat:
         path: "{{ tripleo_ci_gerrit_key }}"
