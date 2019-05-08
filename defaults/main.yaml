@@ -9,16 +9,7 @@ os_centos7_image: upstream-cloudinit-centos-7
 os_fedora28_image: upstream-cloudinit-fedora-28
 os_autohold_node: true
 
-user_pri_key: "id_rsa"
-user_pub_key: "{{ user_pri_key }}.pub"
 ssh_path: "{{ ansible_user_dir }}/.ssh"
-
-upstream_gerrit_user: "{{ ansible_user }}"
-upstream_gerrit_key: "{{ user_pri_key }}"
-
-rdo_gerrit_user: "{{ ansible_user }}"
-rdo_gerrit_key: "{{ user_pri_key }}"
-
 tripleo_ci_gerrit_key: "{{ ssh_path }}/tripleo_ci_gerrit_id_rsa"
 
 install_path: "{{ ansible_user_dir }}/tripleo-ci-reproducer/"
@@ -90,12 +81,12 @@ cloud_config: |
     ssh_pwauth: False
     output: { all: '| tee -a /var/log/cloud-init-output.log' }
     ssh_authorized_keys:
-      - {{ lookup('file', ssh_path + '/' + user_pub_key ) }}
+      - {{ lookup('file', install_path + '/zuul_ssh_rsa.pub' ) }}
     users:
     - default
     - name: zuul
       ssh_authorized_keys:
-        - {{ lookup('file', ssh_path + '/' + user_pub_key ) }}
+        - {{ lookup('file', install_path + '/zuul_ssh_rsa.pub' ) }}
 
 cloud_config_centos: |-
   {{ cloud_config }}
