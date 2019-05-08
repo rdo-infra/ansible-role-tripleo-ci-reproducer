@@ -1,0 +1,34 @@
+- name: Set zuul config connection section
+  set_fact:
+    zuul_conf_connection_section: "connection \"{{ gerrit_server }}\""
+
+- name: Get gerrit baseurl for opendev.org
+  set_fact: 
+  gerrit_baseurl: "https://review.opendev.org"
+  when: gerrit_server == 'opendev.org'
+
+- name: Get gerrit baseurl for rdoproject.org
+  set_fact: 
+  gerrit_baseurl: "https://review.rdoproject.org/r"
+  when: gerrit_server == 'rdoproject.org'
+
+- name: Cloning {{ gerrit_server }} projects
+  git:
+    repo: "{{ gerrit_baseurl }}/{{ item.1 }}"
+    dest: "{{ install_path }}/projects/external/{{ item.1 }}"
+  with_subelements: 
+    - "{{ zuul_tenant_source[gerrit_server]['untrusted-projects'] }}" 
+    - projects
+  register: cloned_projects
+  async: 600
+  poll: 0
+ 
+- name: Wait for {{ gerrit_server }} projects to clone
+  async_status:
+    jid: "{{ item.ansible_job_id }}"
+  register: jobs
+  until: jobs.finished
+  delay: 5
+  retries: 10
+  with_items: "{{ cloned_projects.results }}"
+
