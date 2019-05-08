@@ -16,6 +16,13 @@
       - "{% if ansible_python.version.major == 3 -%}python3-virtualenv{%-
           else -%}python-virtualenv{%- endif -%}"
   tasks:
+
+    - name: Add zuul rsa pub key to authorized_keys
+      authorized_key:
+        user: zuul
+        state: present
+        key: "{{ zuul_ssh_rsa_pub.content | b64decode }}"
+
     - name: Create /etc/nodepool directory
       file:
         path: /etc/nodepool

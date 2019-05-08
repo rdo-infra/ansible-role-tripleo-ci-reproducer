@@ -1,7 +1,10 @@
 ---
+- name: Set project uri
+  set_fact:
+    project_uri: "{{ project.replace('/', '%2F') }}"
 - name: Check if {{ project }} project exists
   uri:
-    url: http://gerrit:8080/projects/{{ project }}
+    url: http://gerrit:8080/projects/{{ project_uri }}
     status_code: 200, 404
   register: project_check
 - name: Create {{ project }}
@@ -13,7 +16,7 @@
       register: project_tmp
     - name: Create {{ project }} project in Gerrit
       uri:
-        url: http://gerrit:8080/a/projects/{{ project }}
+        url: http://gerrit:8080/a/projects/{{ project_uri }}
         method: PUT
         user: admin
         password: secret
@@ -23,6 +26,11 @@
         executable: /bin/sh
         chdir: "{{ project_tmp.path }}"
         cmd: |
+          project_dir=/var/projects/{{ path }}
+          if [ -d $project_dir ]; then
+            cp -rf $project_dir/* .
+            rm -rf .git .gitreview
+          fi
           git init .
           git config user.name "Admin"
           git config user.email "admin@example.com"
@@ -32,13 +40,9 @@
           port=29418
           project={{ project }}
           EOF
-          project_dir=/var/projects/{{ project }}
-          if [ -d $project_dir ]; then
-            cp -rf $project_dir/* .
-          fi
           git add -A
           git commit -m "Initial commit"
-          git remote add gerrit http://admin:secret@gerrit:8080/{{ project }}
+          git remote add gerrit http://admin:secret@gerrit:8080/{{ project_uri }}
           git push -f --set-upstream gerrit +HEAD:master
 
     - name: Create branches
