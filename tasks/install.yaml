@@ -34,14 +34,30 @@
     - web-logging.yaml
     - merger-logging.yaml
 
+- name: Generate zuul ssh key
+  shell: |
+    if [ ! -f {{ install_path }}/zuul_ssh_rsa ]; then
+      ssh-keygen -m PEM -t rsa -f {{ install_path }}/zuul_ssh_rsa
+    fi
+
+- name: Read zuul tenants config
+  set_fact:
+    zuul_tenants: "{{ lookup('file', install_path + '/etc_zuul/main.yaml') | from_yaml }}"
+- name: Select tenant
+  set_fact:
+    zuul_tenant_source: "{{ zuul_tenants.0.tenant.source }}"
+- name: Get external gerrit servers
+  set_fact:
+    external_gerrits: "{{ zuul_tenant_source | reject('equalto', 'gerrit') | list }}"
+
+- name: Clone projects from external gerrit servers
+  include_tasks: clone-projects.yaml
+  with_items: "{{ external_gerrits }}"
+  loop_control:
+    loop_var: gerrit_server
 - name: Generate secrets.env
   vars:
-    id_rsa_b64: "{{ lookup('file', ssh_path + '/' +
-      user_pri_key) | b64encode }}"
-    upstream_gerrit_key_b64: "{{ lookup('file', ssh_path + '/' +
-      upstream_gerrit_key) | b64encode }}"
-    rdo_gerrit_key_b64: "{{ lookup('file', ssh_path + '/' +
-      rdo_gerrit_key) | b64encode }}"
+    id_rsa_b64: "{{ lookup('file', install_path + '/zuul_ssh_rsa') | b64encode }}"
   template:
     src: secrets.env.j2
     dest: "{{ install_path }}/secrets.env"
