@@ -34,18 +34,59 @@
     - web-logging.yaml
     - merger-logging.yaml
 
+- name: Generate zuul ssh key
+  shell: |
+    if [ ! -f {{ install_path }}/zuul_ssh_rsa ]; then
+      ssh-keygen -m PEM -t rsa -f {{ install_path }}/zuul_ssh_rsa
+    fi
+
+- name: Slurp tenants config
+  slurp:
+    src: "{{ install_path }}/etc_zuul/main.yaml"
+  register: zuul_tenants_slurp
+
+- name: Read zuul tenants config
+  set_fact:
+    zuul_tenants: "{{ zuul_tenants_slurp.content | b64decode | from_yaml }}"
+- name: Select tenant
+  set_fact:
+    zuul_tenant_source: "{{ zuul_tenants.0.tenant.source }}"
+- name: Get external gerrit servers
+  set_fact:
+    external_gerrits: "{{ zuul_tenant_source | reject('equalto', 'gerrit') | list }}"
+
+- name: Clone projects from external gerrit servers
+  include_tasks: clone-projects.yaml
+  with_items: "{{ external_gerrits }}"
+  loop_control:
+    loop_var: gerrit_server
+
+- name: Slurp zuul rsa key
+  slurp:
+    src: "{{ install_path }}/zuul_ssh_rsa"
+  register: zuul_ssh_rsa
+- name: Slurp zuul rsa pub key
+  slurp:
+    src: "{{ install_path }}/zuul_ssh_rsa.pub"
+  register: zuul_ssh_rsa_pub_slurp
+- name: Save zuul ssh pub key
+  set_fact:
+    zuul_ssh_rsa_pub: "{{ zuul_ssh_rsa_pub_slurp.content | b64decode }}"
+
+
 - name: Generate secrets.env
   vars:
-    id_rsa_b64: "{{ lookup('file', ssh_path + '/' +
-      user_pri_key) | b64encode }}"
-    upstream_gerrit_key_b64: "{{ lookup('file', ssh_path + '/' +
-      upstream_gerrit_key) | b64encode }}"
-    rdo_gerrit_key_b64: "{{ lookup('file', ssh_path + '/' +
-      rdo_gerrit_key) | b64encode }}"
+    id_rsa_b64: "{{ zuul_ssh_rsa.content }}"
   template:
     src: secrets.env.j2
     dest: "{{ install_path }}/secrets.env"
     mode: 0600
+
+- name: Add zuul rsa pub key to authorized_keys
+  authorized_key:
+    user: "{{ ansible_user }}"
+    state: present
+    key: "{{ zuul_ssh_rsa_pub }}"
 
 - name: Make path for pki ca-bundle.crt
   file:
@@ -60,6 +101,14 @@
 - name: Setup nodepool provider
   include_tasks: "{{ nodepool_provider }}/main.yaml"
   when: nodepool_provider != "host" and setup_nodepool
+
+- name: Scan ssh host key
+  command: ssh-keyscan -t ed25519 {{ ansible_default_ipv4.address }}
+  register: ssh_host_key_command
+
+- name: Store ssh host key
+  set_fact:
+    ssh_host_key: "{{ ssh_host_key_command.stdout }}"
 
 - name: Generate nodepool main configuration
   template:
