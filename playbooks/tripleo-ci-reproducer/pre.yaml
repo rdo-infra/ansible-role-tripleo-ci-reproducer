@@ -152,3 +152,8 @@
         name: docker
         state: started
         enabled: true
+
+    - name: ensure docker.sock has permissions for non-root users
+      become: true
+      file: /var/run/docker.sock
+        mode: 0666
