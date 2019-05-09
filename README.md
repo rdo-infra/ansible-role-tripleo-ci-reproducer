@@ -47,6 +47,7 @@ Role Variables
   - libvirt: Start up a pair of libvirt nodes at install and connects nodepool
     to it
 * `zuul_job` -- zuul job to executo
+* `zuul_job_retries` --  wait time for zuul job to start, default "20"
 * `zuul_yaml` -- zuul config to run it overwrite zuul_job
 * `depends_on` -- Gerrit reviews to test
 * `user_pri_key` -- ssh private key to use for the user, default "id_rsa"
