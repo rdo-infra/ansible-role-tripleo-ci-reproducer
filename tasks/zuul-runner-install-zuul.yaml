@@ -1,0 +1,31 @@
+---
+- name: Cleanup {{ zuul_src_dir }}
+  file:
+    path: "{{ zuul_src_dir|dirname }}"
+    state: absent
+
+- name: Ensure {{ zuul_src_dir }} exists
+  file:
+    path: "{{ zuul_src_dir|dirname }}"
+    state: directory
+
+- name: Cloning zuul
+  git:
+    repo: "https://opendev.org/zuul/zuul"
+    dest: "{{ zuul_src_dir|dirname }}"
+
+- name: Checkout ref
+  command: "{{ item  }}"
+  with_items:
+    - 'git fetch https://review.opendev.org/zuul/zuul {{ fetch_ref }}'
+    - 'git checkout -b {{ tag_ref }} FETCH_HEAD'
+  args:
+    chdir: "{{ zuul_src_dir }}"
+  when: fetch_ref is defined
+
+- name: Install zuul
+  pip:
+    chdir: "{{ zuul_src_dir|dirname }}"
+    extra_args: "--user"
+    name: "."
+    state: present
