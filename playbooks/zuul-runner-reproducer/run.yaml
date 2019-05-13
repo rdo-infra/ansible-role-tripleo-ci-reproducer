@@ -1,0 +1,49 @@
+---
+- hosts: primary
+  vars:
+    repro_role_path: >-
+      {{ ansible_user_dir }}/{{ zuul.projects[
+        'review.rdoproject.org/rdo-infra/ansible-role-tripleo-ci-reproducer'
+        ].src_dir }}
+  tasks:
+    - name: Set facts for mirrors
+      set_fact:
+        mirror_fqdn: "mirror.{{ nodepool.region | lower }}.{{nodepool.cloud | lower }}.rdoproject.org"
+
+    - name: Create roles directory
+      file:
+        path: "{{ ansible_user_dir }}/roles"
+        state: directory
+
+    - name: Link role
+      file:
+        src: "{{ repro_role_path }}"
+        dest: "{{ ansible_user_dir }}/roles/tripleo-ci-reproducer"
+        state: link
+
+    - name: Generate reproducer playbook
+      template:
+        src: start.yaml.j2
+        dest: "{{ ansible_user_dir }}/start.yaml"
+
+    - name: Prepare zuul variables from job context
+      set_fact:
+        zuul_config:
+          zuul: "{{ zuul }}"
+
+    - name: Pass zuul variables
+      blockinfile:
+        content: |
+          {{ zuul_config|default({})|to_nice_yaml }}
+        path: "{{ ansible_user_dir }}/zuul_vars.yaml"
+        create: true
+
+    - name: Generate run script
+      template:
+        src: run.sh.j2
+        dest: "{{ ansible_user_dir }}/run.sh"
+        mode: 0755
+
+    - name: Run reproducer
+      command: "{{ ansible_user_dir }}/run.sh"
+      changed_when: true
