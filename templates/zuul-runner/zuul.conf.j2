@@ -1,0 +1,38 @@
+[gearman]
+server=scheduler
+
+[gearman_server]
+start=true
+
+[zookeeper]
+hosts=zk
+
+[scheduler]
+tenant_config=/etc/zuul/main.yaml
+state_dir=/etc/zuul/state
+
+[connection "local"]
+driver=git
+baseurl=file:///local-git
+
+[web]
+listen_address=0.0.0.0
+
+{% if gerrit_account %}
+
+[connection "opendev.org"]
+driver=git
+baseurl=https://opendev.org
+
+{% else %}
+
+[connection "opendev.org"]
+driver=gerrit
+port=29418
+server=review.opendev.org
+baseurl=https://review.opendev.org
+user={{ gerrit_account }}
+sshkey=/var/lib/zuul/.ssh/id_rsa
+canonical_hostname=opendev.org
+
+{% endif %}

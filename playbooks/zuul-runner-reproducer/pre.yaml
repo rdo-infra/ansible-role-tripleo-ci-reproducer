@@ -1,0 +1,76 @@
+---
+- hosts: primary
+  tasks:
+    - name: Gather needed facts
+      setup:
+        gather_subset: "!min,userdir,distribution"
+      when:
+        - ansible_user_dir is not defined
+        - ansible_distribution is not defined
+
+    - name: Check if pip is installed
+      shell: command -v pip > /dev/null 2>&1
+      ignore_errors: true
+      changed_when: false
+      register: pip_exists
+
+    - when: pip_exists.rc != 0
+      name: Install pip
+      block:
+        - when: ansible_distribution == "CentOS"
+          name: Install EPEL
+          become: true
+          package:
+            name: epel-release
+        - name: Install pip
+          become: true
+          package:
+            name:
+              - python-pip
+
+    # reproducer_role_top_dir evaluates to "reproducer_role_top_dir":
+    - name: Set fact reproducer_role_top_dir
+      set_fact:
+        reproducer_role_top_dir: >-
+          {{ reproducer_role_top_dir | default(playbook_dir + '/../..') }}
+
+    - name: Print top dir
+      debug:
+        var: reproducer_role_top_dir
+
+    - name: Install python dependencies
+      register: result
+      until: not result.failed|bool
+      pip:
+        requirements: "{{ reproducer_role_top_dir }}/requirements.txt"
+        extra_args: --user --force
+      retries: 3
+      delay: 5
+
+    # Adding when to this command for linting error
+    # https://github.com/ansible/ansible-lint/issues/165
+    # Pipe true because bindep always returns code 1 (error)
+    # when packages are missing
+    - name: Discover packages that are not installed
+      shell: |
+        export PATH=$PATH:$HOME/.local/bin/
+        bindep -b -f {{ reproducer_role_top_dir }}/bindep.txt
+      register: package_list
+      failed_when: false
+      changed_when: false
+
+    # TODO(arxcruz): Review these dependences once zuul container
+    # is no longer required
+    - name: Install rpms from bindep
+      become: true
+      package:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - "{{ package_list.stdout_lines }}"
+        - buildah
+        - podman
+        - redhat-rpm-config
+        - gcc-c++
+        - re2-devel
+        - python3-devel

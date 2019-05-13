@@ -1,0 +1,55 @@
+---
+# I choose to split instead of use a for in both scheduler and web service
+# for more readability
+
+- name: Check if images are available or if it requires to be updated
+  command:
+    buildah images -nq localhost/zuul/zuul-scheduler:{{ tag_ref }}
+  register: image_list
+
+- block:
+    - name: Prepare scheduler image
+      shell: |
+        C=$(buildah from zuul/zuul-scheduler)
+        buildah copy $C {{ zuul_src_dir }} /usr/local/lib/python3.7/site-packages/zuul/
+        buildah commit $C zuul/zuul-scheduler:{{ tag_ref }}
+        buildah delete $C
+
+    - name: Prepare web image
+      shell: |
+        C=$(buildah from zuul/zuul-image)
+        buildah copy $C {{ zuul_src_dir }} /usr/local/lib/python3.7/site-packages/zuul/
+        buildah commit $C zuul/zuul-scheduler:{{ tag_ref }}
+        buildah delete $C
+  when: image_list.rc != 0
+
+- name: Generate zuul.conf
+  template:
+    src: zuul.conf.j2
+    dest: {{ zuul_src_dir|dirname }}/zuul.conf
+
+- name: Generate zuul/conf/main.yaml
+  template:
+    src: main.yaml.j2
+    dest: {{ zuul_src_dir|dirname }}/conf/main.yaml
+
+- name: Generate zuul/config/zuul.yaml
+  template:
+    src: zuul.yaml
+    dest: {{ zuul_src_dir|dirname }}/config/zuul.yaml
+
+# It could be a big shell script, but it's better for visibility to do step by
+# step
+
+- name: Create the pod {{ pod_name }}
+  command: podman create --name {{ pod_name }} -p 9000:9000
+
+- name: Start the pod {{ pod_name }}
+  command: podman pod start {{ pod_name }}
+
+- name: Creating zookeeper
+  command: podman run --rm --pod {{ pod_name }} zk --hostname zk zookeeper
+
+  # - name: Creating scheduler
+  # shell: |
+
