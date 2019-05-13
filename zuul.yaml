@@ -6,6 +6,29 @@
         label: cloud-fedora-29
 
 - job:
+    name: tripleo-ci-zuul-runner-reproducer
+    parent: tripleo-ci-reproducer-base
+    abstract: true
+    description: |
+      To test reproducer
+    pre-run:
+      - playbooks/zuul-runner-reproducer/pre.yaml
+    run: playbooks/zuul-runner-reproducer/run.yaml
+    post-run:
+      - playbooks/zuul-runner-reproducer/post.yaml
+    required-projects:
+      - rdo-infra/ansible-role-tripleo-ci-reproducer
+    timeout: 3600
+    vars:
+      upstream_gerrit_user: os-tripleo-ci
+      rdo_gerrit_user: os-tripleo-ci
+      ci_job: hello_job
+      reproducer_role_top_dir: >-
+        {{ ansible_user_dir }}/{{ zuul.projects[
+          'review.rdoproject.org/rdo-infra/ansible-role-tripleo-ci-reproducer'
+          ].src_dir }}
+
+- job:
     name: tripleo-ci-reproducer
     parent: tripleo-ci-reproducer-base
     abstract: true
@@ -36,6 +59,13 @@
       nodepool_provider: host
 
 - job:
+    name: tripleo-ci-zuul-runner-reproducer-host
+    abstract: true
+    parent: tripleo-ci-zuul-runner-reproducer
+    vars:
+      nodepool_provider: host
+
+- job:
     name: tripleo-ci-reproducer-libvirt
     abstract: true
     parent: tripleo-ci-reproducer
@@ -62,6 +92,11 @@
 - job:
     name: tripleo-ci-reproducer-fedora-29-host
     parent: tripleo-ci-reproducer-host
+    nodeset: single-cloud-fedora-29-node
+
+- job:
+    name: tripleo-ci-zuul-runner-reproducer-fedora-29-host
+    parent: tripleo-ci-zuul-runner-reproducer-host
     nodeset: single-cloud-fedora-29-node
 
 - job:
@@ -122,6 +157,7 @@
         - tox-linters
         - tripleo-ci-reproducer-fedora-28-host
         - tripleo-ci-reproducer-fedora-29-host
+        - tripleo-ci-zuul-runner-reproducer-fedora-29-host
         - tripleo-ci-reproducer-centos-7-host
         - tripleo-ci-reproducer-centos-7-libvirt-vexxhost
         - tripleo-ci-reproducer-fedora-28-libvirt-standalone-dryrun
