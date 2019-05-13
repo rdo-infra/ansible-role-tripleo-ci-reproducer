@@ -1,0 +1,32 @@
+- tenant:
+    name: runner
+    source:
+      local:
+        config-projects:
+          - config
+      opendev.org:
+        config-projects:
+          - zuul/zuul-base-jobs
+        untrusted-projects:
+          - zuul/zuul-jobs:
+              include:
+                - job
+          - openstack/openstack-zuul-jobs
+          - openstack/tripleo-ci
+          - openstack/tripleo-quickstart
+          - openstack/tripleo-quickstart-extras
+          - openstack/tripleo-upgrade
+          - x/browbeat
+          - openstack/tripleo-ha-utils
+          - openstack/tripleo-heat-templates
+          - openstack/openstack-virtual-baremetal
+          - openstack/openstack-ansible-os_tempest
+          - openstack/ansible-role-python_venv_build
+          - openstack/ansible-config_template
+          - openstack/tripleo-common
+          - openstack/python-tripleoclient
+          - openstack/requirements
+          - openstack/ansible-role-container-registry
+          - openstack/kolla
+          - openstack/tripleo-repos
+          - openstack/ansible-role-collect-logs
