@@ -1,0 +1,66 @@
+---
+- name: Build zuul container
+  when: build_zuul is defined
+  vars:
+    project:
+      name: zuul
+      repo: https://opendev.org/zuul/zuul
+      version: "{{ build_zuul.version }}"
+      refspec: "{{ build_zuul.refspec }}"
+  include_tasks: build-pbrx-container.yaml
+
+- name: Build nodepool container
+  when: build_nodepool is defined
+  vars:
+    project:
+      name: nodepool
+      repo: https://opendev.org/zuul/nodepool
+      version: "{{ build_nodepool.version }}"
+      refspec: "{{ build_nodepool.refspec }}"
+  include_tasks: build-pbrx-container.yaml
+
+- name: Installing at ~/tripleo-ci-reproducer
+  include_tasks: install.yaml
+  tags:
+    - install
+
+- name: Install and start reproducer
+  block:
+    - name: Start it
+      include_tasks: start.yaml
+
+    - name: Add gerrits to known_hosts
+      known_hosts:
+        name: "[{{ item.name }}]:29418"
+        key: "{{ lookup('pipe', 'ssh-keyscan
+          -4 -t {{ item.type }} -p 29418 {{ item.name }}') }}"
+      with_items:
+        - name: localhost
+          type: ecdsa-sha2-nistp256
+        - name: review.opendev.org
+          type: ssh-rsa
+        - name: review.rdoproject.org
+          type: ssh-rsa
+
+    - name: Check if we have a gerrit key for tripleo
+      stat:
+        path: "{{ tripleo_ci_gerrit_key }}"
+      register: gerrit_key
+    - when: gerrit_key.stat.exists
+      name: Encrypt gerrit key
+      include_tasks: encrypt-gerrit-key.yaml
+  tags:
+    - start
+
+- name: Launch job
+  include_tasks: launch-job.yaml
+  tags:
+    - launch
+
+- name: stop reproducer
+  block:
+    - name: Stop it
+      include_tasks: stop.yaml
+  tags:
+    - never
+    - stop
