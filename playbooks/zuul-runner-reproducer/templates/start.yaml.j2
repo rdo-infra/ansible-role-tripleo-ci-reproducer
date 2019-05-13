@@ -1,0 +1,21 @@
+---
+- hosts: localhost
+  tasks:
+    - name: Start {{ nodepool_provider }} reproducer
+      vars:
+        nodepool_provider: "{{ nodepool_provider }}"
+        upstream_gerrit_user: "{{ upstream_gerrit_user }}"
+        upstream_gerrit_key: "{{ tripleo_gerrit_key_name }}"
+        rdo_gerrit_user: "{{ rdo_gerrit_user }}"
+        rdo_gerrit_key: "{{ tripleo_gerrit_key_name }}"
+        os_cloud_name: "{{ os_cloud_name | default('rdo-cloud') }}"
+        os_autohold_node: "{{ os_autohold_node | default(true) }}"
+        control_vcpu: 4
+        control_memory: 4096
+        mirror_fqdn:  "{{ mirror_fqdn }}"
+        depends_on: "{{ '{{' }} zuul['items'] |
+          rejectattr('project.name', 'match', 'rdo-infra/ansible-role-tripleo-ci-reproducer') |
+          map(attribute='change_url') | list {{ '}}' }}"
+        zuul_runner: yes
+      include_role:
+        name: tripleo-ci-reproducer
