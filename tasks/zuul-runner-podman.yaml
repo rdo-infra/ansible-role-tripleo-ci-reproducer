@@ -1,0 +1,124 @@
+---
+# I choose to split instead of use a for in both scheduler and web service
+# for more readability
+
+- name: Creating zuul directory tree
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - "{{ zuul_src_dir|dirname }}/conf"
+    - "{{ zuul_src_dir|dirname }}/conf/state"
+    - "{{ zuul_src_dir|dirname }}/git"
+    - "{{ zuul_src_dir|dirname }}/config"
+
+- name: Check if zuul image available or if it requires to be updated
+  command:
+    buildah images -nq localhost/zuul/zuul:{{ tag_ref }}
+  register: zuul_image
+  ignore_errors: true
+
+- name: Prepare image
+  shell: |
+    C=$(buildah from zuul/zuul)
+    buildah copy $C {{ zuul_src_dir }}/zuul/ /usr/local/lib/python3.7/site-packages/zuul/
+    buildah commit $C zuul/zuul:{{ tag_ref }}
+    buildah delete $C
+  when: zuul_image.rc != 0
+
+- name: Generate conf/zuul.conf
+  template:
+    src: zuul-runner/zuul.conf.j2
+    dest: "{{ zuul_src_dir|dirname }}/conf/zuul.conf"
+
+- name: Generate zuul/conf/main.yaml
+  template:
+    src: zuul-runner/main.yaml.j2
+    dest: "{{ zuul_src_dir|dirname }}/conf/main.yaml"
+
+- name: Generate zuul/config/zuul.yaml
+  template:
+    src: zuul-runner/zuul.yaml.j2
+    dest: "{{ zuul_src_dir|dirname }}/config/zuul.yaml"
+
+- name: Starting pipelines
+  shell: |
+    [ -d .git ] || {
+      user=$(git config --global user.name)
+      email=$(git config --global user.email)
+      if [ -z "$user" ]; then
+        git config --global user.name "Zuul"
+      fi
+      if [ -z "$email" ]; then
+        git config --global user.email "zuul@runner"
+      fi
+      git init
+      git add zuul.yaml
+      git commit -m "Initialize config project"
+    }
+    if ! test -z "$(git status -s)"; then
+      git add *
+      git commit -m "Update config project"
+    fi
+  args:
+    chdir: "{{ zuul_src_dir|dirname }}/config"
+
+# It could be a big shell script, but it's better for visibility to do step by
+# step
+
+- name: Create the pod {{ pod_name }}
+  command: podman pod create --name {{ pod_name }} -p 9000:9000
+
+- name: Start the pod {{ pod_name }}
+  command: podman pod start {{ pod_name }}
+
+- name: Starting zookeeper container
+  command: podman run --rm --pod {{ pod_name }} -d --name zk --hostname zk zookeeper
+
+- name: Starting scheduler container
+  shell: |
+    {% if upstream_gerrit_user %}
+    # TODO(arxcruz) be able to point to a different id_rsa
+    SSH_SHARE="-v ${HOME}/.ssh/id_rsa:/var/lib/zuul/.ssh/id_rsa:z"
+    {% endif %}
+    podman run --rm --pod {{ pod_name }} -d --name scheduler --hostname scheduler \
+    -v {{ zuul_src_dir|dirname }}/conf:/etc/zuul/:z  \
+    -v {{ zuul_src_dir|dirname }}/:/local-git:z $SSH_SHARE \
+    --add-host scheduler:127.0.0.1 \
+    --add-host zk:127.0.0.1 \
+    localhost/zuul/zuul:{{ tag_ref }} zuul-scheduler -d
+
+- name: Starting web container
+  shell: |
+    podman run --rm --pod {{ pod_name }} -d --name web --hostname web \
+    -v {{ zuul_src_dir|dirname }}/conf:/etc/zuul/:z \
+    --add-host scheduler:127.0.0.1 \
+    --add-host zk:127.0.0.1 \
+    localhost/zuul/zuul:{{ tag_ref }} zuul-web -d
+
+- name: Starting zuul-merger container
+  shell: |
+    {% if upstream_gerrit_user %}
+    # TODO(arxcruz) be able to point to a different id_rsa
+    SSH_SHARE="-v ${HOME}/.ssh/id_rsa:/var/lib/zuul/.ssh/id_rsa:z"
+    {% endif %}
+    podman run --rm --pod {{ pod_name }} -d --name merger --hostname merger \
+     -v {{ zuul_src_dir|dirname }}/conf:/etc/zuul/:z $SSH_SHARE \
+     -v {{ zuul_src_dir|dirname }}/git:/var/lib/zuul/merger-git:z  \
+     -v {{ zuul_src_dir|dirname }}/:/local-git:z  \
+     --add-host scheduler:127.0.0.1 \
+     --add-host zk:127.0.0.1 \
+     zuul/zuul zuul-merger -d
+
+- name: Wait for the api
+  uri:
+    url: "http://localhost:9000/api/tenant/runner/project/openstack/tripleo-ci"
+    method: GET
+    return_content: true
+    status_code: 200
+    body_format: json
+  register: result
+  retries: 60
+  delay: 10
+  until: result.status == 200
+  changed_when: false
