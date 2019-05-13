@@ -51,7 +51,7 @@ zuul_yaml:
 
 launch_job_branch: master
 
-##############
+###############
 # Docker images
 ###############
 
@@ -119,3 +119,13 @@ cloud_config_centos_ovb: |-
     - echo "/dev/disk/by-label/config-2  /mnt/config" >> /etc/fstab
     - reboot
   {% endraw %}
+
+#############
+# Zuul runner
+#############
+
+zuul_runner: false
+fetch_ref: "refs/changes/55/657955/4"
+tag_ref: "55-657955-4"
+pod_name: "zuul-runner-services"
+zuul_src_dir: '{{ lookup("env", "HOME") }}/.cache/zuul/'
