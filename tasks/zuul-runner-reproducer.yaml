@@ -1,0 +1,6 @@
+---
+- name: Install zuul
+  include_tasks: zuul-runner-install-zuul.yaml
+
+- name: Start zuul containers with podman
+  include_tasks: zuul-runner-podman.yaml
