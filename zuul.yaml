@@ -5,6 +5,12 @@
       - name: primary
         label: cloud-fedora-29
 
+- nodeset:
+    name: single-cloud-fedora-30-node
+    nodes:
+      - name: primary
+        label: cloud-fedora-30
+
 - job:
     name: tripleo-ci-reproducer
     parent: tripleo-ci-reproducer-base
@@ -68,6 +74,11 @@
     nodeset: single-cloud-fedora-29-node
 
 - job:
+    name: tripleo-ci-reproducer-fedora-30-host
+    parent: tripleo-ci-reproducer-host
+    nodeset: single-cloud-fedora-30-node
+
+- job:
     name: tripleo-ci-reproducer-centos-7-host
     parent: tripleo-ci-reproducer-host
     nodeset: single-centos-7-node
@@ -76,6 +87,12 @@
     name: tripleo-ci-reproducer-fedora-29-libvirt
     parent: tripleo-ci-reproducer-libvirt
     nodeset: single-cloud-fedora-29-node
+    voting: false
+
+- job:
+    name: tripleo-ci-reproducer-fedora-30-libvirt
+    parent: tripleo-ci-reproducer-libvirt
+    nodeset: single-cloud-fedora-30-node
     voting: false
 
 - job:
@@ -96,6 +113,14 @@
     name: tripleo-ci-reproducer-fedora-28-libvirt-standalone-dryrun
     parent: tripleo-ci-reproducer-libvirt
     nodeset: single-fedora-28-node
+    voting: false
+    vars:
+      ci_job: standalone-dryrun
+
+- job:
+    name: tripleo-ci-reproducer-fedora-30-libvirt-standalone-dryrun
+    parent: tripleo-ci-reproducer-libvirt
+    nodeset: single-cloud-fedora-30-node
     voting: false
     vars:
       ci_job: standalone-dryrun
@@ -156,6 +181,10 @@
         - tripleo-ci-reproducer-centos-7-libvirt-standalone-vexxhost
         - tripleo-ci-reproducer-centos-7-openstack-standalone-dryrun
         - tripleo-ci-reproducer-fedora-29-openstack-standalone-dryrun
+        - tripleo-ci-reproducer-fedora-30-libvirt-standalone-dryrun
+        - tripleo-ci-reproducer-fedora-30-libvirt
+        - tripleo-ci-reproducer-fedora-30-host
+
 
     gate:
       jobs:
