@@ -50,6 +50,7 @@ zuul_yaml:
           - "{{ zuul_job }}"
 
 launch_job_branch: master
+clean_floating_ips: true
 
 ##############
 # Docker images
