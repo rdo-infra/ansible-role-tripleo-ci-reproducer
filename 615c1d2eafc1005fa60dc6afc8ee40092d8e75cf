@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "561783d4_5d3e3e48",
+        "filename": "zuul.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 371
+      },
+      "writtenOn": "2019-05-23T13:09:44Z",
+      "side": 1,
+      "message": "Does it make sense to do this or it would be better to use rawhide instead and avoid the need to update jobs to point to latest fedora?\n\nIf fedora-rawhide would be too-edge, we could use a fedora-latest in build names and only change the node to point to the version, which would allow us to have stable build names.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 37
+      },
+      "revId": "615c1d2eafc1005fa60dc6afc8ee40092d8e75cf",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
