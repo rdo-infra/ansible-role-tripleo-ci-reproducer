@@ -1,0 +1,280 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "21c94bc2_6f5dc9e1",
+        "filename": "defaults/main.yaml",
+        "patchSetId": 36
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 371
+      },
+      "writtenOn": "2019-05-23T11:26:06Z",
+      "side": 1,
+      "message": "I thin that container_mode default value should be templated in such way that it will be podman for system supporting it (Linux?) and docker for the rest.\n\nI am also not a big fun of container_mode variable name, I would have preffered container_engine/backend/builder instead, mode is too generic, even confusing. Better to ask someone else before changing it.",
+      "range": {
+        "startLine": 3,
+        "startChar": 16,
+        "endLine": 3,
+        "endChar": 22
+      },
+      "revId": "35eaeb6b54bab998adcb68a3b4124c77d5370356",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6e899d12_b7e2cbc1",
+        "filename": "playbooks/tripleo-ci-reproducer/post.yaml",
+        "patchSetId": 36
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 371
+      },
+      "writtenOn": "2019-05-23T11:26:06Z",
+      "side": 1,
+      "message": "Please do not use ignore_errors. If command can fail use failed_when with additional conditions based on result code and stdout/stderr output to avoid expected errors.\n\nignore_errors fails even if the cmd is missing!",
+      "range": {
+        "startLine": 28,
+        "startChar": 7,
+        "endLine": 28,
+        "endChar": 25
+      },
+      "revId": "35eaeb6b54bab998adcb68a3b4124c77d5370356",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7994e7e6_af375175",
+        "filename": "playbooks/tripleo-ci-reproducer/post.yaml",
+        "patchSetId": 36
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 371
+      },
+      "writtenOn": "2019-05-23T11:26:06Z",
+      "side": 1,
+      "message": "ditto ^",
+      "range": {
+        "startLine": 48,
+        "startChar": 7,
+        "endLine": 48,
+        "endChar": 25
+      },
+      "revId": "35eaeb6b54bab998adcb68a3b4124c77d5370356",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "959f9a47_dc70c2c1",
+        "filename": "playbooks/tripleo-ci-reproducer/post.yaml",
+        "patchSetId": 36
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 371
+      },
+      "writtenOn": "2019-05-23T11:26:06Z",
+      "side": 1,
+      "message": "this must be false not true, because you donot really change the configuration of the machine. creating some log files does not count as config change.",
+      "range": {
+        "startLine": 83,
+        "startChar": 6,
+        "endLine": 83,
+        "endChar": 24
+      },
+      "revId": "35eaeb6b54bab998adcb68a3b4124c77d5370356",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2edce350_593dad7e",
+        "filename": "playbooks/tripleo-ci-reproducer/post.yaml",
+        "patchSetId": 36
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 371
+      },
+      "writtenOn": "2019-05-23T11:26:06Z",
+      "side": 1,
+      "message": "ditto ^",
+      "range": {
+        "startLine": 84,
+        "startChar": 6,
+        "endLine": 84,
+        "endChar": 25
+      },
+      "revId": "35eaeb6b54bab998adcb68a3b4124c77d5370356",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1bd4a617_d7780ad2",
+        "filename": "playbooks/tripleo-ci-reproducer/post.yaml",
+        "patchSetId": 36
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 371
+      },
+      "writtenOn": "2019-05-23T11:26:06Z",
+      "side": 1,
+      "message": "why ignore errors?",
+      "range": {
+        "startLine": 154,
+        "startChar": 6,
+        "endLine": 154,
+        "endChar": 25
+      },
+      "revId": "35eaeb6b54bab998adcb68a3b4124c77d5370356",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f1b23bf9_962c72de",
+        "filename": "playbooks/tripleo-ci-reproducer/pre.yaml",
+        "patchSetId": 36
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 371
+      },
+      "writtenOn": "2019-05-23T11:26:06Z",
+      "side": 1,
+      "message": "Bad assumption as I already have a system that has both groups defined `docker` and `dockeroot` .... only one is the correct one and nobody can guarantee the order.\n\nMaybe try a more pragmatic approach?\nps -o rgid\u003d $(pgrep dockerd)",
+      "range": {
+        "startLine": 88,
+        "startChar": 12,
+        "endLine": 88,
+        "endChar": 60
+      },
+      "revId": "35eaeb6b54bab998adcb68a3b4124c77d5370356",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8045f6db_a540902a",
+        "filename": "playbooks/tripleo-ci-reproducer/pre.yaml",
+        "patchSetId": 36
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 371
+      },
+      "writtenOn": "2019-05-23T11:26:06Z",
+      "side": 1,
+      "message": "This will destroy docker configuration on that host, please, do not use templating to configure the group. Use a json editor for that.",
+      "range": {
+        "startLine": 134,
+        "startChar": 14,
+        "endLine": 134,
+        "endChar": 51
+      },
+      "revId": "35eaeb6b54bab998adcb68a3b4124c77d5370356",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "20bee13e_dcf57e54",
+        "filename": "playbooks/tripleo-ci-reproducer/templates/run.yaml.j2",
+        "patchSetId": 36
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 371
+      },
+      "writtenOn": "2019-05-23T11:26:06Z",
+      "side": 1,
+      "message": "missing space, does this pass the linting?",
+      "range": {
+        "startLine": 7,
+        "startChar": 41,
+        "endLine": 7,
+        "endChar": 43
+      },
+      "revId": "35eaeb6b54bab998adcb68a3b4124c77d5370356",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "72f723f8_6da91783",
+        "filename": "tasks/install.yaml",
+        "patchSetId": 36
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 371
+      },
+      "writtenOn": "2019-05-23T11:26:06Z",
+      "side": 1,
+      "message": "this is an insanely unsafe permission. others should never have write access.",
+      "range": {
+        "startLine": 78,
+        "startChar": 10,
+        "endLine": 78,
+        "endChar": 14
+      },
+      "revId": "35eaeb6b54bab998adcb68a3b4124c77d5370356",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "39bf7e19_db4a850f",
+        "filename": "tasks/launch-job.yaml",
+        "patchSetId": 36
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 371
+      },
+      "writtenOn": "2019-05-23T11:26:06Z",
+      "side": 1,
+      "message": "Use jinja2 conditional to decide which params to use and avoid adding one extra task to the playbook.\n\nI see that only command name and the -T are different between the two commands, making it an ideal canditate for using templates instead of duplicating tasks.",
+      "range": {
+        "startLine": 85,
+        "startChar": 2,
+        "endLine": 107,
+        "endChar": 32
+      },
+      "revId": "35eaeb6b54bab998adcb68a3b4124c77d5370356",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "519e49f2_27d73988",
+        "filename": "tasks/start.yaml",
+        "patchSetId": 36
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 371
+      },
+      "writtenOn": "2019-05-23T11:26:06Z",
+      "side": 1,
+      "message": "Instead of adding extra tasks just use grep -E with a regexp that covers both formats. It will make easier to read that output (and even to compare).",
+      "range": {
+        "startLine": 59,
+        "startChar": 0,
+        "endLine": 65,
+        "endChar": 34
+      },
+      "revId": "35eaeb6b54bab998adcb68a3b4124c77d5370356",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
