@@ -32,6 +32,6 @@
     - name: Check that we have a build and it's a success
       fail:
         msg: "Build was not executed or a failure: {{ '{{' }}
-          zuul_builds.json | to_nice_yaml {{ '}}' }}"
+          zuul_builds.json | | default({}) | to_nice_yaml {{ '}}' }}"
       when: zuul_builds.json | length == 0 or
             zuul_builds.json.0.result != "SUCCESS"

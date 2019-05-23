@@ -35,7 +35,7 @@
         - name: Write modified docker daemon config
           become: true
           copy:
-            content: "{{ mirrored_docker_registry | to_nice_json }}"
+            content: "{{ mirrored_docker_registry | default({}) | to_nice_json }}"
             dest: /etc/docker/daemon.json
         - name: Reload docker to set mirrors
           become: true
@@ -61,7 +61,7 @@
     - name: Generate jobs config
       blockinfile:
         content: |
-          {{ ci_jobs_config[ci_job]|to_nice_yaml }}
+          {{ ci_jobs_config[ci_job] | default({}) | to_nice_yaml }}
         path: "{{ ansible_user_dir }}/ci-job.yaml"
         create: true
     - name: Prepare zuul variables from job context
@@ -71,7 +71,7 @@
     - name: Pass zuul variables
       blockinfile:
         content: |
-          {{ zuul_config|to_nice_yaml }}
+          {{ zuul_config | default({}) | to_nice_yaml }}
         path: "{{ ansible_user_dir }}/zuul_vars.yaml"
         create: true
     - name: Generate run script
