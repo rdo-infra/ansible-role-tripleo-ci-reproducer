@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "a00c7c89_6e6d63b7",
+        "filename": "defaults/main.yaml",
+        "patchSetId": 36
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 155
+      },
+      "writtenOn": "2019-05-28T10:02:49Z",
+      "side": 1,
+      "message": "podman is supported for all afaik, I\u0027d like user to decide it",
+      "parentUuid": "21c94bc2_6f5dc9e1",
+      "range": {
+        "startLine": 3,
+        "startChar": 16,
+        "endLine": 3,
+        "endChar": 22
+      },
+      "revId": "35eaeb6b54bab998adcb68a3b4124c77d5370356",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6e899d12_b7e2cbc1",
         "filename": "playbooks/tripleo-ci-reproducer/post.yaml",
         "patchSetId": 36
@@ -36,6 +60,30 @@
       "writtenOn": "2019-05-23T11:26:06Z",
       "side": 1,
       "message": "Please do not use ignore_errors. If command can fail use failed_when with additional conditions based on result code and stdout/stderr output to avoid expected errors.\n\nignore_errors fails even if the cmd is missing!",
+      "range": {
+        "startLine": 28,
+        "startChar": 7,
+        "endLine": 28,
+        "endChar": 25
+      },
+      "revId": "35eaeb6b54bab998adcb68a3b4124c77d5370356",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7cf3ea04_cbcf3ca5",
+        "filename": "playbooks/tripleo-ci-reproducer/post.yaml",
+        "patchSetId": 36
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 155
+      },
+      "writtenOn": "2019-05-28T10:02:49Z",
+      "side": 1,
+      "message": "well, this is case when I\u0027d like to get attention if there are errors (shouldn\u0027t be usually), but we can\u0027t stop logs collection",
+      "parentUuid": "6e899d12_b7e2cbc1",
       "range": {
         "startLine": 28,
         "startChar": 7,
@@ -94,6 +142,30 @@
     },
     {
       "key": {
+        "uuid": "66aded24_f3e6d48a",
+        "filename": "playbooks/tripleo-ci-reproducer/post.yaml",
+        "patchSetId": 36
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 155
+      },
+      "writtenOn": "2019-05-28T10:02:49Z",
+      "side": 1,
+      "message": "right, will change",
+      "parentUuid": "959f9a47_dc70c2c1",
+      "range": {
+        "startLine": 83,
+        "startChar": 6,
+        "endLine": 83,
+        "endChar": 24
+      },
+      "revId": "35eaeb6b54bab998adcb68a3b4124c77d5370356",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2edce350_593dad7e",
         "filename": "playbooks/tripleo-ci-reproducer/post.yaml",
         "patchSetId": 36
@@ -140,6 +212,30 @@
     },
     {
       "key": {
+        "uuid": "dabc9960_24136b7e",
+        "filename": "playbooks/tripleo-ci-reproducer/post.yaml",
+        "patchSetId": 36
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 155
+      },
+      "writtenOn": "2019-05-28T10:02:49Z",
+      "side": 1,
+      "message": "because we need all files in logs to determine the problem, even if half of logs don\u0027t present. Look at collect-logs role, it runs all with ignore_errors because of same reason",
+      "parentUuid": "1bd4a617_d7780ad2",
+      "range": {
+        "startLine": 154,
+        "startChar": 6,
+        "endLine": 154,
+        "endChar": 25
+      },
+      "revId": "35eaeb6b54bab998adcb68a3b4124c77d5370356",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f1b23bf9_962c72de",
         "filename": "playbooks/tripleo-ci-reproducer/pre.yaml",
         "patchSetId": 36
@@ -151,6 +247,30 @@
       "writtenOn": "2019-05-23T11:26:06Z",
       "side": 1,
       "message": "Bad assumption as I already have a system that has both groups defined `docker` and `dockeroot` .... only one is the correct one and nobody can guarantee the order.\n\nMaybe try a more pragmatic approach?\nps -o rgid\u003d $(pgrep dockerd)",
+      "range": {
+        "startLine": 88,
+        "startChar": 12,
+        "endLine": 88,
+        "endChar": 60
+      },
+      "revId": "35eaeb6b54bab998adcb68a3b4124c77d5370356",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b2f81def_433a6d72",
+        "filename": "playbooks/tripleo-ci-reproducer/pre.yaml",
+        "patchSetId": 36
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 155
+      },
+      "writtenOn": "2019-05-28T10:02:49Z",
+      "side": 1,
+      "message": "You can make it in other patch, this appears in our infra roles too in ci-config. But seems like rare case and overhead.",
+      "parentUuid": "f1b23bf9_962c72de",
       "range": {
         "startLine": 88,
         "startChar": 12,
@@ -186,6 +306,30 @@
     },
     {
       "key": {
+        "uuid": "84afa7e5_d44e5942",
+        "filename": "playbooks/tripleo-ci-reproducer/pre.yaml",
+        "patchSetId": 36
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 155
+      },
+      "writtenOn": "2019-05-28T10:02:49Z",
+      "side": 1,
+      "message": "it won\u0027t destroy something, look at conditions: if file doesn\u0027t exist, or it contains only {}",
+      "parentUuid": "8045f6db_a540902a",
+      "range": {
+        "startLine": 134,
+        "startChar": 14,
+        "endLine": 134,
+        "endChar": 51
+      },
+      "revId": "35eaeb6b54bab998adcb68a3b4124c77d5370356",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "20bee13e_dcf57e54",
         "filename": "playbooks/tripleo-ci-reproducer/templates/run.yaml.j2",
         "patchSetId": 36
@@ -197,6 +341,30 @@
       "writtenOn": "2019-05-23T11:26:06Z",
       "side": 1,
       "message": "missing space, does this pass the linting?",
+      "range": {
+        "startLine": 7,
+        "startChar": 41,
+        "endLine": 7,
+        "endChar": 43
+      },
+      "revId": "35eaeb6b54bab998adcb68a3b4124c77d5370356",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "573a42fc_9dcbe2ce",
+        "filename": "playbooks/tripleo-ci-reproducer/templates/run.yaml.j2",
+        "patchSetId": 36
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 155
+      },
+      "writtenOn": "2019-05-28T10:02:49Z",
+      "side": 1,
+      "message": "will fix, linter didn\u0027t catch it",
+      "parentUuid": "20bee13e_dcf57e54",
       "range": {
         "startLine": 7,
         "startChar": 41,
@@ -232,6 +400,30 @@
     },
     {
       "key": {
+        "uuid": "f63fe051_5b3852e4",
+        "filename": "tasks/install.yaml",
+        "patchSetId": 36
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 155
+      },
+      "writtenOn": "2019-05-28T10:02:49Z",
+      "side": 1,
+      "message": "right, will fix",
+      "parentUuid": "72f723f8_6da91783",
+      "range": {
+        "startLine": 78,
+        "startChar": 10,
+        "endLine": 78,
+        "endChar": 14
+      },
+      "revId": "35eaeb6b54bab998adcb68a3b4124c77d5370356",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "39bf7e19_db4a850f",
         "filename": "tasks/launch-job.yaml",
         "patchSetId": 36
@@ -255,6 +447,30 @@
     },
     {
       "key": {
+        "uuid": "bc53477c_9ebce44c",
+        "filename": "tasks/launch-job.yaml",
+        "patchSetId": 36
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 155
+      },
+      "writtenOn": "2019-05-28T10:02:49Z",
+      "side": 1,
+      "message": "Correct, but jinja template for one command is overhead, if there will be another commands we can do it",
+      "parentUuid": "39bf7e19_db4a850f",
+      "range": {
+        "startLine": 85,
+        "startChar": 2,
+        "endLine": 107,
+        "endChar": 32
+      },
+      "revId": "35eaeb6b54bab998adcb68a3b4124c77d5370356",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "519e49f2_27d73988",
         "filename": "tasks/start.yaml",
         "patchSetId": 36
@@ -266,6 +482,30 @@
       "writtenOn": "2019-05-23T11:26:06Z",
       "side": 1,
       "message": "Instead of adding extra tasks just use grep -E with a regexp that covers both formats. It will make easier to read that output (and even to compare).",
+      "range": {
+        "startLine": 59,
+        "startChar": 0,
+        "endLine": 65,
+        "endChar": 34
+      },
+      "revId": "35eaeb6b54bab998adcb68a3b4124c77d5370356",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c9d0a713_785c4766",
+        "filename": "tasks/start.yaml",
+        "patchSetId": 36
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 155
+      },
+      "writtenOn": "2019-05-28T10:02:49Z",
+      "side": 1,
+      "message": "not sure what you mean here, can you make an example?",
+      "parentUuid": "519e49f2_27d73988",
       "range": {
         "startLine": 59,
         "startChar": 0,
