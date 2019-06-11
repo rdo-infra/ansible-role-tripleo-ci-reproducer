@@ -115,6 +115,10 @@
     vars:
       ci_job: standalone
 
+- job:
+  name: periodic-tripleo-ci-reproducer-centos-7-libvirt-standalone-vexxhost
+  parent: tripleo-ci-reproducer-centos-7-libvirt-standalone-vexxhost
+
 - project:
     name: rdo-infra/ansible-role-tripleo-ci-reproducer
     check:
