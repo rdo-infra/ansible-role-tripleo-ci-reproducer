@@ -79,6 +79,7 @@ zuul_fingergw_image: rdoci/zuul-fingergw:6afa22c9
 # nodepool_launcher_image: rdoci/nodepool-launcher:stable
 nodepool_launcher_image: rdoci/nodepool-launcher:f8ac796
 
+# test me
 # To control nodepool setup
 setup_nodepool: true
 
