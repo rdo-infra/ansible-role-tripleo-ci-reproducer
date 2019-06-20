@@ -1,4 +1,4 @@
-ansible==2.7.5
+ansible==2.8.0
 bindep
 docker==3.6.0
 docker-compose==1.23.2
