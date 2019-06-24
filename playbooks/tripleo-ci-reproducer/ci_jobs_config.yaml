@@ -30,6 +30,20 @@ ci_jobs_config:
             featureset_override:
               tempest_format: container
 
+  ovb:
+    zuul_yaml:
+      - project:
+          check:
+            jobs:
+              - tripleo-ci-centos-7-ovb-scenario001-dlrn-hash-tag
+
+      - job:
+          name: tripleo-ci-centos-7-ovb-scenario001-dlrn-hash-tag
+          parent: tripleo-ci-centos-7-ovb-3ctlr_1comp-featureset001
+          timeout: 9000
+          vars:
+            mirror_fqdn: "{{ mirror_fqdn }}"
+
 
   hello_job:
     zuul_yaml:
