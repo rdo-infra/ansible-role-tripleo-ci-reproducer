@@ -116,8 +116,21 @@
       ci_job: standalone
 
 - job:
+    name: tripleo-ci-reproducer-centos-7-openstack-ovb-vexxhost
+    parent: tripleo-ci-reproducer-libvirt
+    nodeset: upstream-centos-7-vexxhost
+    voting: false
+    timeout: 15300
+    vars:
+      ci_job: ovb
+
+- job:
     name: periodic-tripleo-ci-reproducer-centos-7-libvirt-standalone-vexxhost
     parent: tripleo-ci-reproducer-centos-7-libvirt-standalone-vexxhost
+
+- job:
+    name: periodic-tripleo-ci-reproducer-centos-7-openstack-ovb-vexxhost
+    parent: tripleo-ci-reproducer-centos-7-openstack-ovb-vexxhost
 
 - project:
     name: rdo-infra/ansible-role-tripleo-ci-reproducer
@@ -128,6 +141,7 @@
         - tripleo-ci-reproducer-fedora-29-host
         - tripleo-ci-reproducer-centos-7-host
         - tripleo-ci-reproducer-centos-7-libvirt-vexxhost
+        - tripleo-ci-reproducer-centos-7-openstack-ovb-vexxhost
         - tripleo-ci-reproducer-fedora-28-libvirt-standalone-dryrun
         - tripleo-ci-reproducer-centos-7-libvirt-standalone-vexxhost
         - tripleo-ci-reproducer-centos-7-openstack-standalone-dryrun
