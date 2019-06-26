@@ -98,6 +98,14 @@
       ci_job: standalone-dryrun
 
 - job:
+    name: tripleo-ci-reproducer-centos-7-openstack-standalone
+    parent: tripleo-ci-reproducer-openstack
+    nodeset: single-centos-7-node
+    voting: false
+    vars:
+      ci_job: standalone
+
+- job:
     name: tripleo-ci-reproducer-fedora-28-openstack-standalone-dryrun
     parent: tripleo-ci-reproducer-openstack
     nodeset: single-fedora-28-node
@@ -118,6 +126,10 @@
 - job:
     name: periodic-tripleo-ci-reproducer-centos-7-libvirt-standalone-vexxhost
     parent: tripleo-ci-reproducer-centos-7-libvirt-standalone-vexxhost
+
+- job:
+    name: periodic-tripleo-ci-reproducer-centos-7-openstack-standalone
+    parent: tripleo-ci-reproducer-centos-7-openstack-standalone
 
 - project:
     name: rdo-infra/ansible-role-tripleo-ci-reproducer
