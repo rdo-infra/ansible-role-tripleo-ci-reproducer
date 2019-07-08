@@ -110,6 +110,7 @@ services:
 
   launcher:
     command: "nodepool-launcher -d -l /etc/nodepool/launcher-logging.yaml"
+    user: root
     depends_on:
       - zk
     image: "{{ nodepool_launcher_image }}"
