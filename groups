@@ -3,6 +3,6 @@ global:Registered-Users	Registered Users
 1c2c15ef834b6fc01764a99d1e4441f3bbfdf6d1	rdo-infra/ansible-role-tripleo-ci-reproducer-ptl
 4572c517702492251ad622a289176552a8acbbb2	rdo-superusers
 global:Anonymous-Users	Anonymous Users
+862d95baa442027a140c22145897694d14448a8d	tripleo-ci-core
 05a678d3d4a168e149d5e8a0063bbd1b1c5526da	Administrators
 6ddfecad023c6f4fa3ac8c4d2583c502ea675a73	Non-Interactive Users
-e5ae2f522328d95a7555c626add1c5677d891542	rdo-infra/ansible-role-tripleo-ci-reproducer
