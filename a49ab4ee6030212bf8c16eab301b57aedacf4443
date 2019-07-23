@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dabe44ed_7f4d88df",
+        "filename": "README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 371
+      },
+      "writtenOn": "2019-07-23T13:04:43Z",
+      "side": 1,
+      "message": "This is partial truth. The reality is that: only a limited number of jobs can run on trusted repositories in order avoid leaking secrets. Also for security reasons changes made to the jobs run on the same repo are not applied when testing the change itself. This prevents a malicious user from editing jobs configured to run in order to make his change pass.\n\nDue to these security measures we should enable only jobs that do not need credentials, and this should be done in two steps: first activating them as non-voting. This should prevent the case where the check/gate gets broken and you cannot fix it with a new change.",
+      "range": {
+        "startLine": 129,
+        "startChar": 59,
+        "endLine": 130,
+        "endChar": 79
+      },
+      "revId": "a49ab4ee6030212bf8c16eab301b57aedacf4443",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
