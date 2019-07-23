@@ -1,8 +1,17 @@
-ci-reproducer
+TripleO CI Reproducer
 ===================
 
 An Ansible role to start a CI zuul + gerrit environment to test jobs and
 patches at an openstack tenant or a ready provisioned VMs like libvirt.
+
+- [TripleO CI Reproducer](#TripleO-CI-Reproducer)
+  - [Requirements](#Requirements)
+  - [Role Variables](#Role-Variables)
+  - [Prerequisites](#Prerequisites)
+  - [Example Playbook](#Example-Playbook)
+  - [Testing trusted repository changes](#Testing-trusted-repository-changes)
+  - [License](#License)
+  - [Author Information](#Author-Information)
 
 Requirements
 ------------
@@ -112,6 +121,144 @@ Run standalone job over stable/rocky
         name: ci-reproducer
 ```
 
+Testing trusted repository changes
+----------------------------------
+When there is required to test change in trusted Zuul repository, the current
+reproducer can be very useful.
+
+Zuul repositories can be trusted and untrusted [[1]](#f1). Patches that affect
+job with secrets submitted to trusted repository can not be tested prior to merge
+because of security context.
+That the place when Zuul reproducer comes into play.
+
+In current reproducer code we install custom Gerrit that contains 2 test projects
+``test1`` and ``test2`` and config project ``zuul-config``. ``zuul-config`` is
+actual trusted config repository for our setup. It includes some base jobs (not
+inherited from upstream) and all TripleO CI related code copied from upstream.
+
+In file ``files/playbooks/add_rdo_config.yml`` you can see copying files and
+directories from RDO config repo (``review.rdoproject.org-config``) to local
+``zuul-config`` repository, while secrets are stripped [[2]](#f2). Eventually
+we have in ``zuul-config`` repo all TripleO related code like periodic jobs,
+playbooks, roles, etc etc. Now we can change them and test locally.
+
+While we still can't run jobs on patch of config repository even if it's local,
+we can just merge a patch to ``zuul-config`` and then run any job in ``test1``
+repository which tests merged changes of ``zuul-config``.
+
+For example the current workflow is recommended for testing ``ovb-manage`` role
+in trusted repository of RDO:
+
+After you set up reproducer with example playbook ``start.yaml`` in directory of
+the reproducer:
+```yaml
+---
+- name: Start reproducer
+  hosts: localhost
+  tasks:
+
+    - name: Start reproducer
+      include_role:
+        name: "../ansible-role-tripleo-ci-reproducer"
+      vars:
+        upstream_gerrit_user: <your_upstream_gerrit_username>
+        rdo_gerrit_user: <your_rdo_gerrit_username>
+```
+and installing it as:
+
+```bash
+ansible-playbook -vv start.yaml
+```
+you wait until the tenant is up and you can see ``http://localhost:9000/t/tripleo-ci-reproducer/status``
+up.
+Now clone the ``zuul-config`` repository:
+```bash
+git clone http://localhost:8080/zuul-config
+```
+enter ``zuul-config`` directory and make all required changed to ``roles/ovb-manage/``.
+Commit and send to review:
+
+```bash
+git commit -a -m "Change OVB manage role"
+git review
+```
+while using ``admin`` as Gerrit username.
+
+Afterwards we need to merge it. Let's enter Gerrit by opening in browset ``http://localhost:8080``.
+Log in to Gerrit by clicking on ``Sign In`` and choose ``admin`` link on the sing-in page.
+Now you can view your change in "My changes" of Gerrit. Go to it and approve it
+by setting +2 and +Verified. After that you can click on button "Submit" and merge
+your change.
+
+All this Gerrit work can be done alternatively by git command like:
+```bash
+git push -f --set-upstream gerrit +HEAD:master
+```
+Update your local ``zuul-config`` to see that you have your changed code merged:
+```bash
+cd zuul-config && git pull
+```
+If everything is OK, let's run a real OVB job. Clone ``test1`` project:
+```bash
+git clone http://localhost:8080/test1
+```
+enter it and create a ``zuul.yaml`` file like that:
+```bash
+cd test1 && touch zuul.yaml
+```
+Let's populate ``zuul.yaml`` file with necessary config to run an OVB job:
+
+```yaml
+---
+- project:
+    check:
+      jobs:
+        - tripleo-ci-centos-7-ovb-3ctlr_1comp-featureset001-test
+
+- job:
+    name: tripleo-ci-centos-7-ovb-3ctlr_1comp-featureset001-test
+    parent: tripleo-ci-centos-7-ovb-3ctlr_1comp-featureset001
+    vars:
+      cloud_secrets:
+        rdocloud:
+          username: <your_username_for_rdo_cloud>
+          password: <your_password_for_rdo_cloud>
+          project_name: <your_username_for_rdo_cloud>
+          auth_url: https://phx2.cloud.rdoproject.org:13000/v3
+          region_name: regionOne
+          identity_api_version: 3
+          user_domain_name: Default
+          project_domain_name: Default
+      key_name: <your_keypair_for_rdo_cloud>
+      cloud_settings:
+        rdocloud:
+          public_ip_net: 38.145.32.0/22
+          undercloud_flavor: m1.large
+          baremetal_flavor: m1.large
+          bmc_flavor: m1.medium
+          extra_node_flavor: m1.small
+          baremetal_image: CentOS-7-x86_64-GenericCloud-1804_02
+      remove_ovb_after_job: true # use false if you need to have all OVB nodes after a job
+```
+We use secrets in zuul.yaml because we don't have in our ``zuul-config`` repository,
+when we removed them a few steps ago.
+Now just commit and push the change while using ``admin`` username:
+```bash
+git config --local gitreview.username "admin"
+git add *
+gc -am "Run OVB change on this job"
+git review
+```
+Check your Zuul tenant for running job in ``http://localhost:9000/t/tripleo-ci-reproducer/status``.
+You can open a console to see what is going on there, ``ssh`` to node, see logs of
+``zuul-executor`` container, enable Zuul debug, etc etc. The current running OVB job
+now uses code you changed in ``ovb-manage`` role before and you can test it and debug.
+
+Don't forget to hold the node if you need it (nodepool node, for OVB it's ``remove_ovb_after_job`` parameter in ``zuul.yaml``)
+```bash
+docker-compose exec scheduler zuul autohold --tenant tripleo-ci-reproducer --job tripleo-ci-centos-7-ovb-3ctlr_1comp-featureset001-test --reason debug --project test1
+```
+Happy testing!
 
 License
 -------
@@ -122,3 +269,7 @@ Author Information
 ------------------
 
 Openstack Tripleo CI Team
+
+<a name="f1">[1]</a>: https://zuul-ci.org/docs/zuul/user/config.html#security-contexts
+<a name="f2">[2]</a>: Secrets from different Zuul system don't make sense, since they
+can't be decrypted by a different Zuul system.
