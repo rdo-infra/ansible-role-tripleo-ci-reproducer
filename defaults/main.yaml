@@ -64,20 +64,13 @@ zk_image: zookeeper:3.4.14
 mariadb_image: mariadb:10.3.14-bionic
 # logs_image: rdoci/httpd:stable
 logs_image: httpd:2.4.39-alpine
-# zuul_image: rdoci/zuul:stable
-zuul_image: rdoci/zuul:6afa22c9
-# zuul_scheduler_image: rdoci/zuul-scheduler:stable
-zuul_scheduler_image: rdoci/zuul-scheduler:6afa22c9
-# zuul_web_image: rdoci/zuul-web:stable
-zuul_web_image: rdoci/zuul-web:6afa22c9
-# zuul_executor_image: rdoci/zuul-executor:stable
-zuul_executor_image: rdoci/zuul-executor:6afa22c9
-# zuul_merger_image: rdoci/zuul-merger:stable
-zuul_merger_image: rdoci/zuul-merger:6afa22c9
-# zuul_fingergw_image: rdoci/zuul-fingergw:stable
-zuul_fingergw_image: rdoci/zuul-fingergw:6afa22c9
-# nodepool_launcher_image: rdoci/nodepool-launcher:stable
-nodepool_launcher_image: rdoci/nodepool-launcher:f8ac796
+zuul_image: rdoci/zuul:stable
+zuul_scheduler_image: rdoci/zuul-scheduler:stable
+zuul_web_image: rdoci/zuul-web:stable
+zuul_executor_image: rdoci/zuul-executor:stable
+zuul_merger_image: rdoci/zuul-merger:stable
+zuul_fingergw_image: rdoci/zuul-fingergw:stable
+nodepool_launcher_image: rdoci/nodepool-launcher:stable
 
 # To control nodepool setup
 setup_nodepool: true
