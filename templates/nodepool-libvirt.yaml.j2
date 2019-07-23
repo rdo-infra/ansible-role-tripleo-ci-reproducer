@@ -6,6 +6,7 @@ labels:
   - name: centos-7
   - name: fedora-28
   - name: tripleo-ovb-centos-7
+  - name: rhel-8
 
 providers:
   - name: static-{{ nodepool_provider }}
@@ -19,6 +20,7 @@ providers:
                 - fedora-28
                 - centos-7
                 - tripleo-ovb-centos-7
+                - rhel-8
             host-key: "{{ lookup('pipe', 'ssh-keyscan -t ed25519 ' + hostvars[subnode].ansible_host ).split(" ", 1)[1] }}"
             username: zuul
 {% endfor %}
