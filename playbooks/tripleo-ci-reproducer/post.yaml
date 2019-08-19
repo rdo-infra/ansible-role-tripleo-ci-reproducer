@@ -130,11 +130,6 @@
           - "--chown={{ ansible_user }}:{{ ansible_user }}"
       ignore_errors: true
 
-    - name: Create var_log directory
-      file:
-        path: '{{ zuul.executor.log_root }}/var_log'
-        state: directory
-
     - name: Copy files from /var/log
       become: true
       synchronize:
