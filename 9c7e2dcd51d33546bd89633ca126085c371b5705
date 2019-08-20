@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a40938a6_26d85855",
+        "filename": "playbooks/tripleo-ci-reproducer/post.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 371
+      },
+      "writtenOn": "2019-08-20T08:23:00Z",
+      "side": 0,
+      "message": "I am almost sure that this removal will break execution logic as rsync requires the destination folder to exist.\n\nI do not see any explanation in the ticket. Ansible state will never change permissions on an existing folder, so mainly I fail to see both benefits and reasons for this change.",
+      "range": {
+        "startLine": 133,
+        "startChar": 4,
+        "endLine": 136,
+        "endChar": 24
+      },
+      "revId": "9c7e2dcd51d33546bd89633ca126085c371b5705",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
