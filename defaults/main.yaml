@@ -56,6 +56,7 @@ clean_floating_ips: true
 ##############
 # Docker images
 ###############
+docker_registry: "http://{{ mirror_fqdn }}:8081/registry-1.docker/"
 
 # gerrit_image: rdoci/gerrit:stable
 gerrit_image: gerritcodereview/gerrit:2.16.7-centos7
