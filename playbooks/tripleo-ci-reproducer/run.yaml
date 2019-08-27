@@ -19,7 +19,7 @@
       when: "'rdo-cloud' in nodepool.cloud"
       vars:
         mirror_fqdn: "{{ mirror_fqdn }}"
-        docker_registry: "http://{{ mirror_fqdn }}:8081/registry-1.docker/"
+        docker_registry: "{{ docker_registry_url }}"
       block:
         - name: Read docker daemon configuration
           become: true
