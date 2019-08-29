@@ -1,9 +1,9 @@
 ---
 - nodeset:
-    name: single-cloud-fedora-29-node
+    name: single-cloud-fedora-30-node
     nodes:
       - name: primary
-        label: cloud-fedora-29
+        label: cloud-fedora-30
 
 - job:
     name: tripleo-ci-reproducer
@@ -62,7 +62,7 @@
 - job:
     name: tripleo-ci-reproducer-fedora-29-host
     parent: tripleo-ci-reproducer-host
-    nodeset: single-cloud-fedora-29-node
+    nodeset: single-cloud-fedora-30-node
 
 - job:
     name: tripleo-ci-reproducer-centos-7-host
