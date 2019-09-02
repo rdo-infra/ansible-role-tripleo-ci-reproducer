@@ -46,6 +46,16 @@
         - name: review.rdoproject.org
           type: ssh-rsa
 
+    - name: Add gerrits to ssh config
+      vars:
+        gerrits:
+          - review.opendev.org
+          - review.rdoproject.org
+          - localhost
+      template:
+        src: config.j2
+        dest: ~/.ssh/config
+
     - name: Check if we have a gerrit key for tripleo
       stat:
         path: "{{ tripleo_ci_gerrit_key }}"

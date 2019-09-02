@@ -1,0 +1,7 @@
+{% for uri in gerrits %}
+Host {{ uri }}
+        Hostname {{ uri }}
+        User {{ upstream_gerrit_user }}
+        PubkeyAuthentication yes
+        IdentityFile {{ ssh_path }}/{{ upstream_gerrit_key }}
+{% endfor %}
