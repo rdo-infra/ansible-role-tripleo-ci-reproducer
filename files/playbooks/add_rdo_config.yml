@@ -46,12 +46,29 @@
   tags:
     - skip_ansible_lint
 
+- name: Complete zuul-config from TripleO CI config
+  git:
+    repo: 'https://opendev.org/openstack/tripleo-ci.git'
+    dest: tripleo_config_repo
+    update: false
+    version: master
+
+- name: Copy files from TripleO CI config repo to zuul-config
+  shell: >-
+    rsync -avx tripleo_config_repo/{{ item }} zuul_config_repo
+  with_items:
+    - roles
+    - playbooks
+    - zuul.d
+  tags:
+    - skip_ansible_lint
+
 - name: Commit and push to zuul-config repo
   shell: |
     git config user.name "Admin"
     git config user.email "admin@example.com"
     git add *
-    git commit -m "Add RDO config repo files"
+    git commit -m "Add RDO & TripleO CI config repo files"
     git remote add gerrit http://admin:secret@gerrit:8080/zuul-config
     git push -f --set-upstream gerrit +HEAD:master
   args:
