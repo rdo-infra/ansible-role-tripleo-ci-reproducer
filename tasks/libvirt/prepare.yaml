@@ -25,6 +25,18 @@
         mode: 0755
       become: true
 
+    - name: Create zuul workspace directories
+      file:
+        path: "{{ item }}"
+        state: directory
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: 0755
+      with_items:
+        - /home/{{ ansible_user }}/workspace
+        - /home/{{ ansible_user }}/workspace/logs
+      become: true
+
     - name: Install repos (will be removed by toci_gate_test)
       package:
         name: "{{ item }}"
