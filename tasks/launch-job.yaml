@@ -10,11 +10,10 @@
     dest: "{{ testproject.path }}"
 
 - name: Dump zuul.yaml
-  blockinfile:
+  copy:
     content: |
       {{ zuul_yaml }}
     dest: "{{ testproject.path }}/zuul.yaml"
-    create: true
     mode: 0644
 
 - name: Push zuul.yaml to launch job
