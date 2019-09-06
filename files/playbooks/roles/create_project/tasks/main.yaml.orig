@@ -36,13 +36,21 @@
           if [ -d $project_dir ]; then
             cp -rf $project_dir/* .
           fi
-          {% if project != 'zuul-config' %}
+<<<<<<< HEAD
+          {% if {{ project }} != 'zuul-config' %}
+=======
+          if [[ '{{ project }}' != 'zuul-config' ]]; then
+>>>>>>> Make zuul writing comments about errors in configs
           cat >zuul.yaml <<EOF
           - project:
               check:
                 jobs: []
           EOF
+<<<<<<< HEAD
           {% endif %}
+=======
+          fi
+>>>>>>> Make zuul writing comments about errors in configs
           git add -A
           git commit -m "Initial commit"
           git remote add gerrit http://admin:secret@gerrit:8080/{{ project }}
