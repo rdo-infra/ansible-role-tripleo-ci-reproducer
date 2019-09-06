@@ -36,6 +36,14 @@
           if [ -d $project_dir ]; then
             cp -rf $project_dir/* .
           fi
+          if [[ '{{ project }}' != 'zuul-config' ]]; then
+          cat >zuul.yaml <<EOF
+          - project:
+              name: {{ project }}
+              check:
+                jobs: []
+          EOF
+          fi
           git add -A
           git commit -m "Initial commit"
           git remote add gerrit http://admin:secret@gerrit:8080/{{ project }}
