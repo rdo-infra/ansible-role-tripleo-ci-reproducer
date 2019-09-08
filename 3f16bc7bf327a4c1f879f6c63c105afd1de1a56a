@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e994decd_44398979",
+        "filename": "templates/main.yaml.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 155
+      },
+      "writtenOn": "2019-09-08T16:21:31Z",
+      "side": 1,
+      "message": "it\u0027s not missing, we don\u0027t want to run in our local gerrit all gate jobs for these projects.",
+      "range": {
+        "startLine": 29,
+        "startChar": 3,
+        "endLine": 30,
+        "endChar": 43
+      },
+      "revId": "3f16bc7bf327a4c1f879f6c63c105afd1de1a56a",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
