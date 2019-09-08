@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "10dc44dd_9d2505a5",
+        "filename": "files/playbooks/add_rdo_config.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 155
+      },
+      "writtenOn": "2019-09-08T16:17:18Z",
+      "side": 1,
+      "message": "you don\u0027t need this, tripleo-ci is cloned as \"required project\" in every job.",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 64,
+        "endChar": 23
+      },
+      "revId": "dcf8a9a47a534b9c209bffcc99e44107f727418c",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
