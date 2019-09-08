@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b18c9001_ceed0559",
+        "filename": "templates/main.yaml.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 155
+      },
+      "writtenOn": "2019-09-08T16:22:39Z",
+      "side": 1,
+      "message": "worth to add tripleo-ansible too",
+      "range": {
+        "startLine": 48,
+        "startChar": 12,
+        "endLine": 48,
+        "endChar": 38
+      },
+      "revId": "7ff16a6edf7bdd7dfe8d5b82001c125af7cc7bce",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
