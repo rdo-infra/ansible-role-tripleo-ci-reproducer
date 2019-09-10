@@ -28,6 +28,15 @@
             name:
               - python-pip
 
+    - name: Install bindep
+      register: result_bindep
+      until: result_bindep is success
+      pip:
+        name: bindep
+        extra_args: --user --force
+      retries: 3
+      delay: 5
+
     # reproducer_role_top_dir evaluates to "reproducer_role_top_dir":
     - name: Set fact reproducer_role_top_dir
       set_fact:
@@ -37,15 +46,6 @@
     - name: Print top dir
       debug:
         var: reproducer_role_top_dir
-
-    - name: Install python dependencies
-      register: result
-      until: not result.failed|bool
-      pip:
-        requirements: "{{ reproducer_role_top_dir }}/requirements.txt"
-        extra_args: --user --force
-      retries: 3
-      delay: 5
 
     # Adding when to this command for linting error
     # https://github.com/ansible/ansible-lint/issues/165
@@ -66,6 +66,15 @@
         state: present
       with_items:
         - "{{ package_list.stdout_lines }}"
+
+    - name: Install python dependencies
+      register: result
+      until: not result.failed|bool
+      pip:
+        requirements: "{{ reproducer_role_top_dir }}/requirements.txt"
+        extra_args: --user --force
+      retries: 3
+      delay: 5
 
     - name: Find out docker group name
       shell: |
