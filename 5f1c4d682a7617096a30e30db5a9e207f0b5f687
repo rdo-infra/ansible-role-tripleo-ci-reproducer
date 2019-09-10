@@ -22,6 +22,30 @@
       "revId": "5f1c4d682a7617096a30e30db5a9e207f0b5f687",
       "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "cb645fe2_bce7c63a",
+        "filename": "templates/config.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 411
+      },
+      "writtenOn": "2019-09-10T12:42:27Z",
+      "side": 1,
+      "message": "oops",
+      "parentUuid": "2b77e150_685e3625",
+      "range": {
+        "startLine": 4,
+        "startChar": 16,
+        "endLine": 4,
+        "endChar": 35
+      },
+      "revId": "5f1c4d682a7617096a30e30db5a9e207f0b5f687",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
     }
   ]
 }
