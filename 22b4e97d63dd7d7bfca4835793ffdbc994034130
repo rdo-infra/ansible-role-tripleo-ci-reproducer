@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fe59b305_06caa398",
+        "filename": "files/playbooks/roles/create_project/tasks/main.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 411
+      },
+      "writtenOn": "2019-09-10T13:01:04Z",
+      "side": 1,
+      "message": "thanks!",
+      "revId": "22b4e97d63dd7d7bfca4835793ffdbc994034130",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
