@@ -4,9 +4,13 @@ zookeeper-servers:
 
 labels:
   - name: centos-7
+    subnodes: {% if groups['subnodes'] | length > 0 %}{{ groups['subnodes'] | length - 1 }}{% endif %}
   - name: fedora-28
+    subnodes: {% if groups['subnodes'] | length > 0 %}{{ groups['subnodes'] | length - 1 }}{% endif %}
   - name: tripleo-ovb-centos-7
+    subnodes: {% if groups['subnodes'] | length > 0 %}{{ groups['subnodes'] | length - 1 }}{% endif %}
   - name: rhel-8
+    subnodes: {% if groups['subnodes'] | length > 0 %}{{ groups['subnodes'] | length - 1 }}{% endif %}
 
 providers:
   - name: static-{{ nodepool_provider }}
