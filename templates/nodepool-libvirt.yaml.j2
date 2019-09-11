@@ -2,11 +2,16 @@
 zookeeper-servers:
   - host: zk
 
+{% set extra_nodes_count = groups['subnodes'] | length %}
 labels:
   - name: centos-7
+    subnodes: {% if extra_nodes_count > 0 %}{{ extra_nodes_count - 1 }}{% else %}0{% endif %}
   - name: fedora-28
+    subnodes: {% if extra_nodes_count > 0 %}{{ extra_nodes_count - 1 }}{% else %}0{% endif %}
   - name: tripleo-ovb-centos-7
+    subnodes: {% if extra_nodes_count > 0 %}{{ extra_nodes_count - 1 }}{% else %}0{% endif %}
   - name: rhel-8
+    subnodes: {% if extra_nodes_count > 0 %}{{ extra_nodes_count - 1 }}{% else %}0{% endif %}
 
 providers:
   - name: static-{{ nodepool_provider }}
