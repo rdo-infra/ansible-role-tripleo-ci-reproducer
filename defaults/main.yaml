@@ -8,6 +8,7 @@ os_cloud_name: rdo-cloud
 os_centos7_image: upstream-cloudinit-centos-7
 os_fedora28_image: upstream-cloudinit-fedora-28
 os_rhel8_image: upstream-cloudinit-rhel-8
+os_centos8_image: upstream-cloudinit-centos-8
 os_autohold_node: true
 
 user_pri_key: "id_rsa"
@@ -118,6 +119,21 @@ cloud_config_centos_ovb: |-
   {% raw %}  runcmd:
     - [ yum, remove, -y, cloud-init ]
     - [ yum, update, -y ]
+    - echo "/dev/disk/by-label/config-2  /mnt/config" >> /etc/fstab
+    - reboot
+  {% endraw %}
+cloud_config_centos8: |-
+  {{ cloud_config }}
+  {% raw %}  runcmd:
+    - [ dnf, remove, -y, cloud-init ]
+    - [ dnf, update, -y ]
+    - reboot
+  {% endraw %}
+cloud_config_centos_ovb8: |-
+  {{ cloud_config }}
+  {% raw %}  runcmd:
+    - [ dnf, remove, -y, cloud-init ]
+    - [ dnf, update, -y ]
     - echo "/dev/disk/by-label/config-2  /mnt/config" >> /etc/fstab
     - reboot
   {% endraw %}

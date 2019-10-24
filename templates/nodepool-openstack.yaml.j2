@@ -4,6 +4,7 @@ zookeeper-servers:
 
 labels:
   - name: centos-7
+  - name: centos-8
   - name: fedora-28
   - name: tripleo-ovb-centos-7
   - name: upstream-rhel-8
@@ -20,6 +21,10 @@ providers:
       - name: centos-7
         config-drive: true
         image-name: {{ os_centos7_image }}
+        username: zuul
+      - name: centos-8
+        config-drive: true
+        image-name: {{ os_centos8_image }}
         username: zuul
       - name: fedora-28
         config-drive: true
@@ -44,12 +49,24 @@ providers:
             cloud-image: centos-7
             console-log: true
             {{ cloud_config_centos | indent(12) }}
+          - name: centos-8
+            min-ram: 8192
+            flavor-name: 'm1.large'
+            cloud-image: centos-8
+            console-log: true
+            {{ cloud_config_centos8 | indent(12) }}
           - name: tripleo-ovb-centos-7
             min-ram: 8192
             flavor-name: 'm1.large'
             cloud-image: centos-7
             console-log: true
             {{ cloud_config_centos_ovb | indent(12) }}
+          - name: tripleo-ovb-centos-8
+            min-ram: 8192
+            flavor-name: 'm1.large'
+            cloud-image: centos-8
+            console-log: true
+            {{ cloud_config_centos_ovb8 | indent(12) }}
           - name: fedora-28
             min-ram: 8192
             flavor-name: 'm1.large'

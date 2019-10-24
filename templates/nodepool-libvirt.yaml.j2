@@ -4,6 +4,7 @@ zookeeper-servers:
 
 labels:
   - name: centos-7
+  - name: centos-8
   - name: fedora-28
   - name: tripleo-ovb-centos-7
   - name: rhel-8
@@ -19,6 +20,7 @@ providers:
             labels:
                 - fedora-28
                 - centos-7
+                - centos-8
                 - tripleo-ovb-centos-7
                 - rhel-8
             host-key: "{{ lookup('pipe', 'ssh-keyscan -t ed25519 ' + hostvars[subnode].ansible_host ).split(" ", 1)[1] }}"
