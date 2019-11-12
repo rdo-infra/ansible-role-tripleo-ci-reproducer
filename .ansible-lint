@@ -1,5 +1,5 @@
----
 parseable: true
+quiet: false
 skip_list:
   - ANSIBLE0006
   - '405'  # [E405] Remote package tasks should have a retry (too new, TBD in separate change)
