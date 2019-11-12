@@ -7,6 +7,7 @@
     - playbooks
     - projects
     - httpd.conf
+    - cleanup_containers.sh
 
 - name: Generate docker compose config
   template:
