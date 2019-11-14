@@ -49,11 +49,6 @@
       os_autohold_node: false
 
 - job:
-    name: tripleo-ci-reproducer-fedora-28-host
-    parent: tripleo-ci-reproducer-host
-    nodeset: single-fedora-28-node
-
-- job:
     name: tripleo-ci-reproducer-fedora-29-host
     parent: tripleo-ci-reproducer-host
     nodeset: single-fedora-29-node
