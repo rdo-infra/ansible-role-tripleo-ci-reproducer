@@ -73,6 +73,7 @@
       vars:
         project: test1
         branches:
+          - stable/train
           - stable/stein
           - stable/rocky
           - stable/queens
