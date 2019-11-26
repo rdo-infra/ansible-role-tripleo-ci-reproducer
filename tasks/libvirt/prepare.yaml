@@ -32,6 +32,7 @@
         - centos-release-openstack-queens
         - epel-release
       become: true
+      when: ansible_distribution|lower != 'fedora'
 
     - name: Install packages
       package:
