@@ -46,6 +46,30 @@
       "revId": "e879e9adee0a673b889793db26852ab33a1c0c32",
       "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e9f8572b_de094909",
+        "filename": "templates/nodepool-openstack.yaml.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 411
+      },
+      "writtenOn": "2019-11-27T14:19:34Z",
+      "side": 1,
+      "message": "hm, actually, we cannot use py3 by default, that would make the change incompatible to py2 based jobs?",
+      "parentUuid": "6619cfa7_fbdc7146",
+      "range": {
+        "startLine": 34,
+        "startChar": 75,
+        "endLine": 34,
+        "endChar": 79
+      },
+      "revId": "e879e9adee0a673b889793db26852ab33a1c0c32",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
     }
   ]
 }
