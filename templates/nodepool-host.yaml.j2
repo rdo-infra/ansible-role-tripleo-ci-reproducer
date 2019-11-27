@@ -21,3 +21,6 @@ providers:
                 - tripleo-ovb-centos-7
             username: {{ ansible_user }}
             host-key: {{ lookup('pipe', 'ssh-keyscan -t ed25519 ' + ansible_default_ipv4.address ).split(" ", 1)[1] }}
+            {% if ansible_python_interpreter is defined -%}
+            python-path: "{{ ansible_python_interpreter }}"
+            {% endif %}
