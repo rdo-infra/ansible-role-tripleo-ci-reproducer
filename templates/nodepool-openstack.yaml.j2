@@ -21,14 +21,23 @@ providers:
         config-drive: true
         image-name: {{ os_centos7_image }}
         username: zuul
+        {% if ansible_python_interpreter is defined -%}
+        python-path: "{{ ansible_python_interpreter }}"
+        {% endif -%}
       - name: fedora-28
         config-drive: true
         image-name: {{ os_fedora28_image }}
         username: zuul
+        {% if ansible_python_interpreter is defined -%}
+        python-path: "{{ ansible_python_interpreter }}"
+        {% endif -%}
       - name: cloud-rhel-8
         config-drive: true
         image-name: {{ os_rhel8_image }}
         username: zuul
+        {% if ansible_python_interpreter is defined -%}
+        python-path: "{{ ansible_python_interpreter }}"
+        {% endif -%}
     pools:
       - name: main
         max-servers: 5
