@@ -1,0 +1,9 @@
+---
+- hosts: primary
+  tasks:
+
+    - name: Shut down docker-compose
+      command: ~/.local/bin/docker-compose down -v
+      args:
+        chdir: "{{ ansible_user_dir }}/tripleo-ci-reproducer"
+      changed_when: true
