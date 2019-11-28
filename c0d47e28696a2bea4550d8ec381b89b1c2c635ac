@@ -22,6 +22,30 @@
       "revId": "c0d47e28696a2bea4550d8ec381b89b1c2c635ac",
       "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f130293f_96f5dd94",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 411
+      },
+      "writtenOn": "2019-11-28T08:07:35Z",
+      "side": 1,
+      "message": "to run zuul reproducer on py3 OS, like fedora 30+",
+      "parentUuid": "f98d0866_f3db6a4e",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 46
+      },
+      "revId": "c0d47e28696a2bea4550d8ec381b89b1c2c635ac",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
     }
   ]
 }
