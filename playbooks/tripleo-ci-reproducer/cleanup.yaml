@@ -1,9 +1,19 @@
 ---
 - hosts: primary
+  vars:
+    docker_compose_cli: '~/.local/bin/docker-compose'
   tasks:
 
+    - name: Shut down reproducer
+      become: true
+      command: "{{ ansible_user_dir }}/tripleo-ci-reproducer/tripleo-ci-reproducer.sh --stop"
+      changed_when: true
+      ignore_errors: true
+      when: container_mode == 'podman'
+
     - name: Shut down docker-compose
-      command: ~/.local/bin/docker-compose down -v
+      command: "{{ docker_compose_cli }} down -v"
       args:
         chdir: "{{ ansible_user_dir }}/tripleo-ci-reproducer"
       changed_when: true
+      when: container_mode == 'docker'
