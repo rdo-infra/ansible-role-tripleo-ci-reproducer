@@ -18,6 +18,7 @@
         gpgcheck: false
       when:
         - ansible_distribution == 'CentOS'
+        - ansible_distribution_major_version == 7
         - container_mode == 'podman'
 
     - name: Check if pip is installed
@@ -38,7 +39,7 @@
           become: true
           package:
             name:
-              - python-pip
+              - python{{ '3' if ansible_distribution_major_version == 8 else '' }}-pip
 
     - name: Install bindep
       register: result_bindep
