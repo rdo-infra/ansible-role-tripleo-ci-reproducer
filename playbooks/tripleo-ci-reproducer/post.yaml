@@ -82,14 +82,14 @@
       shell: |
         dnf list installed > rpms.log || yum list installed > rpms.log
         free -m > system.log
-        pip freeze > pip.log
+        $(command -v pip || command -v pip3) freeze > pip.log
       args:
         chdir: "{{ ansible_user_dir }}/tripleo-ci-reproducer"
       changed_when: false
       ignore_errors: true
 
     - name: Get local pip info
-      shell: pip freeze > pip-user.log
+      shell: $(command -v pip || command -v pip3) freeze > pip-user.log
       changed_when: true
 
     - name: Copy files from reproducer on node to log
