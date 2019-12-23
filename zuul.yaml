@@ -80,6 +80,11 @@
       container_mode: docker
 
 - job:
+    name: tripleo-ci-reproducer-centos-8-host
+    parent: tripleo-ci-reproducer-host
+    nodeset: single-centos-8-node
+
+- job:
     name: tripleo-ci-reproducer-centos-7-openstack-standalone-dryrun
     parent: tripleo-ci-reproducer-openstack
     nodeset: single-centos-7-node
@@ -143,13 +148,14 @@
     check:
       jobs:
         - tox-linters
-        - tripleo-ci-reproducer-fedora-29-host-docker
-        - tripleo-ci-reproducer-fedora-29-host-podman
-        - tripleo-ci-reproducer-fedora-30-host
-        - tripleo-ci-reproducer-centos-7-host
-        - tripleo-ci-reproducer-fedora-29-openstack-standalone-dryrun
-        - tripleo-ci-reproducer-centos-7-libvirt-standalone-dryrun-vexxhost
-        - tripleo-ci-reproducer-centos-7-openstack-standalone
+        # - tripleo-ci-reproducer-fedora-29-host-docker
+        # - tripleo-ci-reproducer-fedora-29-host-podman
+        # - tripleo-ci-reproducer-fedora-30-host
+        # - tripleo-ci-reproducer-centos-7-host
+        - tripleo-ci-reproducer-centos-8-host
+        # - tripleo-ci-reproducer-fedora-29-openstack-standalone-dryrun
+        # - tripleo-ci-reproducer-centos-7-libvirt-standalone-dryrun-vexxhost
+        # - tripleo-ci-reproducer-centos-7-openstack-standalone
 
 
     gate:
