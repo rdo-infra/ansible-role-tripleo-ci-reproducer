@@ -155,6 +155,7 @@
         - tripleo-ci-reproducer-fedora-29-openstack-standalone-dryrun
         - tripleo-ci-reproducer-centos-7-libvirt-standalone-dryrun-vexxhost
         - tripleo-ci-reproducer-centos-7-openstack-standalone
+        - tripleo-ci-reproducer-centos-7-libvirt-standalone-vexxhost
 
     gate:
       jobs:
