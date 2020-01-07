@@ -65,13 +65,13 @@ zk_image: zookeeper:3.4.14
 mariadb_image: mariadb:10.3.14-bionic
 # logs_image: rdoci/httpd:stable
 logs_image: httpd:2.4.39-alpine
-zuul_image: rdoci/zuul:stable
-zuul_scheduler_image: rdoci/zuul-scheduler:stable
-zuul_web_image: rdoci/zuul-web:stable
-zuul_executor_image: rdoci/zuul-executor:stable
-zuul_merger_image: rdoci/zuul-merger:stable
-zuul_fingergw_image: rdoci/zuul-fingergw:stable
-nodepool_launcher_image: rdoci/nodepool-launcher:stable
+zuul_image: zuul/zuul
+zuul_scheduler_image: zuul/zuul-scheduler
+zuul_web_image: zuul/zuul-web
+zuul_executor_image: zuul/zuul-executor
+zuul_merger_image: zuul/zuul-merger
+zuul_fingergw_image: zuul/zuul-fingergw
+nodepool_launcher_image: zuul/nodepool-launcher
 
 # To control nodepool setup
 setup_nodepool: true
