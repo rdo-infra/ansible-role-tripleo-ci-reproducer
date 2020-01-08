@@ -127,10 +127,8 @@
       container_mode: docker
 
 - job:
-    name: periodic-tripleo-ci-reproducer-centos-7-libvirt-standalone-vexxhost
-    parent: tripleo-ci-reproducer-centos-7-libvirt-standalone-vexxhost
-    vars:
-      container_mode: docker
+    name: periodic-tripleo-ci-reproducer-fedora-29-openstack-standalone-dryrun
+    parent: tripleo-ci-reproducer-fedora-29-openstack-standalone-dryrun
 
 - job:
     name: periodic-tripleo-ci-reproducer-centos-7-openstack-standalone
@@ -138,8 +136,15 @@
     vars:
       container_mode: docker
 
+- job:
+    name: periodic-tripleo-ci-reproducer-centos-7-libvirt-standalone-dryrun-vexxhost
+    parent: tripleo-ci-reproducer-centos-7-libvirt-standalone-dryrun-vexxhost
+    vars:
+      container_mode: docker
+
 - project:
     name: rdo-infra/ansible-role-tripleo-ci-reproducer
+
     check:
       jobs:
         - tox-linters
@@ -151,7 +156,6 @@
         - tripleo-ci-reproducer-centos-7-libvirt-standalone-dryrun-vexxhost
         - tripleo-ci-reproducer-centos-7-openstack-standalone
 
-
     gate:
       jobs:
         - tox-linters
@@ -159,3 +163,9 @@
         - tripleo-ci-reproducer-fedora-29-host-podman
         - tripleo-ci-reproducer-fedora-30-host
         - tripleo-ci-reproducer-centos-7-host
+
+    openstack-periodic-24hr:
+      jobs:
+        - periodic-tripleo-ci-reproducer-fedora-29-openstack-standalone-dryrun
+        - periodic-tripleo-ci-reproducer-centos-7-openstack-standalone
+        - periodic-tripleo-ci-reproducer-centos-7-libvirt-standalone-dryrun-vexxhost
