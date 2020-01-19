@@ -31,30 +31,35 @@
             - project
             - project-template
             projects:
-            - zuul/zuul-jobs
-            - openstack/tripleo-ci
-            - openstack/tripleo-quickstart
-            - openstack/tripleo-quickstart-extras
-            - openstack/tripleo-operator-ansible
-            - openstack/tripleo-upgrade
-            - x/browbeat
-            - openstack/tripleo-ha-utils
-            - openstack/tripleo-heat-templates
-            - openstack/openstack-virtual-baremetal
-            - openstack/openstack-ansible-os_tempest
-            - openstack/ansible-role-python_venv_build
+            - openstack/ansible-collections-openstack
             - openstack/ansible-config_template
-            - openstack/tripleo-common
+            - openstack/ansible-role-collect-logs
+            - openstack/ansible-role-container-registry
+            - openstack/ansible-role-python_venv_build
+            - openstack/ansible-role-tripleo-modify-image
+            - openstack/devstack
+            - openstack/diskimage-builder
+            - openstack/kolla
+            - openstack/openstack-ansible-os_tempest
+            - openstack/openstack-virtual-baremetal
+            - openstack/openstacksdk
             - openstack/paunch
             - openstack/puppet-tripleo
-            - openstack/tripleo-ansible
             - openstack/python-tripleoclient
             - openstack/requirements
-            - openstack/ansible-role-container-registry
-            - openstack/kolla
+            - openstack/tripleo-ansible
+            - openstack/tripleo-ci
+            - openstack/tripleo-common
+            - openstack/tripleo-ha-utils
+            - openstack/tripleo-heat-templates
+            - openstack/tripleo-operator-ansible
+            - openstack/tripleo-quickstart
+            - openstack/tripleo-quickstart-extras
             - openstack/tripleo-repos
-            - openstack/ansible-role-collect-logs
-            - openstack/diskimage-builder
+            - openstack/tripleo-upgrade
+            - x/browbeat
+            - zuul/zuul-jobs
+
       rdoproject.org:
         untrusted-projects:
           - exclude:
@@ -64,4 +69,5 @@
             - rdo-jobs
             - rdo-infra/ci-config
             - rdo-infra/ansible-role-tripleo-ci-reproducer
+            - rdo-infra/ansible-role-tripleo-ci-zuul-runner
             - rdoinfo
