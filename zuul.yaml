@@ -131,6 +131,15 @@
       ci_job: standalone
 
 - job:
+    name: tripleo-ci-reproducer-centos-8-libvirt-standalone-dryrun-vexxhost
+    parent: tripleo-ci-reproducer-libvirt
+    nodeset: upstream-centos-8-vexxhost
+    voting: false
+    timeout: 15300
+    vars:
+      ci_job: standalone-dryrun
+
+- job:
     name: tripleo-ci-reproducer-centos-7-libvirt-standalone-dryrun-vexxhost
     parent: tripleo-ci-reproducer-libvirt
     nodeset: upstream-centos-7-vexxhost
@@ -170,6 +179,7 @@
         - tripleo-ci-reproducer-fedora-29-openstack-standalone-dryrun
         - tripleo-ci-reproducer-centos-7-libvirt-standalone-dryrun-vexxhost
         - tripleo-ci-reproducer-centos-7-openstack-standalone
+        - tripleo-ci-reproducer-centos-8-libvirt-standalone-dryrun-vexxhost
 
     gate:
       jobs:
@@ -178,6 +188,7 @@
         - tripleo-ci-reproducer-fedora-29-host-podman
         - tripleo-ci-reproducer-fedora-30-host
         - tripleo-ci-reproducer-centos-7-host
+        - tripleo-ci-reproducer-centos-8-host
 
     openstack-periodic-24hr:
       jobs:
