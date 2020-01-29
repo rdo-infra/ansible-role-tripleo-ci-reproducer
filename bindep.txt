@@ -2,7 +2,7 @@
 # epel is not installed on nodepool nodes.
 ansible [!platform:centos-8]
 podman [platform:rpm]
-docker [platform:rpm]
+docker [platform:centos-7]
 epel-release [platform:centos]
 gcc [platform:rpm]
 git [platform:rpm]
