@@ -121,3 +121,4 @@ cloud_config_centos_ovb: |-
     - echo "/dev/disk/by-label/config-2  /mnt/config" >> /etc/fstab
     - reboot
   {% endraw %}
+# test
