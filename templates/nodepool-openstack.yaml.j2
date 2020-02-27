@@ -7,6 +7,8 @@ labels:
   - name: fedora-28
   - name: tripleo-ovb-centos-7
   - name: upstream-rhel-8
+  - name: centos-8
+  - name: tripleo-ovb-centos-8
 
 providers:
   - name: {{ ansible_hostname }}-{{ os_cloud_name }}
@@ -28,6 +30,10 @@ providers:
       - name: cloud-rhel-8
         config-drive: true
         image-name: {{ os_rhel8_image }}
+        username: zuul
+      - name: centos-8
+        config-drive: true
+        image-name: {{ os_centos8_image }}
         username: zuul
     pools:
       - name: main
@@ -62,3 +68,15 @@ providers:
             cloud-image: cloud-rhel-8
             console-log: true
             {{ cloud_config_rhel8 | indent(12) }}
+          - name: centos-8
+            min-ram: 8192
+            flavor-name: 'm1.large'
+            cloud-image: centos-8
+            console-log: true
+            {{ cloud_config_centos8 | indent(12) }}
+          - name: tripleo-ovb-centos-8
+            min-ram: 8192
+            flavor-name: 'm1.large'
+            cloud-image: centos-8
+            console-log: true
+            {{ cloud_config_centos8_ovb | indent(12) }}
