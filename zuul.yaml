@@ -63,7 +63,14 @@
     nodeset: single-fedora-29-node
 
 - job:
-    name: tripleo-ci-reproducer-fedora-30-host
+    name: tripleo-ci-reproducer-fedora-30-host-docker
+    parent: tripleo-ci-reproducer-host
+    nodeset: single-fedora-30-node
+    vars:
+      container_mode: docker
+
+- job:
+    name: tripleo-ci-reproducer-fedora-30-host-podman
     parent: tripleo-ci-reproducer-host
     nodeset: single-fedora-30-node
 
@@ -102,6 +109,23 @@
     vars:
       ci_job: standalone
       container_mode: docker
+
+- job:
+    name: tripleo-ci-reproducer-centos-8-openstack-standalone-dryrun
+    parent: tripleo-ci-reproducer-openstack
+    nodeset: single-centos-8-node
+    voting: false
+    vars:
+      ci_job: standalone-dryrun
+
+- job:
+    name: tripleo-ci-reproducer-centos-8-openstack-standalone
+    parent: tripleo-ci-reproducer-openstack
+    nodeset: single-centos-8-node
+    voting: false
+    timeout: 15300
+    vars:
+      ci_job: standalone
 
 - job:
     name: tripleo-ci-reproducer-fedora-29-openstack-standalone-dryrun
@@ -160,6 +184,18 @@
       container_mode: docker
 
 - job:
+    name: periodic-tripleo-ci-reproducer-centos-8-openstack-standalone
+    parent: tripleo-ci-reproducer-centos-8-openstack-standalone
+
+- job:
+    name: periodic-tripleo-ci-reproducer-centos-8-openstack-standalone-dryrun
+    parent: tripleo-ci-reproducer-centos-8-openstack-standalone-dryrun
+
+- job:
+    name: periodic-tripleo-ci-reproducer-centos-8-libvirt-standalone-dryrun-vexxhost
+    parent: tripleo-ci-reproducer-centos-8-libvirt-standalone-dryrun-vexxhost
+
+- job:
     name: periodic-tripleo-ci-reproducer-centos-7-libvirt-standalone-dryrun-vexxhost
     parent: tripleo-ci-reproducer-centos-7-libvirt-standalone-dryrun-vexxhost
     vars:
@@ -171,21 +207,26 @@
     check:
       jobs:
         - tox-linters
-        - tripleo-ci-reproducer-fedora-30-host
+        - tripleo-ci-reproducer-fedora-30-host-docker
+        - tripleo-ci-reproducer-fedora-30-host-podman
         - tripleo-ci-reproducer-centos-7-host
         - tripleo-ci-reproducer-centos-8-host
         - tripleo-ci-reproducer-centos-7-libvirt-standalone-dryrun-vexxhost
         - tripleo-ci-reproducer-centos-7-openstack-standalone
         - tripleo-ci-reproducer-centos-8-libvirt-standalone-dryrun-vexxhost
+        - tripleo-ci-reproducer-centos-8-openstack-standalone
+        - tripleo-ci-reproducer-centos-8-openstack-standalone-dryrun
 
     gate:
       jobs:
         - tox-linters
-        - tripleo-ci-reproducer-fedora-30-host
+        - tripleo-ci-reproducer-fedora-30-host-docker
+        - tripleo-ci-reproducer-fedora-30-host-podman
         - tripleo-ci-reproducer-centos-7-host
         - tripleo-ci-reproducer-centos-8-host
 
     openstack-periodic-24hr:
       jobs:
-        - periodic-tripleo-ci-reproducer-centos-7-openstack-standalone
         - periodic-tripleo-ci-reproducer-centos-7-libvirt-standalone-dryrun-vexxhost
+        - periodic-tripleo-ci-reproducer-centos-8-libvirt-standalone-dryrun-vexxhost
+        - periodic-tripleo-ci-reproducer-centos-8-openstack-standalone
