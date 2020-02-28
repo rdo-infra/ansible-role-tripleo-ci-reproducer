@@ -92,6 +92,15 @@
       shell: $(command -v pip || command -v pip3) freeze > pip-user.log
       changed_when: true
 
+    - name: Extract known errors from files
+      shell:
+        grep -a -A2 "syntax error" scheduler.log >> scheduler_errors.txt || true
+        grep -a "No matching parents" scheduler.log >> scheduler_errors.txt || true
+      args:
+        chdir: "{{ ansible_user_dir }}/tripleo-ci-reproducer"
+      failed_when: false
+      changed_when: true
+
     - name: Copy files from reproducer on node to log
       become: true
       no_log: true
@@ -163,13 +172,12 @@
       ignore_errors: true
       synchronize:
         src: '/usr/share/containers/'
-        dest: '{{ zuul.executor.log_root }}/usr/share/containers/'
+        dest: '{{ zuul.executor.log_root }}/containers-config/'
         mode: pull
         copy_links: true
         verify_host: true
         rsync_opts:
           - "--chown={{ ansible_user }}:{{ ansible_user }}"
-
 
     - name: Copy libvirtd debug log if exists
       become: true
