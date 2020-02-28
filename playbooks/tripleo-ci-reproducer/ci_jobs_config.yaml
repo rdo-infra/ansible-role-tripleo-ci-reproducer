@@ -4,11 +4,11 @@ ci_jobs_config:
       - project:
           check:
             jobs:
-              - tripleo-ci-centos-7-standalone-dlrn-hash-tag
+              - tripleo-ci-centos-8-standalone-dlrn-hash-tag
 
       - job:
-          name: tripleo-ci-centos-7-standalone-dlrn-hash-tag
-          parent: tripleo-ci-centos-7-standalone
+          name: tripleo-ci-centos-8-standalone-dlrn-hash-tag
+          parent: tripleo-ci-centos-8-standalone
           vars:
             mirror_fqdn: "{{ mirror_fqdn }}"
             dryrun: true
@@ -19,11 +19,11 @@ ci_jobs_config:
       - project:
           check:
             jobs:
-              - tripleo-ci-centos-7-standalone-dlrn-hash-tag
+              - tripleo-ci-centos-8-standalone-dlrn-hash-tag
 
       - job:
-          name: tripleo-ci-centos-7-standalone-dlrn-hash-tag
-          parent: tripleo-ci-centos-7-standalone
+          name: tripleo-ci-centos-8-standalone-dlrn-hash-tag
+          parent: tripleo-ci-centos-8-standalone
           timeout: 9000
           vars:
             mirror_fqdn: "{{ mirror_fqdn }}"
