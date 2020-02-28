@@ -195,3 +195,13 @@
           - "--chown={{ ansible_user }}:{{ ansible_user }}"
           - "--exclude=journal/*"
       ignore_errors: true
+
+
+    - name: Extract known errors from files
+      shell:
+        grep -a -A2 "syntax error" {{ zuul.executor.log_root }}/tripleo-ci-reproducer/scheduler.log
+        >> {{ zuul.executor.log_root }}/scheduler_errors.txt
+        grep -a "No matching parents" {{ zuul.executor.log_root }}/tripleo-ci-reproducer/scheduler.log
+        >> {{ zuul.executor.log_root }}/scheduler_errors.txt
+      failed_when: false
+      no_log: true
