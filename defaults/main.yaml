@@ -28,6 +28,7 @@ logs_path: "./logs"
 vm_password: changeme
 
 mergers: "{{ ansible_processor_vcpus }}"
+full_repos_set: false
 
 nodepool_provider: openstack
 

@@ -40,7 +40,7 @@
     body_format: json
   register: result
   retries: 60
-  delay: 15
+  delay: "{{ 15 if not full_repos_set|default(false)|bool else 30 }}"
   until: result.status == 200 and result.json["zuul_version"] is defined
   changed_when: false
 
