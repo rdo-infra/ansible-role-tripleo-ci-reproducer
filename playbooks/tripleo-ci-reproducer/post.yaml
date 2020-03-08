@@ -105,17 +105,15 @@
         grep -a -B3 "failed=1" executor.log >> job_errors.txt || true
         echo "" >> job_errors.txt
         export build_id=$(grep -a '1001,1' scheduler.log | grep updated | head -1 | grep -Eo " [a-z0-9]+\]" | tr -d " " | tr -d "]" || true)
-        grep -a "$build_id" scheduler.log > build_id.log
-        echo "$build_id"
+        [[ -n "$build_id" ]] && \
+          grep -a "$build_id" scheduler.log > build_id.log || \
+          echo "" > build_id.log
+        cat logs/01/1001/*/check/tripleo-ci-centos-8-standalone-dlrn-hash-tag/*/logs/zuul_console.json | \
+        jq '.[-1].plays[0].tasks[-1].hosts.primary.stdout_lines' | sed 's/^  "/ /g' | sed 's/",$//g' > job_console.txt || true
       args:
         chdir: "{{ ansible_user_dir }}/tripleo-ci-reproducer"
       failed_when: false
       changed_when: true
-      register: build_id
-
-    - name: Print build ID
-      debug:
-        msg: "Build ID is {{ build_id.stdout }}"
 
     - name: Copy files from reproducer on node to log
       become: true

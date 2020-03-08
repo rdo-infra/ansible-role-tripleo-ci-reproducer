@@ -51,18 +51,6 @@
       os_autohold_node: false
 
 - job:
-    name: tripleo-ci-reproducer-fedora-29-host-docker
-    parent: tripleo-ci-reproducer-host
-    nodeset: single-fedora-29-node
-    vars:
-      container_mode: docker
-
-- job:
-    name: tripleo-ci-reproducer-fedora-29-host-podman
-    parent: tripleo-ci-reproducer-host
-    nodeset: single-fedora-29-node
-
-- job:
     name: tripleo-ci-reproducer-fedora-30-host-docker
     parent: tripleo-ci-reproducer-host
     nodeset: single-fedora-30-node
@@ -92,25 +80,6 @@
     nodeset: single-centos-8-node
 
 - job:
-    name: tripleo-ci-reproducer-centos-7-openstack-standalone-dryrun
-    parent: tripleo-ci-reproducer-openstack
-    nodeset: single-centos-7-node
-    voting: false
-    vars:
-      ci_job: standalone-dryrun
-      container_mode: docker
-
-- job:
-    name: tripleo-ci-reproducer-centos-7-openstack-standalone
-    parent: tripleo-ci-reproducer-openstack
-    nodeset: single-centos-7-node
-    voting: false
-    timeout: 15300
-    vars:
-      ci_job: standalone
-      container_mode: docker
-
-- job:
     name: tripleo-ci-reproducer-centos-8-openstack-standalone-dryrun
     parent: tripleo-ci-reproducer-openstack
     nodeset: single-centos-8-node
@@ -126,14 +95,6 @@
     timeout: 15300
     vars:
       ci_job: standalone
-
-- job:
-    name: tripleo-ci-reproducer-fedora-29-openstack-standalone-dryrun
-    parent: tripleo-ci-reproducer-openstack
-    nodeset: single-fedora-29-node
-    voting: false
-    vars:
-      ci_job: standalone-dryrun
 
 - job:
     name: tripleo-ci-reproducer-centos-7-libvirt-standalone-vexxhost
@@ -174,16 +135,6 @@
       container_mode: docker
 
 - job:
-    name: periodic-tripleo-ci-reproducer-fedora-29-openstack-standalone-dryrun
-    parent: tripleo-ci-reproducer-fedora-29-openstack-standalone-dryrun
-
-- job:
-    name: periodic-tripleo-ci-reproducer-centos-7-openstack-standalone
-    parent: tripleo-ci-reproducer-centos-7-openstack-standalone
-    vars:
-      container_mode: docker
-
-- job:
     name: periodic-tripleo-ci-reproducer-centos-8-openstack-standalone
     parent: tripleo-ci-reproducer-centos-8-openstack-standalone
 
@@ -212,7 +163,6 @@
         - tripleo-ci-reproducer-centos-7-host
         - tripleo-ci-reproducer-centos-8-host
         - tripleo-ci-reproducer-centos-7-libvirt-standalone-dryrun-vexxhost
-        - tripleo-ci-reproducer-centos-7-openstack-standalone
         - tripleo-ci-reproducer-centos-8-libvirt-standalone-dryrun-vexxhost
         - tripleo-ci-reproducer-centos-8-openstack-standalone
         - tripleo-ci-reproducer-centos-8-openstack-standalone-dryrun
