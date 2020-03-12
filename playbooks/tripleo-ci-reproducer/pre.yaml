@@ -136,6 +136,11 @@
             path: /etc/docker/daemon.json
           register: docker_daemon_file
 
+        - name: Check if docker dir exist
+          stat:
+            path: /etc/docker
+          register: docker_dir
+
         - name: Create docker configuration if missing or empty
           become: true
           copy:
@@ -147,6 +152,7 @@
           register: docker_config
           when:
             - (not docker_daemon_file.stat.exists|bool) or ("docker_daemon_file.stat.size <= 3")
+            - (docker_dir.stat.exists|bool)
 
         # check if docker is configured in docker_daemon
         - name: Fail if daemon file is incorrectly configured for the reproducer
