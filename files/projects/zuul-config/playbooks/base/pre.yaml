@@ -23,6 +23,6 @@
   roles:
     - validate-host
     - prepare-workspace
-    - mirror-info
+    - mirror-info-fork
     - role: configure-mirrors
       set_apt_mirrors_trusted: true
