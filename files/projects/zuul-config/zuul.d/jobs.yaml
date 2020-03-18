@@ -19,6 +19,7 @@
     roles:
       - zuul: opendev.org/openstack/project-config
       - zuul: opendev.org/zuul/zuul-jobs
+      - zuul: opendev.org/opendev/base-jobs
       - zuul: opendev.org/openstack/openstack-zuul-jobs
       - zuul: review.rdoproject.org/rdo-jobs
     vars:
