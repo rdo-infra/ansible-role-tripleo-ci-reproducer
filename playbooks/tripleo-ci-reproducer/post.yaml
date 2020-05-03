@@ -149,11 +149,14 @@
 
     - name: Copy job logs from user dir to log
       synchronize:
-        src: '{{ ansible_user_dir }}/ci-job.yaml'
+        src: '{{ item }}'
         dest: '{{ zuul.executor.log_root }}/tripleo-ci-reproducer/'
         mode: pull
         copy_links: true
         verify_host: true
+      loop:
+        - '{{ ansible_user_dir }}/ci-job.yaml'
+        - '{{ ansible_user_dir }}/zuul_vars.yaml'
 
     - name: Copy files from /etc
       become: true
