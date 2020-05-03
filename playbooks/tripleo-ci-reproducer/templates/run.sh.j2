@@ -14,4 +14,4 @@ export ANSIBLE_STDOUT_CALLBACK=debug
 # At zuul images we don't have any .bash_profile or .profile
 export PATH=$PATH:$HOME/.local/bin
 
-ansible-playbook -vv ~/start.yaml -e @~/ci-job.yaml -e @~/zuul_vars.yaml -e full_repos_set=false
+ansible-playbook -vv ~/start.yaml -e @~/job_vars.yaml -e @~/ci-job.yaml -e @~/zuul_vars.yaml -e full_repos_set=false
