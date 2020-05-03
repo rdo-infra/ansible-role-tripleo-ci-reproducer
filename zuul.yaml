@@ -156,15 +156,26 @@
     check:
       jobs:
         - tox-linters
-        - tripleo-ci-reproducer-fedora-30-host-docker
-        - tripleo-ci-reproducer-fedora-30-host-podman
-        - tripleo-ci-reproducer-fedora-31-host-podman
-        - tripleo-ci-reproducer-centos-7-host
-        - tripleo-ci-reproducer-centos-8-host
-        - tripleo-ci-reproducer-centos-7-libvirt-standalone-dryrun-vexxhost
-        - tripleo-ci-reproducer-centos-8-libvirt-standalone-dryrun-vexxhost
-        - tripleo-ci-reproducer-centos-8-openstack-standalone
-        - tripleo-ci-reproducer-centos-8-openstack-standalone-dryrun
+        - tripleo-ci-reproducer-fedora-30-host-docker:
+            vars: &newest
+              override:
+                zuul_image: zuul/zuul
+                zuul_scheduler_image: zuul/zuul-scheduler
+                zuul_web_image: zuul/zuul-web
+                zuul_executor_image: zuul/zuul-executor
+                zuul_merger_image: zuul/zuul-merger
+                zuul_fingergw_image: zuul/zuul-fingergw
+                nodepool_launcher_image: zuul/nodepool-launcher
+
+        - tripleo-ci-reproducer-fedora-30-host-podman:
+            vars: *newest
+        # - tripleo-ci-reproducer-fedora-31-host-podman
+        # - tripleo-ci-reproducer-centos-7-host
+        # - tripleo-ci-reproducer-centos-8-host
+        # - tripleo-ci-reproducer-centos-7-libvirt-standalone-dryrun-vexxhost
+        # - tripleo-ci-reproducer-centos-8-libvirt-standalone-dryrun-vexxhost
+        # - tripleo-ci-reproducer-centos-8-openstack-standalone
+        # - tripleo-ci-reproducer-centos-8-openstack-standalone-dryrun
 
     gate:
       jobs:
