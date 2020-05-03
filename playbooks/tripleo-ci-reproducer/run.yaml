@@ -88,6 +88,12 @@
           {{ zuul_config | default({}) | to_nice_yaml }}
         path: "{{ ansible_user_dir }}/zuul_vars.yaml"
         create: true
+    - name: Pass override config for reproducer
+      blockinfile:
+        content: |
+          {{ override | default({}) | to_nice_yaml }}
+        path: "{{ ansible_user_dir }}/override.yaml"
+        create: true
     - name: Generate run script
       template:
         src: run.sh.j2
