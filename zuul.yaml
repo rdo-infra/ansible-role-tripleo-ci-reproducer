@@ -150,6 +150,10 @@
     name: periodic-tripleo-ci-reproducer-centos-7-libvirt-standalone-dryrun-vexxhost
     parent: tripleo-ci-reproducer-centos-7-libvirt-standalone-dryrun-vexxhost
 
+- job:
+    name: periodic-tripleo-centos-8-reproducer-update-images-start
+    parent: periodic-tripleo-centos-8-reproducer-update-images
+
 - project:
     name: rdo-infra/ansible-role-tripleo-ci-reproducer
 
@@ -182,3 +186,52 @@
         - periodic-tripleo-ci-reproducer-centos-7-libvirt-standalone-dryrun-vexxhost
         - periodic-tripleo-ci-reproducer-centos-8-libvirt-standalone-dryrun-vexxhost
         - periodic-tripleo-ci-reproducer-centos-8-openstack-standalone
+
+    periodic:
+      jobs:
+        - periodic-tripleo-centos-8-reproducer-update-images-start:
+            vars:
+              push_tag: promotion-test
+        - tripleo-ci-reproducer-fedora-30-host-docker:
+            vars: &promotion
+              override:
+                zuul_image: rdoci/zuul:promotion-test
+                zuul_scheduler_image: rdoci/zuul-scheduler:promotion-test
+                zuul_web_image: rdoci/zuul-web:promotion-test
+                zuul_executor_image: rdoci/zuul-executor:promotion-test
+                zuul_merger_image: rdoci/zuul-merger:promotion-test
+                zuul_fingergw_image: rdoci/zuul-fingergw:promotion-test
+                nodepool_launcher_image: rdoci/nodepool-launcher:promotion-test
+            dependencies:
+              - periodic-tripleo-centos-8-reproducer-update-images-start
+        - tripleo-ci-reproducer-fedora-30-host-podman:
+            vars: *promotion
+            dependencies:
+              - periodic-tripleo-centos-8-reproducer-update-images-start
+        - tripleo-ci-reproducer-fedora-31-host-podman:
+            vars: *promotion
+            dependencies:
+              - periodic-tripleo-centos-8-reproducer-update-images-start
+        - tripleo-ci-reproducer-centos-7-host:
+            vars: *promotion
+            dependencies:
+              - periodic-tripleo-centos-8-reproducer-update-images-start
+        - tripleo-ci-reproducer-centos-8-host:
+            vars: *promotion
+            dependencies:
+              - periodic-tripleo-centos-8-reproducer-update-images-start
+        - tripleo-ci-reproducer-centos-8-openstack-standalone-dryrun:
+            vars: *promotion
+            dependencies:
+              - periodic-tripleo-centos-8-reproducer-update-images-start
+        - periodic-tripleo-centos-8-reproducer-update-images:
+            vars:
+              push_tag: stable
+            dependencies:
+              - tripleo-ci-reproducer-fedora-30-host-docker
+              - tripleo-ci-reproducer-fedora-30-host-podman
+              - tripleo-ci-reproducer-fedora-31-host-podman
+              - tripleo-ci-reproducer-centos-7-host
+              - tripleo-ci-reproducer-centos-8-host
+              - tripleo-ci-reproducer-centos-8-openstack-standalone-dryrun
+              - periodic-tripleo-centos-8-reproducer-update-images
