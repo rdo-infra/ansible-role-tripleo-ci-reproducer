@@ -88,6 +88,15 @@
           {{ zuul_config | default({}) | to_nice_yaml }}
         path: "{{ ansible_user_dir }}/zuul_vars.yaml"
         create: true
+    - name: Prepare job variables from job context
+      set_fact:
+        job_conf: "{{ hostvars }}"
+    - name: Pass zuul variables
+      blockinfile:
+        content: |
+          {{ job_conf | default([]) | to_nice_yaml }}
+        path: "{{ ansible_user_dir }}/job_vars1.yaml"
+        create: true
     - name: Generate run script
       template:
         src: run.sh.j2
