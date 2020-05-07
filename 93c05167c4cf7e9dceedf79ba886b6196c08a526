@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9db42088_8712c6f8",
+        "filename": "playbooks/tripleo-ci-reproducer/pre.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 128
+      },
+      "writtenOn": "2020-05-07T13:47:31Z",
+      "side": 1,
+      "message": "Note that this will install latest stable rdo repo, so any software installed from it will be from that release. This may be a problem if this server is going to install software from older releases. i.e. install ansible from train may not work to run stein or rocky.\n\nAlso it\u0027d probably be good to remove the repos config after installing the required software in pre.yml so that the environment is clean for next steps.",
+      "range": {
+        "startLine": 14,
+        "startChar": 14,
+        "endLine": 14,
+        "endChar": 62
+      },
+      "revId": "93c05167c4cf7e9dceedf79ba886b6196c08a526",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
