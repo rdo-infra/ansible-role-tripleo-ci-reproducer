@@ -22,6 +22,30 @@
       "revId": "93c05167c4cf7e9dceedf79ba886b6196c08a526",
       "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "68f6809e_68829259",
+        "filename": "playbooks/tripleo-ci-reproducer/pre.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 155
+      },
+      "writtenOn": "2020-05-07T14:20:59Z",
+      "side": 1,
+      "message": "It\u0027s not an openstack job, so we just need ansible and podman/docker here, the newer the better actually.",
+      "parentUuid": "9db42088_8712c6f8",
+      "range": {
+        "startLine": 14,
+        "startChar": 14,
+        "endLine": 14,
+        "endChar": 62
+      },
+      "revId": "93c05167c4cf7e9dceedf79ba886b6196c08a526",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
     }
   ]
 }
