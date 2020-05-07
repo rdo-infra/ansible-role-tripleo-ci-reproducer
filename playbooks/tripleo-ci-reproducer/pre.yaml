@@ -9,17 +9,12 @@
         - ansible_user_dir is not defined
         - ansible_distribution is not defined
 
-    - name: Install centos-7 virt7-container repo
-      become: true
-      yum_repository:
-        name: virt7-container
-        description: virtsig repo with newer podman
-        baseurl: https://cbs.centos.org/repos/virt$releasever-container-common-candidate/$basearch/os/
-        gpgcheck: false
+    - name: Install RDO repos for getting packages for CentOS 7
+      yum:
+        name: https://www.rdoproject.org/repos/rdo-release.rpm
       when:
         - ansible_distribution == 'CentOS'
         - ansible_distribution_major_version|int == 7
-        - container_mode == 'podman'
 
     - name: Check if pip is installed
       shell: command -v pip > /dev/null 2>&1
