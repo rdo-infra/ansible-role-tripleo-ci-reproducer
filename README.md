@@ -4,14 +4,14 @@ TripleO CI Reproducer
 An Ansible role to start a CI zuul + gerrit environment to test jobs and
 patches at an openstack tenant or a ready provisioned VMs like libvirt.
 
-- [TripleO CI Reproducer](#TripleO-CI-Reproducer)
-  - [Requirements](#Requirements)
-  - [Role Variables](#Role-Variables)
-  - [Prerequisites](#Prerequisites)
-  - [Example Playbook](#Example-Playbook)
-  - [Testing trusted repository changes](#Testing-trusted-repository-changes)
-  - [License](#License)
-  - [Author Information](#Author-Information)
+- [TripleO CI Reproducer](#tripleo-ci-reproducer)
+  - [Requirements](#requirements)
+  - [Role Variables](#role-variables)
+  - [Prerequisites](#prerequisites)
+  - [Example Playbook](#example-playbook)
+  - [Testing trusted repository changes](#testing-trusted-repository-changes)
+  - [License](#license)
+  - [Author Information](#author-information)
 
 Requirements
 ------------
@@ -179,6 +179,7 @@ enter ``zuul-config`` directory and make all required changed to ``roles/ovb-man
 Commit and send to review:
 
 ```bash
+git config --local gitreview.username "admin"
 git commit -a -m "Change OVB manage role"
 git review
 ```
@@ -239,6 +240,9 @@ Let's populate ``zuul.yaml`` file with necessary config to run an OVB job:
           extra_node_flavor: m1.small
           baremetal_image: CentOS-7-x86_64-GenericCloud-1804_02
       remove_ovb_after_job: true # use false if you need to have all OVB nodes after a job
+      force_job_failure: true # use true if you want job to fail in the end and stay for further investigations
+      registry_login_enabled: false # use it to avoid login failures to RDO registry, login isn't required
+      quickstart_verbosity: -vv # use it for more verbosity in quickstart logs
 ```
 We use secrets in zuul.yaml because we don't have in our ``zuul-config`` repository,
 when we removed them a few steps ago.

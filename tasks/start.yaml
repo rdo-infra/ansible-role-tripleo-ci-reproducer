@@ -32,17 +32,32 @@
       command: "{{ install_path }}/tripleo-ci-reproducer.sh --run"
 
 - name: Wait for zuul tenant
-  uri:
-    url: "http://localhost:9000/api/tenant/tripleo-ci-reproducer/status"
-    method: GET
-    return_content: true
-    status_code: 200
-    body_format: json
-  register: result
-  retries: 60
-  delay: "{{ 15 if not full_repos_set|default(false)|bool else 30 }}"
-  until: result.status == 200 and result.json["zuul_version"] is defined
-  changed_when: false
+  block:
+
+    - name: Get link of the tenant
+      uri:
+        url: "http://localhost:9000/api/tenant/tripleo-ci-reproducer/status"
+        method: GET
+        return_content: true
+        status_code: 200
+        body_format: json
+      register: result
+      retries: "{{ 60 if ci_job is defined else 120 }}"
+      delay: "{{ 15 if not full_repos_set|default(false)|bool else 30 }}"
+      until: result.status == 200 and result.json["zuul_version"] is defined
+      changed_when: false
+
+  rescue:
+    - name: Print message in case tenant is not ready yet
+      fail:
+        msg: |
+          Zuul tenant is not ready yet, it may take more time for mergers to
+          clone the code. Please be patient and check in a few time if URL
+          http://localhost:9000/api/tenant/tripleo-ci-reproducer/status is
+          available.
+          If you can see the tenant, you're good. In case it doesn't appear
+          even after 40 mins, please check if Zuul scheduler container is up.
+          If it is, feel free to ping CI folks on #oooq or #tripleo in IRC.
 
 - name: Check that all services are with correct state
   shell: |
