@@ -138,6 +138,19 @@ stop_pod () {
     podman pod stop $pod_name
 }
 
+pull_images () {
+    podman pull {{ gerrit_image }}
+    podman pull {{ mariadb_image }}
+    podman pull {{ zk_image }}
+    podman pull {{ zuul_image }}
+    podman pull {{ zuul_scheduler_image }}
+    podman pull {{ zuul_web_image }}
+    podman pull {{ zuul_executor_image }}
+    podman pull {{ zuul_fingergw_image }}
+    podman pull {{ zuul_merger_image }}
+    podman pull {{ nodepool_launcher_image }}
+}
+
 run_reproducer () {
     create_pod
     create_containers
@@ -163,6 +176,9 @@ case "$1" in
         ;;
     --stop|-s)
         stop_reproducer
+        ;;
+    --pull|-p)
+        pull_images
         ;;
     -*) echo "ERROR: unknown option: $1" >&2
         usage >&2
