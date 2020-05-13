@@ -55,7 +55,7 @@
         PATH=$PATH:$HOME/.local/bin
         ANSIBLE_STDOUT_CALLBACK=debug
         ansible-playbook -i {{ install_path }}/hosts -vv \
-          {{ role_path }}/tasks/libvirt/prepare.yaml
+          {{ role_path }}/playbooks/tripleo-ci-reproducer/libvirt/prepare.yaml
     - name: Create libvirt snapshot
       when: create_snapshot
       vars:

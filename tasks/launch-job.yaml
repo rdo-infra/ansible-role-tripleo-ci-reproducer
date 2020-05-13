@@ -8,6 +8,7 @@
   git:
     repo: ssh://admin@localhost:29418/test1
     dest: "{{ testproject.path }}"
+    version: master
 
 - name: Dump zuul.yaml
   copy:
@@ -140,6 +141,7 @@
     ssh -p 29418 admin@localhost
       gerrit query --comments "commit:{{ commit }}"
   register: gerrit_info
+  changed_when: false
 
 - name: Print gerrit info
   debug:
