@@ -1,0 +1,11 @@
+---
+- name: Start reproducer
+  hosts: localhost
+  tasks:
+
+    - name: Start reproducer
+      include_role:
+        name: "../ansible-role-tripleo-ci-reproducer"
+      vars:
+        upstream_gerrit_user: {{ opendev_user }}
+        rdo_gerrit_user: {{ rdoproject_user }}

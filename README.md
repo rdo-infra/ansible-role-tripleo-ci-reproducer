@@ -6,6 +6,8 @@ patches at an openstack tenant or a ready provisioned VMs like libvirt.
 
 - [TripleO CI Reproducer](#tripleo-ci-reproducer)
   - [Requirements](#requirements)
+  - [Install](#install)
+  - [Tenant Configuration](#tenant-configuration)
   - [Role Variables](#role-variables)
   - [Prerequisites](#prerequisites)
   - [Example Playbook](#example-playbook)
@@ -15,12 +17,47 @@ patches at an openstack tenant or a ready provisioned VMs like libvirt.
 
 Requirements
 ------------
-
+Packages:
+* ansible
 * [docker](https://docs.docker.com/install/)
-* [openstack auth config at clouds.yaml](https://docs.openstack.org/python-openstackclient/pike/configuration/index.html)
+* docker-compose
+
+System:
+* [openstack auth config at clouds.yaml](#tenant-configuration)
 * [centos-7 and fedora-28 images](https://nb02.openstack.org/images/)
 * [virt-edit to inject pub keys to images](https://docs.openstack.org/image-guide/modify-images.html)
 * Sudo permissions
+
+Install
+-------
+TripleO CI Reproducer can be installed in your local environment or any remote
+server. A typical setup includes local installations of Zuul, Nodepool and
+Gerrit. Follow these 3 steps to install:
+
+  1. Install [package requirements](#requirements)
+  2. Create ~/.config/openstack/clouds.yaml](#tenant-configuration)
+  3. Run [start.yaml](#start-playbook) playbook to set reprducer up
+
+```
+ansible-playbook -vv start.yaml -e "opendev_user=<your_upstream_gerrit_user> rdoproject_user=<your_rdo_gerrit_user>"
+```
+
+Tenant Configuration
+--------------------
+~/.config/openstack/clouds.yaml
+```
+clouds:
+  rdo-cloud:
+    identity_api_version: 3
+    region_name: regionOne
+    auth:
+      auth_url: https://my.cloud.authurl.org:13000
+      password: <my_password>
+      project_name: <my_project_name>
+      username:  <my_username>
+      user_domain_name: Default
+      project_domain_name: Default
+```
 
 Role Variables
 --------------
@@ -63,12 +100,6 @@ Role Variables
 * `user_pub_key` -- ssh public key to use for the user, default "id_rsa.pub"
 * `ssh_path` --  path where the ssh keys are present, default "~/.ssh"
 * `launch_job_branch` -- branch to launch the job from, default "master"
-
-Prerequisites
--------------
-Inside the role there is a playbook to prepare your machine to run the
-reproducer, the path is playbooks/tripleo-ci-reproducer/pre.yaml is also
-running at CI so it's well tested.
 
 Example Playbook
 ----------------
@@ -167,7 +198,7 @@ the reproducer:
 and installing it as:
 
 ```bash
-ansible-playbook -vv start.yaml
+ansible-playbook -vv start.yaml -e "opendev_user=<your_upstream_gerrit_user> rdoproject_user=<your_rdo_gerrit_user>"
 ```
 you wait until the tenant is up and you can see ``http://localhost:9000/t/tripleo-ci-reproducer/status``
 up.
