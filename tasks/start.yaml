@@ -69,6 +69,7 @@
 
 - name: Check that all services are with correct state
   shell: |
+    set -o pipefail
     export PATH=~/.local/bin/:$PATH
     ! docker-compose ps |grep -v gerritconfig |grep ' Exit '
     docker-compose ps |grep gerritconfig |grep ' Exit 0 '
@@ -79,6 +80,7 @@
 
 - name: Check that all services are with correct state
   shell: |
+    set -o pipefail
     ! podman ps | grep -v gerritconfig | grep ' exited '
     podman ps -a |grep gerritconfig |grep ' Exited (0) '
   args:
@@ -101,10 +103,12 @@
           Accept: "application/json"
       register: node_list
       changed_when: false
-    - fail:
+    - name: fail if no nodes are unavailable
+      fail:
         msg: "There is no node to run jobs"
       when: node_list.json |length == 0
-    - fail:
+    - name: fail if nodes are not ready
+      fail:
         msg: "The nodes are not ready"
       when: item.state != "ready"
       with_items: "{{ node_list.json | list }}"

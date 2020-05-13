@@ -8,6 +8,7 @@
   git:
     repo: ssh://admin@localhost:29418/zuul-config
     dest: "{{ zuul_config.path }}"
+    version: master
 
 - name: Check if we already have the secret
   stat:
