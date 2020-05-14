@@ -53,6 +53,12 @@
             {%- endif %}
 
           - exclude:
+            - nodeset
+            - project
+            - project-template
+            projects:
+            - openstack/tripleo-ci
+          - exclude:
             - project
             - project-template
             projects:
@@ -73,7 +79,6 @@
             - openstack/python-tripleoclient
             - openstack/requirements
             - openstack/tripleo-ansible
-            - openstack/tripleo-ci
             - openstack/tripleo-common
             - openstack/tripleo-ha-utils
             - openstack/tripleo-heat-templates
