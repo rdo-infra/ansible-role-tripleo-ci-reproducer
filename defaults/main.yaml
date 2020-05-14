@@ -44,7 +44,7 @@ depends_on: []
 
 zuul_job: noop
 
-zuul_job_retries: 20
+zuul_job_retries: 30
 
 zuul_yaml:
   - project:
