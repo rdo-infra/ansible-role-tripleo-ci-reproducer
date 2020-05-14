@@ -89,9 +89,21 @@
       changed_when: false
       ignore_errors: true
 
+    - name: Get VMs info
+      become: true
+      shell: |
+        [[ $(command -v virsh) ]] && virsh -c qemu:///system list --all >> virsh.log
+        [[ $(command -v virsh) ]] && virsh list --all >> virsh.log
+      args:
+        chdir: "{{ ansible_user_dir }}/tripleo-ci-reproducer"
+      changed_when: false
+      ignore_errors: true
+
     - name: Get local pip info
       shell: $(command -v pip || command -v pip3) freeze > pip-user.log
-      changed_when: true
+      changed_when: false
+      args:
+        chdir: "{{ ansible_user_dir }}/tripleo-ci-reproducer"
 
     - name: Extract known errors from files
       shell: |

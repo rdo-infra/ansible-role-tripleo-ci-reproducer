@@ -1,0 +1,16 @@
+---
+# For libvirt
+- name: Set facts for libvirt for reproducer work
+  set_fact:
+    libvirt_volume_path: /opt/vm_images
+    libvirt_uri: qemu:///system
+    overcloud_nodes:
+      - name: subnode-0
+        flavor: control
+    libvirt_nodepool: true
+    local_working_dir: "{{ install_path }}"
+    working_dir: "{{ install_path }}"
+    non_root_user: "{{ ansible_user }}"
+    non_root_group: "{{ ansible_user }}"
+    restore_snapshot: false
+    create_snapshot: false
