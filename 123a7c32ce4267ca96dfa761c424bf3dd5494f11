@@ -137,6 +137,29 @@
       "revId": "123a7c32ce4267ca96dfa761c424bf3dd5494f11",
       "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7fb66ab9_97448a3a",
+        "filename": "start.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 671
+      },
+      "writtenOn": "2020-05-14T14:01:10Z",
+      "side": 1,
+      "message": "I think we need \"\" around {{ rdoproject_user }} and {{ opendev_user }}.\n\nI faced below error while running and resolved after adding quotes.\n\n~~~\n$ ansible-playbook -vv start.yaml -e \"opendev_user\u003d\u003cmy\u003e rdoproject_user\u003d\u003cmy\u003e\"\nansible-playbook 2.9.7\n  config file \u003d /etc/ansible/ansible.cfg\n  configured module search path \u003d [\u0027/home/cloud-user/.ansible/plugins/modules\u0027, \u0027/usr/share/ansible/plugins/modules\u0027]\n  ansible python module location \u003d /usr/lib/python3.6/site-packages/ansible\n  executable location \u003d /usr/bin/ansible-playbook\n  python version \u003d 3.6.8 (default, Nov 21 2019, 19:31:34) [GCC 8.3.1 20190507 (Red Hat 8.3.1-4)]\nUsing /etc/ansible/ansible.cfg as config file\n[WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit localhost does not match \u0027all\u0027\nERROR! Syntax Error while loading YAML.\n  found unacceptable key (unhashable type: \u0027AnsibleMapping\u0027)\n\nThe error appears to be in \u0027/home/cloud-user/start.yaml\u0027: line 10, column 32, but may\nbe elsewhere in the file depending on the exact syntax problem.\n\nThe offending line appears to be:\n\n      vars:\n        upstream_gerrit_user: {{ opendev_user }}\n                               ^ here\nWe could be wrong, but this one looks like it might be an issue with\nmissing quotes. Always quote template expression brackets when they\nstart a value. For instance:\n\n    with_items:\n      - {{ foo }}\n\nShould be written as:\n\n    with_items:\n      - \"{{ foo }}\"\n~~~",
+      "range": {
+        "startLine": 11,
+        "startChar": 25,
+        "endLine": 11,
+        "endChar": 46
+      },
+      "revId": "123a7c32ce4267ca96dfa761c424bf3dd5494f11",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
     }
   ]
 }
