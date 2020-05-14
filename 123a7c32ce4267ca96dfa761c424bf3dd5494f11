@@ -143,6 +143,29 @@
     },
     {
       "key": {
+        "uuid": "8caa0c06_b5c07378",
+        "filename": "README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 671
+      },
+      "writtenOn": "2020-05-14T15:05:29Z",
+      "side": 1,
+      "message": "First, I am sorry to not post comments in one go - I am posting them as I am testing these steps.\n\nIn centos8 we are installing as a prerequisite requirements but we are not mentioned anywhere in the read.me to pass -e \"container_mode\u003dpodman\" to the ansible-playbook run command:-\n\n~~~\ntask path: /home/cloud-user/ansible-role-tripleo-ci-reproducer/tasks/start.yaml:4\nfatal: [localhost]: FAILED! \u003d\u003e {\"changed\": false, \"msg\": \"Could not find the requested service docker: host\"} \n~~~\n\nWe need to pass container_mode in playbook run command otherwise it will default to docker:-\n~~~\n[cloud-user@repro ~]$ ansible-playbook -vv start.yaml -e \"opendev_user\u003d\u003c\u003e rdoproject_user\u003d\u003c\u003e\" -e \"container_mode\u003dpodman\"\n~~~\n\nWe can possibly add this in read.me doc or create a ansible task to find if docker is installed or podman is install and take action on that or complain/ try to install docker/podman based on distro/versions.",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 7
+      },
+      "revId": "123a7c32ce4267ca96dfa761c424bf3dd5494f11",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9ac53272_cbaf0fd4",
         "filename": "README.md",
         "patchSetId": 2
