@@ -4,7 +4,7 @@
     state: directory
   register: testproject
 
-- name: Clone testproject project
+- name: Clone testproject project  # noqa 401
   git:
     repo: ssh://admin@localhost:29418/test1
     dest: "{{ testproject.path }}"
@@ -140,6 +140,7 @@
     ssh -p 29418 admin@localhost
       gerrit query --comments "commit:{{ commit }}"
   register: gerrit_info
+  changed_when: false
 
 - name: Print gerrit info
   debug:

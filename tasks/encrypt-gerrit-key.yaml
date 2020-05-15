@@ -4,7 +4,7 @@
     state: directory
   register: zuul_config
 
-- name: Clone zuul-config project
+- name: Clone zuul-config project  # noqa 401
   git:
     repo: ssh://admin@localhost:29418/zuul-config
     dest: "{{ zuul_config.path }}"
