@@ -21,14 +21,12 @@
             - secret
             projects:
             - openstack/project-config
+            {%- if full_repos_set|default(false)|bool %}
           - exclude:
             - project
             - project-template
             - job
             projects:
-            - opendev/base-jobs
-            - openstack/openstack-zuul-jobs
-            {%- if full_repos_set|default(false)|bool %}
             - openstack/cinder
             - openstack/heat-agents
             - openstack/instack-undercloud
@@ -56,17 +54,20 @@
             - project
             - project-template
             projects:
+            - opendev/base-jobs
             - openstack/ansible-collections-openstack
             - openstack/ansible-config_template
             - openstack/ansible-role-collect-logs
             - openstack/ansible-role-container-registry
             - openstack/ansible-role-python_venv_build
             - openstack/ansible-role-tripleo-modify-image
-            - openstack/diskimage-builder
             - openstack/devstack
+            - openstack/diskimage-builder
             - openstack/kolla
             - openstack/openstack-ansible-os_tempest
+            - openstack/openstack-tempest-skiplist
             - openstack/openstack-virtual-baremetal
+            - openstack/openstack-zuul-jobs
             - openstack/openstacksdk
             - openstack/paunch
             - openstack/puppet-tripleo
@@ -85,6 +86,7 @@
             - openstack/tripleo-repos
             - openstack/tripleo-upgrade
             - x/browbeat
+            - zuul/zuul-base-jobs
             - zuul/zuul-jobs
 
       rdoproject.org:
