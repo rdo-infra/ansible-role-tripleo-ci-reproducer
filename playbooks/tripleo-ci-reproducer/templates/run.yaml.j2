@@ -14,7 +14,9 @@
         os_autohold_node: "{{ os_autohold_node | default(true) }}"
         control_vcpu: 4
         control_memory: 4096
-        mirror_fqdn:  "{{ mirror_fqdn }}"
+        mirror_fqdn: "{{ mirror_fqdn | default(omit) }}"
+        pypi_fqdn: "{{ pypi_fqdn | default(mirror_fqdn) | default(omit) }}"
+        package_mirror: "{{ package_mirror | default(omit) }}"
         depends_on: "{{ '{{' }} zuul['items'] |
           rejectattr('project.name', 'match', 'rdo-infra/ansible-role-tripleo-ci-reproducer') |
           map(attribute='change_url') | list {{ '}}' }}"

@@ -11,6 +11,8 @@ ci_jobs_config:
           parent: tripleo-ci-centos-8-standalone
           vars:
             mirror_fqdn: "{{ mirror_fqdn }}"
+            pypi_fqdn: "{{ pypi_fqdn | default(mirror_fqdn) }}"
+            package_mirror: "{{ package_mirror | default(omit) }}"
             dryrun: true
             featureset_override:
               tempest_format: container
@@ -27,6 +29,8 @@ ci_jobs_config:
           timeout: 9000
           vars:
             mirror_fqdn: "{{ mirror_fqdn }}"
+            pypi_fqdn: "{{ pypi_fqdn | default(mirror_fqdn) }}"
+            package_mirror: "{{ package_mirror | default(omit) }}"
             featureset_override:
               tempest_format: container
 
