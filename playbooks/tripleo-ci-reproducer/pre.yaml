@@ -1,6 +1,16 @@
 ---
 
 - hosts: primary
+  roles:
+    - role: add-authorized-keys
+      public_keys:
+        # sshnaidm
+        - public_key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDDhi/BqsZibuAPiUjJe7b3Dqe5nyI7\
+            BckOwfGwJYg436+bFQMoR/7RKmtPe+ISVQ04lwIriIPwKGaSHj5mbEe4LsCLZ5jAUHxv\
+            WfgHitqS5ln295zU7vp1z28o7e6LQNplgExyqQlxUPdOU48tmlz93F6szSYkNYvZnhzM\
+            n9syrajC74qPuKsmHTeYFLEcxesb7/u+BtxCk8WdjYTb//sk038NEtIsNhrGtAOV3WcD\
+            pXnA5mNMpUfeoQ4yiN9LqtreXr7Zeo587LV3T2QL+huAE0J7EuCzHAKk6TIzJqjLidg0\
+            SYwZZwfbxgviU66QLkeyzh9oiovwskelvOQCBFq3 sshnaidm@redhat.com"
   tasks:
     - name: Gather needed facts
       setup:
