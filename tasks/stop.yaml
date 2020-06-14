@@ -15,7 +15,7 @@
 
 
 - name: Stop up zuul and friends
-  become: true
+  #become: true
   command: "{{ install_path }}/tripleo-ci-reproducer.sh --stop"
   ignore_errors: true
   when:

@@ -9,7 +9,7 @@
         state: directory
 
     - name: Get podman system info
-      become: true
+      #become: true
       shell: |
         {{ container_mode }} --version > {{ container_mode }}.system.log 2>&1
         {{ container_mode }} system info >> {{ container_mode }}.system.log 2>&1
@@ -20,7 +20,7 @@
       ignore_errors: true
 
     - name: Get reproducer services logs
-      become: "{{ true if container_mode == 'podman' else false }}"
+      #become: "{{ true if container_mode == 'podman' else false }}"
       shell: >-
         {{ container_mode if container_mode == 'podman' else docker_compose_cli }}
         logs {{ '' if container_mode == 'podman' else '--no-color' }} {{ item }} 2>&1 >
@@ -42,7 +42,7 @@
         - fingergw
 
     - name: Get reproducer mergers logs
-      become: "{{ true if container_mode == 'podman' else false }}"
+      #become: "{{ true if container_mode == 'podman' else false }}"
       shell: >-
         {{ container_mode if container_mode == 'podman' else docker_compose_cli }}
         logs {{ '' if container_mode == 'podman' else '--no-color' }} {{ item }} 2>&1 >
@@ -55,7 +55,7 @@
         start=0 count={{ ansible_processor_vcpus }} format='merger%d'
 
     - name: Shut down reproducer
-      become: true
+      #become: true
       command: "{{ ansible_user_dir }}/tripleo-ci-reproducer/tripleo-ci-reproducer.sh --stop"
       changed_when: true
       ignore_errors: true

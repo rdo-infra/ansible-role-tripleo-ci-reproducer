@@ -160,15 +160,15 @@
     check:
       jobs:
         - tox-linters
-        - tripleo-ci-reproducer-fedora-30-host-docker
+        #- tripleo-ci-reproducer-fedora-30-host-docker
         - tripleo-ci-reproducer-fedora-30-host-podman
         - tripleo-ci-reproducer-fedora-31-host-podman
         - tripleo-ci-reproducer-centos-7-host
         - tripleo-ci-reproducer-centos-8-host
         - tripleo-ci-reproducer-centos-7-libvirt-standalone-dryrun-vexxhost
         - tripleo-ci-reproducer-centos-8-libvirt-standalone-dryrun-vexxhost
-        - tripleo-ci-reproducer-centos-8-openstack-standalone
-        - tripleo-ci-reproducer-centos-8-openstack-standalone-dryrun
+        # - tripleo-ci-reproducer-centos-8-openstack-standalone
+        # - tripleo-ci-reproducer-centos-8-openstack-standalone-dryrun
 
     gate:
       jobs:

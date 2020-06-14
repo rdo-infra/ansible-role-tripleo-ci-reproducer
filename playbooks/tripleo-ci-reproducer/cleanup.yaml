@@ -5,7 +5,7 @@
   tasks:
 
     - name: Shut down reproducer
-      become: true
+      #become: true
       command: "{{ ansible_user_dir }}/tripleo-ci-reproducer/tripleo-ci-reproducer.sh --stop"
       changed_when: true
       ignore_errors: true

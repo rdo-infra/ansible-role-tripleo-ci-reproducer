@@ -81,7 +81,7 @@
     msg: 'finger {{ zuul_status.json.0.jobs.0.uuid }}@localhost'
 
 - name: Do autohold to have the nodes in case of job failure - podman
-  become: true
+  #become: true
   command: |
     podman exec scheduler zuul autohold
       --project test1
