@@ -21,6 +21,7 @@
 - name: Check image are uploaded
   fail:
     msg: |
+      WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING!
       Cannot find {{ item }} at the openstack cloud, you can upload one from
       https://nb02.openstack.org/images/ and add your ssh pub key with
       virt-edit and upload it to your openstack cloud.
@@ -28,6 +29,9 @@
     openstack_image|selectattr( 'name', 'equalto', item )|list|length == 0
   with_items:
     - "{{ os_centos7_image }}"
+    - "{{ os_centos8_image }}"
+    - "{{ os_rhel8_image }}"
+  ignore_error: true
 
 - name: Gather facts about a previously created network by name
   os_networks_facts:
