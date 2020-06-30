@@ -28,7 +28,6 @@
     openstack_image|selectattr( 'name', 'equalto', item )|list|length == 0
   with_items:
     - "{{ os_centos7_image }}"
-    - "{{ os_fedora28_image }}"
 
 - name: Gather facts about a previously created network by name
   os_networks_facts:

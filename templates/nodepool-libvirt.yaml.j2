@@ -4,7 +4,6 @@ zookeeper-servers:
 
 labels:
   - name: centos-7
-  - name: fedora-28
   - name: tripleo-ovb-centos-7
   - name: rhel-8
   - name: centos-8
@@ -18,7 +17,6 @@ providers:
 {% for subnode in groups['subnodes'] %}
           - name: {{ hostvars[subnode].ansible_host }}
             labels:
-                - fedora-28
                 - centos-7
                 - tripleo-ovb-centos-7
                 - rhel-8
