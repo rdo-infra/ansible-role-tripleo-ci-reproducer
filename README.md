@@ -90,8 +90,6 @@ Role Variables
   clouds.yaml
 - `os_centos7_image` -- Image to use at centos-7 nodesets,
   default value is penstack-infra-centos-7
-- `os_fedora28_image` -- Image to use at fedora-28 nodesets,
-  default value is penstack-infra-centos-7
 - `upstream_gerrit_user` -- User clone repos from review.opendev.org,
 - `rdo_gerrit_user` -- User clone repos from review.rdoproject.org,
   default value is ansible_user

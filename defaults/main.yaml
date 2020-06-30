@@ -6,7 +6,6 @@ container_mode: docker
 ###############
 os_cloud_name: rdo-cloud
 os_centos7_image: upstream-cloudinit-centos-7
-os_fedora28_image: upstream-cloudinit-fedora-28
 os_rhel8_image: upstream-cloudinit-rhel-8
 os_centos8_image: upstream-cloudinit-centos-8-rdo
 os_autohold_node: true

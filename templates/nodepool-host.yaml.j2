@@ -4,7 +4,6 @@ zookeeper-servers:
 
 labels:
   - name: centos-7
-  - name: fedora-28
   - name: tripleo-ovb-centos-7
   - name: rhel-8
   - name: centos-8
@@ -17,7 +16,6 @@ providers:
         nodes:
           - name: {{ ansible_default_ipv4.address }}
             labels:
-                - fedora-28
                 - centos-7
                 - tripleo-ovb-centos-7
                 - centos-8
