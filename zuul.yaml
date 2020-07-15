@@ -68,6 +68,17 @@
     nodeset: single-fedora-31-node
 
 - job:
+    name: tripleo-ci-reproducer-fedora-32-host-podman
+    parent: tripleo-ci-reproducer-host
+    nodeset: single-fedora-32-node
+
+- job:
+    name: tripleo-ci-reproducer-fedora-rawhide-host-podman
+    parent: tripleo-ci-reproducer-host
+    nodeset: single-fedora-rawhide-node
+    voting: false
+
+- job:
     name: tripleo-ci-reproducer-centos-7-host
     parent: tripleo-ci-reproducer-host
     nodeset: single-centos-7-node
@@ -163,6 +174,8 @@
         - tripleo-ci-reproducer-fedora-30-host-docker
         - tripleo-ci-reproducer-fedora-30-host-podman
         - tripleo-ci-reproducer-fedora-31-host-podman
+        - tripleo-ci-reproducer-fedora-32-host-podman
+        - tripleo-ci-reproducer-fedora-rawhide-host-podman
         - tripleo-ci-reproducer-centos-7-host
         - tripleo-ci-reproducer-centos-8-host
         - tripleo-ci-reproducer-centos-7-libvirt-standalone-dryrun-vexxhost
@@ -176,6 +189,7 @@
         - tripleo-ci-reproducer-fedora-30-host-docker
         - tripleo-ci-reproducer-fedora-30-host-podman
         - tripleo-ci-reproducer-fedora-31-host-podman
+        - tripleo-ci-reproducer-fedora-32-host-podman
         - tripleo-ci-reproducer-centos-7-host
         - tripleo-ci-reproducer-centos-8-host
 
