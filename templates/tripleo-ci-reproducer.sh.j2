@@ -5,6 +5,7 @@ pod_name=tripleo-ci-reproducer
 create_pod () {
     podman pod create \
         --name $pod_name \
+        --share ipc,net \
         -p 8000:80 \
         -p 8080:8080 \
         -p 8005:8005 \
