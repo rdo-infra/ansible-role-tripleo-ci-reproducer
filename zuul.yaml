@@ -192,7 +192,7 @@
         - tripleo-ci-reproducer-centos-7-host
         - tripleo-ci-reproducer-centos-8-host
 
-    openstack-periodic-24hr:
+    openstack-periodic-daily:
       jobs:
         - tripleo-ci-reproducer-fedora-30-host-docker
         - tripleo-ci-reproducer-fedora-31-host-podman
