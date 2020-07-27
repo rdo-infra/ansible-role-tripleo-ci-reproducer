@@ -13,7 +13,7 @@ providers:
   - name: {{ ansible_hostname }}-{{ os_cloud_name }}
     cloud: {{ os_cloud_name }}
     launch-retries: 1
-    region-name: regionOne
+    region-name: RegionOne
     clean-floating-ips: {{ clean_floating_ips }}
     boot-timeout: 600
     rate: 0.25

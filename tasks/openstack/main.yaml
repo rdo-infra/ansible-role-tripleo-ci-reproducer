@@ -10,6 +10,7 @@
   with_items:
     - 19885
     - 22
+  when: os_initial_setup|default(false)|bool
 
 - name: Get installed images names
   os_image_facts:
