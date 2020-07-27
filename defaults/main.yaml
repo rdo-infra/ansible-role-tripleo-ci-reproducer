@@ -5,9 +5,10 @@ container_mode: docker
 # Configuration for openstack nodepool
 ###############
 os_cloud_name: rdo-cloud
-os_centos7_image: upstream-cloudinit-centos-7
+os_centos7_image: upstream-cloudinit-centos-7-new
 os_rhel8_image: upstream-cloudinit-rhel-8
-os_centos8_image: upstream-cloudinit-centos-8-rdo
+os_centos8_image: upstream-cloudinit-centos-8-new
+os_flavor_name: "{{ job.flavor_name | default('m1.large') }}"
 os_autohold_node: true
 
 user_pri_key: "id_rsa"
