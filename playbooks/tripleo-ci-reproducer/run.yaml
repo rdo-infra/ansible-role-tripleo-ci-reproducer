@@ -88,6 +88,13 @@
           {{ zuul_config | default({}) | to_nice_yaml }}
         path: "{{ ansible_user_dir }}/zuul_vars.yaml"
         create: true
+    - name: Dump hostvars with job variables
+      set_fact:
+        local_hostvars: "{{ {'job': hostvars[inventory_hostname]} }}"
+    - name: Dump hostvars on the host to pass it to inner ansible
+      copy:
+        content: "{{ local_hostvars|to_nice_yaml }}"
+        dest: "{{ ansible_user_dir }}/hostvars-variables.yaml"
     - name: Pass override config for reproducer
       blockinfile:
         content: |
