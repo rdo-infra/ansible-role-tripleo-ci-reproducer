@@ -79,7 +79,10 @@
 
 - name: Setup nodepool provider
   include_tasks: "{{ nodepool_provider }}/main.yaml"
-  when: nodepool_provider != "host" and setup_nodepool
+  when:
+    - nodepool_provider != "host"
+    - setup_nodepool|bool
+    - job.setup_nodepool|default(setup_nodepool)|bool
 
 - name: Generate nodepool main configuration
   template:
