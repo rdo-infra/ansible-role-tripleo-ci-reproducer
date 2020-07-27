@@ -233,7 +233,7 @@
             vars: *promotion
             dependencies:
               - periodic-tripleo-centos-8-reproducer-update-images-start
-        - tripleo-ci-reproducer-centos-8-openstack-standalone-dryrun:
+        - tripleo-ci-reproducer-centos-8-libvirt-standalone-dryrun-vexxhost:
             vars: *promotion
             dependencies:
               - periodic-tripleo-centos-8-reproducer-update-images-start
@@ -248,4 +248,4 @@
               - tripleo-ci-reproducer-fedora-31-host-podman
               - tripleo-ci-reproducer-centos-7-host
               - tripleo-ci-reproducer-centos-8-host
-              - tripleo-ci-reproducer-centos-8-openstack-standalone-dryrun
+              - tripleo-ci-reproducer-centos-8-libvirt-standalone-dryrun-vexxhost
