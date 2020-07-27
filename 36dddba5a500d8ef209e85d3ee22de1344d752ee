@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5b1ae06f_7c1aef14",
+        "filename": "tasks/openstack/main.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 155
+      },
+      "writtenOn": "2020-07-27T10:41:39Z",
+      "side": 1,
+      "message": "you should change it to \"debug\" if using \"ignore_error\"",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 7
+      },
+      "revId": "36dddba5a500d8ef209e85d3ee22de1344d752ee",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
