@@ -49,6 +49,7 @@
       nodepool_provider: openstack
       os_cloud_name: ovb-test
       os_autohold_node: false
+      setup_nodepool: false
 
 - job:
     name: tripleo-ci-reproducer-fedora-30-host-docker
@@ -249,3 +250,4 @@
               - tripleo-ci-reproducer-centos-7-host
               - tripleo-ci-reproducer-centos-8-host
               - tripleo-ci-reproducer-centos-8-libvirt-standalone-dryrun-vexxhost
+# test
