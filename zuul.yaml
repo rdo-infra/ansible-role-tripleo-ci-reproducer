@@ -49,6 +49,8 @@
       nodepool_provider: openstack
       os_cloud_name: ovb-test
       os_autohold_node: false
+      setup_nodepool: false
+      flavor_name: nodepool
 
 - job:
     name: tripleo-ci-reproducer-fedora-30-host-docker
@@ -199,6 +201,7 @@
         - periodic-tripleo-ci-reproducer-centos-7-libvirt-standalone-dryrun-vexxhost
         - periodic-tripleo-ci-reproducer-centos-8-libvirt-standalone-dryrun-vexxhost
         - periodic-tripleo-ci-reproducer-centos-8-openstack-standalone
+        - periodic-tripleo-ci-reproducer-centos-8-openstack-standalone-dryrun
 
     periodic:
       jobs:
@@ -237,6 +240,10 @@
             vars: *promotion
             dependencies:
               - periodic-tripleo-centos-8-reproducer-update-images-start
+        - tripleo-ci-reproducer-centos-8-openstack-standalone-dryrun:
+            vars: *promotion
+            dependencies:
+              - periodic-tripleo-centos-8-reproducer-update-images-start
         - periodic-tripleo-centos-8-reproducer-update-images:
             vars:
               original_namespace: rdoci
@@ -249,3 +256,4 @@
               - tripleo-ci-reproducer-centos-7-host
               - tripleo-ci-reproducer-centos-8-host
               - tripleo-ci-reproducer-centos-8-libvirt-standalone-dryrun-vexxhost
+              - tripleo-ci-reproducer-centos-8-openstack-standalone-dryrun
