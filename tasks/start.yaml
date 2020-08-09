@@ -10,12 +10,12 @@
     # so we do a stop/start
     #
     - name: Stop up zuul and friends
-      docker_service:
+      docker_compose:
         project_src: "{{ install_path }}"
         state: absent
         remove_volumes: true
     - name: Start up zuul and friends
-      docker_service:
+      docker_compose:
         project_src: "{{ install_path }}"
         state: present
         pull: "{{ pull | default(false) | bool }}"

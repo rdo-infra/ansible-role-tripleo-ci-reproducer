@@ -133,7 +133,7 @@ Run standalone job over tripleo noop change
 - name: Start reproducer
   hosts: virthost
   vars:
-    zuul_job: tripleo-ci-centos-7-standalone
+    zuul_job: tripleo-ci-centos-8-standalone
     depends_on:
         - https://review.opendev.org/#/c/622261/
   tasks:
@@ -152,7 +152,7 @@ Run standalone without tempest towards a noop change
       - project:
           check:
             jobs:
-              - name: tripleo-ci-centos-7-standalone
+              - name: tripleo-ci-centos-8-standalone
                 vars:
                   override_settings:
                     tempest_run: false
@@ -169,7 +169,7 @@ Run standalone job over stable/rocky
 - name: Start reproducer
   hosts: virthost
   vars:
-    zuul_job: tripleo-ci-centos-7-standalone
+    zuul_job: tripleo-ci-centos-8-standalone
     launch_job_branch: stable/rocky
   tasks:
     - include_role:
@@ -284,36 +284,63 @@ Let's populate ``zuul.yaml`` file with necessary config to run an OVB job:
 - project:
     check:
       jobs:
-        - tripleo-ci-centos-7-ovb-3ctlr_1comp-featureset001-test
+        - tripleo-ci-centos-8-ovb-3ctlr_1comp-featureset001-test
 
 - job:
-    name: tripleo-ci-centos-7-ovb-3ctlr_1comp-featureset001-test
-    parent: tripleo-ci-centos-7-ovb-3ctlr_1comp-featureset001
+    name: tripleo-ci-centos-8-ovb-3ctlr_1comp-featureset001-test
+    parent: tripleo-ci-centos-8-ovb-3ctlr_1comp-featureset001
     vars:
       cloud_secrets:
-        rdocloud:
-          username: <your_username_for_rdo_cloud>
-          password: <your_password_for_rdo_cloud>
-          project_name: <your_username_for_rdo_cloud>
-          auth_url: https://phx2.cloud.rdoproject.org:13000/v3
+        upshift:
+          username: <your_username_for_cloud>
+          password: <your_password_for_cloud>
+          project_name: <your_project_name_for_cloud>
+          auth_url: https://rhos-d.infra.prod.upshift.rdu2.redhat.com:13000/v3
           region_name: regionOne
           identity_api_version: 3
-          user_domain_name: Default
-          project_domain_name: Default
-      key_name: <your_keypair_for_rdo_cloud>
+          user_domain_name: redhat.com
+      key_name: <your_keypair_for_cloud>
       cloud_settings:
-        rdocloud:
-          public_ip_net: 38.145.32.0/22
-          undercloud_flavor: m1.large
+        upshift:
+          public_ip_net: provider_net_shared_3
+          undercloud_flavor: m1.xlarge
           baremetal_flavor: m1.large
           bmc_flavor: m1.medium
           extra_node_flavor: m1.small
-          baremetal_image: CentOS-7-x86_64-GenericCloud-1804_02
+          baremetal_image: CentOS-8-x86_64-GenericCloud-released-latest
       remove_ovb_after_job: true # use false if you need to have all OVB nodes after a job
       force_job_failure: true # use true if you want job to fail in the end and stay for further investigations
       registry_login_enabled: false # use it to avoid login failures to RDO registry, login isn't required
       quickstart_verbosity: -vv # use it for more verbosity in quickstart logs
 ```
+
+In case of PSI/Upshift clouds you will need to create a configuration in
+local openstack client config in `~/.config/openstack/clouds.yaml`:
+
+```yaml
+clouds:
+  upshift:
+    identity_api_version: 3
+    auth:
+      auth_url: https://rhos-d.infra.prod.upshift.rdu2.redhat.com:13000/v3
+      password: <your_password_for_cloud>
+      project_name: <your_project_name_for_cloud>
+      username: <your_username_for_cloud>
+      project_domain_id: <your_project_domain_id_for_cloud>
+      user_domain_name: "redhat.com"
+    regions:
+    - name: regionOne
+      values:
+        networks:
+         - name: provider_net_shared_3  # or whatever external network you want
+           routes_externally: true
+           nat_source: true
+```
+
+Because of multiple external networks in the cloud, it's important to choose one
+and configure it in `clouds.yaml` as an external one. If you have a router in the
+tenant and private network, the routers external gateway must be for the same
+networks as in `clouds.yaml` (in this case for `provider_net_shared_3`).
 
 We use secrets in zuul.yaml because we don't have in our ``zuul-config`` repository,
 when we removed them a few steps ago.
@@ -334,7 +361,7 @@ now uses code you changed in ``ovb-manage`` role before and you can test it and 
 Don't forget to hold the node if you need it (nodepool node, for OVB it's ``remove_ovb_after_job`` parameter in ``zuul.yaml``)
 
 ```bash
-docker-compose exec scheduler zuul autohold --tenant tripleo-ci-reproducer --job tripleo-ci-centos-7-ovb-3ctlr_1comp-featureset001-test --reason debug --project test1
+docker-compose exec scheduler zuul autohold --tenant tripleo-ci-reproducer --job tripleo-ci-centos-8-ovb-3ctlr_1comp-featureset001-test --reason debug --project test1
 ```
 
 Happy testing!

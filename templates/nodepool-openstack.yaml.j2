@@ -13,8 +13,8 @@ providers:
   - name: {{ os_nodepool_name }}
     cloud: {{ os_cloud_name }}
     launch-retries: 1
-    region-name: RegionOne
-    clean-floating-ips: {{ clean_floating_ips }}
+    clean-floating-ips: {{ os_clean_floating_ips }}
+    port-cleanup-interval: {{ os_port_cleanup_interval }}
     boot-timeout: 600
     rate: 0.25
     cloud-images:
