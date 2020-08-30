@@ -291,7 +291,7 @@ Let's populate ``zuul.yaml`` file with necessary config to run an OVB job:
     parent: tripleo-ci-centos-8-ovb-3ctlr_1comp-featureset001
     vars:
       cloud_secrets:
-        upshift:
+        rdocloud:
           username: <your_username_for_cloud>
           password: <your_password_for_cloud>
           project_name: <your_project_name_for_cloud>
@@ -301,7 +301,7 @@ Let's populate ``zuul.yaml`` file with necessary config to run an OVB job:
           user_domain_name: redhat.com
       key_name: <your_keypair_for_cloud>
       cloud_settings:
-        upshift:
+        rdocloud:
           public_ip_net: provider_net_shared_3
           undercloud_flavor: m1.xlarge
           baremetal_flavor: m1.large
@@ -319,14 +319,14 @@ local openstack client config in `~/.config/openstack/clouds.yaml`:
 
 ```yaml
 clouds:
-  upshift:
+  rdocloud:
     identity_api_version: 3
     auth:
       auth_url: https://rhos-d.infra.prod.upshift.rdu2.redhat.com:13000/v3
-      password: <your_password_for_cloud>
-      project_name: <your_project_name_for_cloud>
       username: <your_username_for_cloud>
-      project_domain_id: <your_project_domain_id_for_cloud>
+      password: <your_password_for_cloud>
+      project_name: <your_project_name_for_cloud> # rhos-dfg-pcci
+      project_domain_id: <your_project_domain_id_for_cloud> # 62cf1b5ec006489db99e2b0ebfb55f57
       user_domain_name: "redhat.com"
     regions:
     - name: regionOne
@@ -335,6 +335,74 @@ clouds:
          - name: provider_net_shared_3  # or whatever external network you want
            routes_externally: true
            nat_source: true
+```
+
+The job definition should look like:
+
+```yaml
+- job:
+    name: tripleo-ci-centos-8-containers-multinode-test
+    parent: tripleo-ci-centos-8-containers-multinode
+    vars:
+      mirror_fqdn: afs-mirror.sf.hosted.upshift.rdu2.redhat.com
+      custom_nameserver:
+        - 10.5.30.160
+        - 10.11.5.19
+      undercloud_undercloud_nameservers:
+        - 10.5.30.160
+      external_net: provider_net_shared_3
+      ntp_server: '10.5.26.10,clock.redhat.com,clock2.redhat.com'
+      undercloud_undercloud_ntp_servers:
+        - 10.5.26.10
+        - clock.redhat.com
+```
+
+In this case you can use any mirror which is available from PSI cloud, the local
+`afs-mirror` or rdo-cloud/vexxhost/upstream mirror.
+`external_net` should be one of available external networks in PSI cloud.
+
+For OVB job it can be like:
+
+```yaml
+- job:
+    name: tripleo-ci-centos-8-ovb-3ctlr_1comp-featureset001-test
+    parent: tripleo-ci-centos-8-ovb-3ctlr_1comp-featureset001
+    vars:
+      cloudenv: internal
+      mirror_fqdn: mirror.regionone.rdo-cloud.rdoproject.org # or afs-mirror.sf.hosted.upshift.rdu2.redhat.com
+      custom_nameserver:
+        - 10.5.30.160
+        - 10.11.5.19
+      undercloud_undercloud_nameservers:
+        - 10.5.30.160
+      external_net: provider_net_shared_3
+      ntp_server: '10.5.26.10,clock.redhat.com,clock2.redhat.com'
+      undercloud_undercloud_ntp_servers:
+        - 10.5.26.10
+        - clock.redhat.com
+      cloud_secrets:
+        rdocloud:
+          username: <cloud_username>
+          password: <cloud_password>
+          project_name: rhos-dfg-pcci
+          auth_url: https://rhos-d.infra.prod.upshift.rdu2.redhat.com:13000/v3
+          region_name: regionOne
+          identity_api_version: 3
+          user_domain_name: redhat.com
+          project_domain_id: "62cf1b5ec006489db99e2b0ebfb55f57"
+      key_name: <your_key_name>
+      cloud_settings:
+        rdocloud:
+          public_ip_net: provider_net_shared_3
+          undercloud_flavor: m1.xlarge
+          baremetal_flavor: m1.large
+          bmc_flavor: m1.medium
+          extra_node_flavor: m1.small
+          baremetal_image: CentOS-8-x86_64-GenericCloud-released-latest
+      remove_ovb_after_job: false # use false if you need to have all OVB nodes after a job
+      force_job_failure: true # use true if you want job to fail in the end and stay for further investigations
+      registry_login_enabled: false # use it to avoid login failures to RDO registry, login isn't required
+      quickstart_verbosity: -vv
 ```
 
 Because of multiple external networks in the cloud, it's important to choose one
