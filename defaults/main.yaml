@@ -1,6 +1,7 @@
 ---
 log_level: DEBUG
-container_mode: docker
+container_mode: podman
+ansible_user: "{{ ansible_user_id }}"
 ##############
 # Configuration for openstack nodepool
 ###############

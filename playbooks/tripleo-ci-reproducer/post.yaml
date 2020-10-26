@@ -165,7 +165,7 @@
         src: '/etc/'
         dest: '{{ zuul.executor.log_root }}/etc/'
         mode: pull
-        copy_links: true
+        copy_links: false
         verify_host: true
         rsync_opts:
           - "--chown={{ ansible_user }}:{{ ansible_user }}"
