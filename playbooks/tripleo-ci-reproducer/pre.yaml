@@ -76,6 +76,13 @@
       with_items:
         - "{{ package_list.stdout_lines }}"
 
+    - name: Update rpms
+      become: true
+      package:
+        name:
+          - git
+        state: latest
+
     - name: Install python dependencies
       register: result
       until: not result.failed|bool
