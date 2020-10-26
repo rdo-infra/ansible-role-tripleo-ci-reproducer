@@ -65,6 +65,9 @@
       command: "{{ docker_compose_cli }} down -v"
       args:
         chdir: "{{ ansible_user_dir }}/tripleo-ci-reproducer"
+      environment:
+        DOCKER_CLIENT_TIMEOUT: 120
+        COMPOSE_HTTP_TIMEOUT: 120
       changed_when: true
       when: container_mode == 'docker'
 
@@ -165,7 +168,7 @@
         src: '/etc/'
         dest: '{{ zuul.executor.log_root }}/etc/'
         mode: pull
-        copy_links: true
+        copy_links: false
         verify_host: true
         rsync_opts:
           - "--chown={{ ansible_user }}:{{ ansible_user }}"
