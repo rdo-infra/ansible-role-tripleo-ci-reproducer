@@ -1,6 +1,8 @@
 ---
 log_level: DEBUG
-container_mode: docker
+container_mode: podman
+ansible_user: lookup('env', 'USER')
+ansible_user_dir: lookup('env', 'HOME')
 ##############
 # Configuration for openstack nodepool
 ###############
