@@ -1,7 +1,7 @@
 ---
 - name: Gather needed facts
   setup:
-    gather_subset: "!min,processor,user_dir"
+    # gather_subset: "!min,processor,user_dir"
 
 - name: Build zuul container
   when: build_zuul is defined
