@@ -95,7 +95,7 @@
 - job:
     name: tripleo-ci-reproducer-centos-8-openstack-standalone-dryrun
     parent: tripleo-ci-reproducer-openstack
-    nodeset: single-centos-8-node
+    nodeset: single-centos-8-node-vexxhost
     voting: false
     vars:
       ci_job: standalone-dryrun
@@ -103,7 +103,7 @@
 - job:
     name: tripleo-ci-reproducer-centos-8-openstack-standalone
     parent: tripleo-ci-reproducer-openstack
-    nodeset: single-centos-8-node
+    nodeset: single-centos-8-node-vexxhost
     voting: false
     timeout: 15300
     vars:
