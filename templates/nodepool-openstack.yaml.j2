@@ -5,7 +5,6 @@ zookeeper-servers:
 labels:
   - name: centos-7
   - name: tripleo-ovb-centos-7
-  - name: upstream-rhel-8
   - name: centos-8
   - name: tripleo-ovb-centos-8
 
@@ -51,12 +50,6 @@ providers:
             cloud-image: centos-7
             console-log: true
             {{ cloud_config_centos_ovb | indent(12) }}
-          - name: upstream-rhel-8
-            min-ram: 8192
-            flavor-name: {{ os_flavor_name }}
-            cloud-image: cloud-rhel-8
-            console-log: true
-            {{ cloud_config_rhel8 | indent(12) }}
           - name: centos-8
             min-ram: 8192
             flavor-name: {{ os_flavor_name }}
