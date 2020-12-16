@@ -58,6 +58,11 @@
     nodeset: single-fedora-32-node
 
 - job:
+    name: tripleo-ci-reproducer-fedora-33-host-podman
+    parent: tripleo-ci-reproducer-host
+    nodeset: single-fedora-33-node
+
+- job:
     name: tripleo-ci-reproducer-fedora-rawhide-host-podman
     parent: tripleo-ci-reproducer-host
     nodeset: single-fedora-rawhide-node
@@ -135,6 +140,10 @@
     parent: tripleo-ci-reproducer-centos-8-openstack-standalone
 
 - job:
+    name: periodic-tripleo-ci-reproducer-fedora-rawhide-host-podman
+    parent: tripleo-ci-reproducer-fedora-rawhide-host-podman
+
+- job:
     name: periodic-tripleo-ci-reproducer-centos-8-openstack-standalone-dryrun
     parent: tripleo-ci-reproducer-centos-8-openstack-standalone-dryrun
 
@@ -157,6 +166,8 @@
       jobs:
         - tox-linters
         - tripleo-ci-reproducer-fedora-32-host-podman
+        - tripleo-ci-reproducer-fedora-33-host-podman
+        - tripleo-ci-reproducer-fedora-rawhide-host-podman
         - tripleo-ci-reproducer-centos-7-host
         - tripleo-ci-reproducer-centos-8-host
         - tripleo-ci-reproducer-centos-7-libvirt-standalone-dryrun-vexxhost
@@ -168,6 +179,7 @@
       jobs:
         - tox-linters
         - tripleo-ci-reproducer-fedora-32-host-podman
+        - tripleo-ci-reproducer-fedora-33-host-podman
         - tripleo-ci-reproducer-centos-7-host
         - tripleo-ci-reproducer-centos-8-host
 
@@ -177,6 +189,7 @@
         - periodic-tripleo-ci-reproducer-centos-8-libvirt-standalone-dryrun-vexxhost
         - periodic-tripleo-ci-reproducer-centos-8-openstack-standalone
         - periodic-tripleo-ci-reproducer-centos-8-openstack-standalone-dryrun
+        - periodic-tripleo-ci-reproducer-fedora-rawhide-host-podman
 
     periodic:
       jobs:
@@ -193,6 +206,10 @@
                 zuul_merger_image: rdoci/zuul-merger:promotion-test
                 zuul_fingergw_image: rdoci/zuul-fingergw:promotion-test
                 nodepool_launcher_image: rdoci/nodepool-launcher:promotion-test
+            dependencies:
+              - periodic-tripleo-centos-8-reproducer-update-images-start
+        - tripleo-ci-reproducer-fedora-33-host-podman:
+            vars: *promotion
             dependencies:
               - periodic-tripleo-centos-8-reproducer-update-images-start
         - tripleo-ci-reproducer-centos-7-host:
@@ -218,6 +235,7 @@
               push_tag: stable
             dependencies:
               - tripleo-ci-reproducer-fedora-32-host-podman
+              - tripleo-ci-reproducer-fedora-33-host-podman
               - tripleo-ci-reproducer-centos-7-host
               - tripleo-ci-reproducer-centos-8-host
               - tripleo-ci-reproducer-centos-8-libvirt-standalone-dryrun-vexxhost
