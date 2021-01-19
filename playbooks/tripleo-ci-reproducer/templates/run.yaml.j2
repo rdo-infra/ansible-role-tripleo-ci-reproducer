@@ -18,7 +18,10 @@
         os_centos8_image: upstream-cloudinit-centos-8-new
         control_vcpu: 4
         control_memory: 4096
-        mirror_fqdn:  "{{ mirror_fqdn }}"
+        mirror_fqdn: "{{ mirror_fqdn }}"
+        zuul_site_mirror_fqdn: "{{ zuul_site_mirror_fqdn | default(mirror_fqdn) }}"
+        pypi_fqdn: "{{ pypi_fqdn | default(mirror_fqdn) }}"
+        package_mirror: http://mirror.centos.org/{{ ansible_distribution | lower }}
         depends_on: "{{ '{{' }} zuul['items'] |
           rejectattr('project.name', 'match', 'rdo-infra/ansible-role-tripleo-ci-reproducer') |
           map(attribute='change_url') | list {{ '}}' }}"
