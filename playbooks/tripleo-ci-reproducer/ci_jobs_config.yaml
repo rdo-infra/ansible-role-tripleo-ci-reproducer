@@ -11,6 +11,9 @@ ci_jobs_config:
           parent: tripleo-ci-centos-8-standalone
           vars:
             mirror_fqdn: "{{ mirror_fqdn }}"
+            zuul_site_mirror_fqdn: "{{ zuul_site_mirror_fqdn | default(mirror_fqdn) }}"
+            pypi_fqdn: "{{ pypi_fqdn | default(mirror_fqdn) }}"
+            package_mirror: "{{  package_mirror | default('http://mirror.centos.org/' ~ ansible_distribution | lower) }}"
             dryrun: true
             featureset_override:
               tempest_format: container
@@ -27,6 +30,9 @@ ci_jobs_config:
           timeout: 9000
           vars:
             mirror_fqdn: "{{ mirror_fqdn }}"
+            zuul_site_mirror_fqdn: "{{ zuul_site_mirror_fqdn | default(mirror_fqdn) }}"
+            pypi_fqdn: "{{ pypi_fqdn | default(mirror_fqdn) }}"
+            package_mirror: "{{  package_mirror | default('http://mirror.centos.org/' ~ ansible_distribution | lower) }}"
             featureset_override:
               tempest_format: container
 

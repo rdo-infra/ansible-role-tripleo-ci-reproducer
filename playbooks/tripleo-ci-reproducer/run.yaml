@@ -15,12 +15,17 @@
     - name: Set facts for mirrors
       set_fact:
         mirror_fqdn: "mirror.{{ nodepool.region | lower }}.{{ nodepool.cloud | lower }}.rdoproject.org"
+      when: mirror_fqdn is not defined
+    - name: Set facts for mirrors overrides
+      set_fact:
+        zuul_site_mirror_fqdn: "{{ zuul_site_mirror_fqdn | default(mirror_fqdn) }}"
+        pypi_fqdn: "{{ pypi_fqdn | default(mirror_fqdn) }}"
+        package_mirror: "{{  package_mirror | default('http://mirror.centos.org/' ~ ansible_distribution | lower) }}"
     - name: Use RDO docker registry at RDO cloud
       when:
         - "'rdo-cloud' in nodepool.cloud"
         - container_mode == 'docker'
       vars:
-        mirror_fqdn: "{{ mirror_fqdn }}"
         docker_registry: "http://{{ mirror_fqdn }}:8081/registry-1.docker/"
       block:
         - name: Read docker daemon configuration
