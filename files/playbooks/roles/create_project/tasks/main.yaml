@@ -42,6 +42,23 @@
               check:
                 jobs: []
           EOF
+          {% else %}
+          sed -i "s/ZUUL_SITE_MFQDN/{{ zuul_site_mirror_fqdn }}/g" "${project_dir}/zuul.d/jobs.yaml"
+          {% if mirror_fqdn is not defined %}
+          sed -i "s/MIRROR_FQDN/{{ zuul_site_mirror_fqdn }}/g" "${project_dir}/zuul.d/jobs.yaml"
+          {% else %}
+          sed -i "s/MIRROR_FQDN/{{ mirror_fqdn }}/g" "${project_dir}/zuul.d/jobs.yaml"
+          {% endif %}
+          {% if pypi_fqdn is not defined %}
+          sed -i '/PYPI_FQDN/d' "${project_dir}/zuul.d/jobs.yaml"
+          {% else %}
+          sed -i "s/PYPI_FQDN/{{ pypi_fqdn }}/g" "${project_dir}/zuul.d/jobs.yaml"
+          {% endif %}
+          {% if package_mirror is not defined %}
+          sed -i '/PACKAGE_MIRROR/d' "${project_dir}/zuul.d/jobs.yaml"
+          {% else %}
+          sed -i "s/PACKAGE_MIRROR/{{ package_mirror }}/g" "${project_dir}/zuul.d/jobs.yaml"
+          {% endif %}
           {% endif %}
           git add -A
           git commit -m "Initial commit"
