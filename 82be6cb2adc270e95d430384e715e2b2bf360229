@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9418dd9f_4685b86d",
+        "filename": "files/projects/zuul-config/zuul.d/jobs.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 411
+      },
+      "writtenOn": "2021-01-20T12:23:17Z",
+      "side": 1,
+      "message": "note, those need different names otherwise cannot be recursively resolved",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 49
+      },
+      "revId": "82be6cb2adc270e95d430384e715e2b2bf360229",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
