@@ -369,7 +369,7 @@ For OVB job it can be like:
     parent: tripleo-ci-centos-8-ovb-3ctlr_1comp-featureset001
     vars:
       cloudenv: internal
-      mirror_fqdn: mirror.regionone.rdo-cloud.rdoproject.org # or afs-mirror.sf.hosted.upshift.rdu2.redhat.com
+      mirror_fqdn: mirror.mtl01.inap.opendev.org # or afs-mirror.sf.hosted.upshift.rdu2.redhat.com
       custom_nameserver:
         - 10.5.30.160
         - 10.11.5.19
