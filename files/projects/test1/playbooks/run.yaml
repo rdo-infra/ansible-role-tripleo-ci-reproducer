@@ -1,5 +1,15 @@
 ---
 - hosts: primary
   tasks:
-    - debug:
-        msg: "Hello reproducer"
+
+    - name: Start testing reproducer
+      debug:
+        msg: "Start testing reproducer"
+
+    - name: Sleep
+      command: sleep 20
+      changed_when: false
+
+    - name: End testing reproducer
+      debug:
+        msg: "End testing reproducer"

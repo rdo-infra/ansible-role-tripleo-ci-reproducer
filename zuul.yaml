@@ -93,16 +93,6 @@
       ci_job: standalone
 
 - job:
-    name: tripleo-ci-reproducer-centos-7-libvirt-standalone-vexxhost
-    parent: tripleo-ci-reproducer-libvirt
-    nodeset: upstream-centos-7-vexxhost
-    voting: false
-    timeout: 15300
-    vars:
-      ci_job: standalone
-      container_mode: docker
-
-- job:
     name: tripleo-ci-reproducer-centos-8-libvirt-standalone-vexxhost
     parent: tripleo-ci-reproducer-libvirt
     nodeset: upstream-centos-8-vexxhost
@@ -121,16 +111,6 @@
       ci_job: standalone-dryrun
 
 - job:
-    name: tripleo-ci-reproducer-centos-7-libvirt-standalone-dryrun-vexxhost
-    parent: tripleo-ci-reproducer-libvirt
-    nodeset: upstream-centos-7-vexxhost
-    voting: false
-    timeout: 15300
-    vars:
-      ci_job: standalone-dryrun
-      container_mode: docker
-
-- job:
     name: periodic-tripleo-ci-reproducer-centos-8-openstack-standalone
     parent: tripleo-ci-reproducer-centos-8-openstack-standalone
 
@@ -141,10 +121,6 @@
 - job:
     name: periodic-tripleo-ci-reproducer-centos-8-libvirt-standalone-dryrun-vexxhost
     parent: tripleo-ci-reproducer-centos-8-libvirt-standalone-dryrun-vexxhost
-
-- job:
-    name: periodic-tripleo-ci-reproducer-centos-7-libvirt-standalone-dryrun-vexxhost
-    parent: tripleo-ci-reproducer-centos-7-libvirt-standalone-dryrun-vexxhost
 
 - job:
     name: periodic-tripleo-centos-8-reproducer-update-images-start
@@ -159,7 +135,6 @@
         - tripleo-ci-reproducer-fedora-32-host-podman
         - tripleo-ci-reproducer-centos-7-host
         - tripleo-ci-reproducer-centos-8-host
-        - tripleo-ci-reproducer-centos-7-libvirt-standalone-dryrun-vexxhost
         - tripleo-ci-reproducer-centos-8-libvirt-standalone-dryrun-vexxhost
         - tripleo-ci-reproducer-centos-8-openstack-standalone
         - tripleo-ci-reproducer-centos-8-openstack-standalone-dryrun
@@ -173,7 +148,6 @@
 
     openstack-periodic-daily:
       jobs:
-        - periodic-tripleo-ci-reproducer-centos-7-libvirt-standalone-dryrun-vexxhost
         - periodic-tripleo-ci-reproducer-centos-8-libvirt-standalone-dryrun-vexxhost
         - periodic-tripleo-ci-reproducer-centos-8-openstack-standalone
         - periodic-tripleo-ci-reproducer-centos-8-openstack-standalone-dryrun
