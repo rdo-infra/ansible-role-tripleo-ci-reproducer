@@ -4,3 +4,4 @@ docker==3.6.0
 docker-compose==1.23.2
 jinja2>=2.8
 openstacksdk==0.13.0
+cryptography<3.4
