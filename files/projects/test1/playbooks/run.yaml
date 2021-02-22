@@ -1,5 +1,9 @@
 ---
 - hosts: primary
   tasks:
+
     - debug:
-        msg: "Hello reproducer"
+        msg: "Start testing reproducer"
+    - command: sleep 20
+    - debug:
+        msg: "End testing reproducer"
