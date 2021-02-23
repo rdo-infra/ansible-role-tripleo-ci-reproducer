@@ -194,5 +194,4 @@
               - tripleo-ci-reproducer-fedora-32-host-podman
               - tripleo-ci-reproducer-centos-7-host
               - tripleo-ci-reproducer-centos-8-host
-              - tripleo-ci-reproducer-centos-8-libvirt-standalone-dryrun-vexxhost
               - tripleo-ci-reproducer-centos-8-openstack-standalone-dryrun
