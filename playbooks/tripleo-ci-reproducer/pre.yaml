@@ -4,7 +4,7 @@
   tasks:
     - name: Gather needed facts
       setup:
-        gather_subset: "!min,user_dir,distribution"
+        gather_subset: "!min,user_dir,distribution,hardware"
       when:
         - ansible_user_dir is not defined
         - ansible_distribution is not defined
@@ -32,6 +32,29 @@
           yum:
             name: git224
 
+    - name: Enable nested virtualization if possible
+      become: true
+      block:
+
+        - name: Set CPU vendor
+          set_fact:
+            cpu_vendor: "{{ 'intel' if 'Intel' in ansible_processor|join('') else
+                                'amd' if 'AMD' in ansible_processor|join('') else 'unknown' }}"
+
+        - name: Configure KVM module
+          copy:
+            dest: "/etc/modprobe.d/kvm.conf"
+            content: |
+              options kvm_{{ cpu_vendor }} nested=1
+
+        - name: Restart KVM module
+          shell: |
+            modprobe -r kvm_{{ cpu_vendor }}
+            sleep 2
+            modprobe kvm_{{ cpu_vendor }}
+            cat /sys/module/kvm_{{ cpu_vendor }}/parameters/nested
+          changed_when: true
+          ignore_errors: true
 
     - name: Check if pip is installed
       shell: command -v pip > /dev/null 2>&1
