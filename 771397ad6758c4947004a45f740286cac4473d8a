@@ -16,6 +16,24 @@
       "revId": "771397ad6758c4947004a45f740286cac4473d8a",
       "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c668ce7b_dd5769b9",
+        "filename": "files/playbooks/roles/create_project/defaults/main.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 155
+      },
+      "writtenOn": "2021-02-24T14:57:41Z",
+      "side": 1,
+      "message": "Probably need to change it in readme",
+      "parentUuid": "ea1bdd3d_2a0c67c5",
+      "revId": "771397ad6758c4947004a45f740286cac4473d8a",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
     }
   ]
 }
