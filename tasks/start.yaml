@@ -23,12 +23,10 @@
 - when: container_mode == 'podman'
   block:
     - name: Stop up zuul and friends with podman
-      become: true
       command: "{{ install_path }}/tripleo-ci-reproducer.sh --stop"
       ignore_errors: true
 
     - name: Pull all images for podman
-      become: true
       command: "{{ install_path }}/tripleo-ci-reproducer.sh --pull"
       register: result
       until: result is success
@@ -36,7 +34,6 @@
       delay: 10
 
     - name: Start podman pod
-      become: true
       command: "{{ install_path }}/tripleo-ci-reproducer.sh --run"
 
 - name: Wait for zuul tenant
