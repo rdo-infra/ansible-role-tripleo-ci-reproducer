@@ -19,6 +19,7 @@
       upstream_gerrit_user: os-tripleo-ci
       rdo_gerrit_user: os-tripleo-ci
       ci_job: hello_job
+      mergers_count: 3
       reproducer_role_top_dir: >-
         {{ ansible_user_dir }}/{{ zuul.projects[
           'review.rdoproject.org/rdo-infra/ansible-role-tripleo-ci-reproducer'

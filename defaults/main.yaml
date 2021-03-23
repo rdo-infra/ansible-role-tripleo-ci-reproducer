@@ -1,6 +1,7 @@
 ---
 log_level: DEBUG
 container_mode: podman
+rootless: true
 ansible_user: "{{ ansible_user_id }}"
 ##############
 # Configuration for openstack nodepool
@@ -31,7 +32,7 @@ install_path: "{{ ansible_user_dir }}/tripleo-ci-reproducer/"
 logs_path: "./logs"
 vm_password: changeme
 
-mergers: "{{ ansible_processor_vcpus }}"
+mergers: "{{ mergers_count|default(ansible_processor_vcpus)|int }}"
 full_repos_set: false
 
 nodepool_provider: openstack

@@ -9,7 +9,7 @@
         state: directory
 
     - name: Get podman system info
-      become: true
+      become: "{{ not rootless|bool }}"
       shell: |
         {{ container_mode }} --version > {{ container_mode }}.system.log 2>&1
         {{ container_mode }} system info >> {{ container_mode }}.system.log 2>&1
@@ -55,7 +55,7 @@
         start=0 count={{ ansible_processor_vcpus }} format='merger%d'
 
     - name: Shut down reproducer
-      become: true
+      become: "{{ not rootless|bool }}"
       command: "{{ ansible_user_dir }}/tripleo-ci-reproducer/tripleo-ci-reproducer.sh --stop"
       changed_when: true
       ignore_errors: true
