@@ -23,12 +23,12 @@
     - zuul
 
 - name: Create log directory
-  become: true
+  #become: true
   file:
     name: "{{ install_path }}/logs"
     state: directory
-    owner: root
-    group: root
+    #owner: root
+    #group: root
 
 - name: Ensure cloud config dir
   file:
