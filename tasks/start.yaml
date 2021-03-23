@@ -21,6 +21,7 @@
         pull: "{{ pull | default(false) | bool }}"
 
 - when: container_mode == 'podman'
+  become: "{{ not rootless|bool }}"
   block:
     - name: Stop up zuul and friends with podman
       become: true
