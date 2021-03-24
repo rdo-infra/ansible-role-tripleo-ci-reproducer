@@ -7,6 +7,7 @@ labels:
   - name: tripleo-ovb-centos-7
   - name: upstream-rhel-8
   - name: centos-8
+  - name: centos-8-stream
   - name: tripleo-ovb-centos-8
 
 providers:
@@ -58,6 +59,12 @@ providers:
             console-log: true
             {{ cloud_config_rhel8 | indent(12) }}
           - name: centos-8
+            min-ram: 8192
+            flavor-name: {{ os_flavor_name }}
+            cloud-image: centos-8
+            console-log: true
+            {{ cloud_config_centos8 | indent(12) }}
+          - name: centos-8-stream
             min-ram: 8192
             flavor-name: {{ os_flavor_name }}
             cloud-image: centos-8
