@@ -9,6 +9,8 @@
     project_src: "{{ install_path }}"
     state: absent
     remove_volumes: true
+  environment:
+    COMPOSE_HTTP_TIMEOUT: 300
   when:
     - reproducer_path.stat.exists and reproducer_path.stat.isdir
     - container_mode == 'docker'
