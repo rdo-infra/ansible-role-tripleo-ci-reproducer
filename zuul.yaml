@@ -133,7 +133,8 @@
       jobs:
         - tox-linters
         - tripleo-ci-reproducer-fedora-32-host-podman
-        - tripleo-ci-reproducer-centos-7-host
+        - tripleo-ci-reproducer-centos-7-host:
+            voting: false
         - tripleo-ci-reproducer-centos-8-host
         - tripleo-ci-reproducer-centos-8-libvirt-standalone-dryrun-vexxhost
         - tripleo-ci-reproducer-centos-8-openstack-standalone
@@ -143,7 +144,7 @@
       jobs:
         - tox-linters
         - tripleo-ci-reproducer-fedora-32-host-podman
-        - tripleo-ci-reproducer-centos-7-host
+        # - tripleo-ci-reproducer-centos-7-host
         - tripleo-ci-reproducer-centos-8-host
 
     openstack-periodic-daily:
@@ -169,10 +170,10 @@
                 nodepool_launcher_image: rdoci/nodepool-launcher:promotion-test
             dependencies:
               - periodic-tripleo-centos-8-reproducer-update-images-start
-        - tripleo-ci-reproducer-centos-7-host:
-            vars: *promotion
-            dependencies:
-              - periodic-tripleo-centos-8-reproducer-update-images-start
+        # - tripleo-ci-reproducer-centos-7-host:
+        #     vars: *promotion
+        #     dependencies:
+        #       - periodic-tripleo-centos-8-reproducer-update-images-start
         - tripleo-ci-reproducer-centos-8-host:
             vars: *promotion
             dependencies:
@@ -192,6 +193,6 @@
               push_tag: stable
             dependencies:
               - tripleo-ci-reproducer-fedora-32-host-podman
-              - tripleo-ci-reproducer-centos-7-host
+              # - tripleo-ci-reproducer-centos-7-host
               - tripleo-ci-reproducer-centos-8-host
               - tripleo-ci-reproducer-centos-8-openstack-standalone-dryrun
