@@ -66,8 +66,8 @@
       args:
         chdir: "{{ ansible_user_dir }}/tripleo-ci-reproducer"
       environment:
-        DOCKER_CLIENT_TIMEOUT: 120
-        COMPOSE_HTTP_TIMEOUT: 120
+        DOCKER_CLIENT_TIMEOUT: 300
+        COMPOSE_HTTP_TIMEOUT: 300
       changed_when: true
       when: container_mode == 'docker'
 

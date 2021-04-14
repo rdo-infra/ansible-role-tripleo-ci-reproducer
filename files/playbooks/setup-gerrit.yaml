@@ -73,6 +73,8 @@
       vars:
         project: test1
         branches:
+          - stable/wallaby
+          - stable/victoria
           - stable/ussuri
           - stable/train
           - stable/stein
