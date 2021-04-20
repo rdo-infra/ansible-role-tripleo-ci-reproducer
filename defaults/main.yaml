@@ -1,6 +1,8 @@
 ---
 log_level: DEBUG
 container_mode: podman
+# Use kube YAML for running podman pod
+play_kube: true
 rootless: true
 ansible_user: "{{ ansible_user_id }}"
 ##############
@@ -32,7 +34,7 @@ install_path: "{{ ansible_user_dir }}/tripleo-ci-reproducer/"
 logs_path: "./logs"
 vm_password: changeme
 
-mergers: "{{ ansible_processor_vcpus }}"
+mergers: "{{ [2, ansible_processor_vcpus|int - 4 ] | max}}"
 full_repos_set: false
 
 nodepool_provider: openstack
