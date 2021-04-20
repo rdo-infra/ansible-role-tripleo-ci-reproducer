@@ -56,6 +56,8 @@
 - job:
     name: tripleo-ci-reproducer-fedora-32-host-podman
     parent: tripleo-ci-reproducer-host
+    vars:
+      play_kube: false
     nodeset: single-fedora-32-node
 
 - job:

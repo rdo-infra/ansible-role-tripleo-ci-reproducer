@@ -15,11 +15,20 @@
     - reproducer_path.stat.exists and reproducer_path.stat.isdir
     - container_mode == 'docker'
 
-
-- name: Stop up zuul and friends
+- name: Stop up zuul and friends with script
   become: "{{ not rootless|bool }}"
   command: "{{ install_path }}/tripleo-ci-reproducer.sh --stop"
   ignore_errors: true
   when:
     - reproducer_path.stat.exists and reproducer_path.stat.isdir
     - container_mode == 'podman'
+    - not play_kube|bool
+
+- name: Stop up zuul and friends with kube
+  become: "{{ not rootless|bool }}"
+  command: "podman pod stop tripleo-reproducer"
+  ignore_errors: true
+  when:
+    - reproducer_path.stat.exists and reproducer_path.stat.isdir
+    - container_mode == 'podman'
+    - play_kube|bool
