@@ -56,7 +56,7 @@
 
     - name: Shut down reproducer
       become: "{{ not rootless|default(true)|bool }}"
-      command: "{{ ansible_user_dir }}/tripleo-ci-reproducer/tripleo-ci-reproducer.sh --stop"
+      command: "podman pod stop tripleo-reproducer"
       changed_when: true
       ignore_errors: true
       when: container_mode == 'podman'
@@ -130,6 +130,7 @@
         rsync_opts:
           - "--chown={{ ansible_user }}:{{ ansible_user }}"
           - "--exclude=secrets.env"
+          - "--exclude=secrets.yaml"
           - "--exclude=*.qcow2"
           - "--exclude=playbooks/rdo_config_repo"
           - "--exclude=playbooks/zuul_config_repo"

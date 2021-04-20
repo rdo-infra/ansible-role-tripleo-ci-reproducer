@@ -18,7 +18,7 @@
 
 - name: Stop up zuul and friends
   become: "{{ not rootless|bool }}"
-  command: "{{ install_path }}/tripleo-ci-reproducer.sh --stop"
+  command: "podman pod stop tripleo-reproducer"
   ignore_errors: true
   when:
     - reproducer_path.stat.exists and reproducer_path.stat.isdir
