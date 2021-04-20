@@ -83,7 +83,7 @@
 - name: Do autohold to have the nodes in case of job failure - podman
   become: "{{ not rootless|bool }}"
   command: |
-    podman exec scheduler zuul autohold
+    podman exec tripleo-reproducer-scheduler zuul autohold
       --project test1
       --tenant tripleo-ci-reproducer
       --job {{ zuul_status.json.0.jobs.0.name }}

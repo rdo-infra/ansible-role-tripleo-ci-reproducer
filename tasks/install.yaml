@@ -59,6 +59,19 @@
     dest: "{{ install_path }}/secrets.env"
     mode: 0600
 
+- name: Generate secrets.yaml configmap
+  vars:
+    id_rsa_b64: "{{ lookup('file', ssh_path + '/' +
+      user_pri_key) | b64encode }}"
+    upstream_gerrit_key_b64: "{{ lookup('file', ssh_path + '/' +
+      upstream_gerrit_key) | b64encode }}"
+    rdo_gerrit_key_b64: "{{ lookup('file', ssh_path + '/' +
+      rdo_gerrit_key) | b64encode }}"
+  template:
+    src: secrets.yaml.j2
+    dest: "{{ install_path }}/secrets.yaml"
+    mode: 0600
+
 - name: Make path for pki ca-bundle.crt
   file:
     path: "{{ install_path }}/etc/pki/tls/certs"
@@ -73,6 +86,12 @@
   template:
     src: tripleo-ci-reproducer.sh.j2
     dest: "{{ install_path }}/tripleo-ci-reproducer.sh"
+    mode: 0770
+
+- name: Create reproducer kube YAML
+  template:
+    src: tripleo-reproducer.yaml.j2
+    dest: "{{ install_path }}/tripleo-reproducer.yaml"
     mode: 0770
 
 - name: Setup nodepool provider
