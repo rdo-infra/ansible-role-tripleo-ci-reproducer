@@ -4,12 +4,23 @@
     docker_compose_cli: '~/.local/bin/docker-compose'
   tasks:
 
-    - name: Shut down reproducer
+    - name: Shut down reproducer with script
       become: "{{ not rootless|bool }}"
       command: "{{ ansible_user_dir }}/tripleo-ci-reproducer/tripleo-ci-reproducer.sh --stop"
       changed_when: true
       ignore_errors: true
-      when: container_mode == 'podman'
+      when:
+        - container_mode == 'podman'
+        - not play_kube|bool
+
+    - name: Shut down reproducer with kube
+      become: "{{ not rootless|bool }}"
+      command: "podman pod stop tripleo-reproducer"
+      changed_when: true
+      ignore_errors: true
+      when:
+        - container_mode == 'podman'
+        - play_kube|bool
 
     - name: Shut down docker-compose
       command: "{{ docker_compose_cli }} down -v"

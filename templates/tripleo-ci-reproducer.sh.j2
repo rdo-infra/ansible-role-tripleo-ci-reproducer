@@ -61,7 +61,7 @@ create_containers () {
         --add-host scheduler:127.0.0.1 \
         --add-host mysql:127.0.0.1 \
         --add-host zk:127.0.0.1 \
-    {% for i in range(mergers) %}
+    {% for i in range(mergers|int) %}
         --add-host merger{{ i }}:127.0.0.1 \
     {% endfor %}
         {{ zuul_web_image }} \
@@ -86,7 +86,7 @@ create_containers () {
         --name fingergw --hostname fingergw \
         --add-host scheduler:127.0.0.1 \
         --add-host executor:127.0.0.1 \
-    {% for i in range(mergers) %}
+    {% for i in range(mergers|int) %}
         --add-host merger{{ i }}:127.0.0.1 \
     {% endfor %}
         -v {{ install_path }}/zuul:/var/lib/zuul:z \
@@ -104,7 +104,7 @@ create_containers () {
         {{ nodepool_launcher_image }} \
         nodepool-launcher -d -l /etc/nodepool/launcher-logging.yaml
 
-    {% for i in range(mergers) %}
+    {% for i in range(mergers|int) %}
     podman create \
         --pod $pod_name \
         --name merger{{ i }} --hostname merger{{ i }} \
