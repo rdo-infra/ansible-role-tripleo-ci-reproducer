@@ -24,7 +24,7 @@
   become: "{{ not rootless|bool }}"
   block:
     - name: Stop up zuul and friends with podman
-      command: "{{ install_path }}/tripleo-ci-reproducer.sh --stop"
+      command: "podman pod stop tripleo-reproducer"
       ignore_errors: true
 
     - name: Pull all images for podman
@@ -34,8 +34,14 @@
       retries: 5
       delay: 10
 
+    - name: Create podman pod
+      command: >-
+        podman play kube {{ install_path }}/tripleo-reproducer.yaml
+        --configmap {{ install_path }}/secrets.yaml
+        --start=false
+
     - name: Start podman pod
-      command: "{{ install_path }}/tripleo-ci-reproducer.sh --run"
+      command: "podman pod start tripleo-reproducer"
 
 - name: Wait for zuul tenant
   block:
