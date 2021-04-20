@@ -1,0 +1,272 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: reproducer
+  name: tripleo-reproducer
+
+spec:
+  securityContext:
+    sysctls:
+      - name: net.ipv4.tcp_keepalive_time
+        value: "600"
+      - name: net.ipv4.tcp_keepalive_intvl
+        value: "75"
+      - name: net.ipv4.tcp_keepalive_probes
+        value: "9"
+  restartPolicy: Never
+  hostAliases:
+    - ip: "127.0.0.1"
+      hostnames:
+        - gerrit
+        - scheduler
+        - mysql
+        - zk
+        - executor
+{% for i in range(mergers|int) %}
+        - merger{{ i }}
+{% endfor %}
+
+  containers:
+    - name: gerrit
+      image: "gerritcodereview/gerrit:2.16.7-centos7"
+      command:
+        - /bin/sh
+        - -c
+        - git config -f /var/gerrit/etc/gerrit.config gerrit.canonicalWebUrl http://localhost:8080/ &&
+          git config -f /var/gerrit/etc/gerrit.config gerrit.ui POLYGERRIT &&
+          git config -f /var/gerrit/etc/gerrit.config sendemail.enable false &&
+          git config -f /var/gerrit/etc/gerrit.config noteDb.changes.autoMigrate true &&
+          /var/gerrit/bin/gerrit.sh run
+      ports:
+        - containerPort: 8080
+          hostPort: 8080
+        - containerPort: 29418
+          hostPort: 29418
+    - name: gerritconfig
+      image: "rdoci/zuul:stable"
+      env:
+        - name: no_proxy
+          value: "${no_proxy},gerrit"
+      envFrom:
+        - configMapRef:
+            name: secrets
+      command:
+        - /bin/sh
+        - -c
+        - pip install 'ansible<2.11' &&
+          ansible-playbook -vv
+          /usr/src/inject-ssh-keys.yaml
+          /usr/src/setup-gerrit.yaml
+      volumeMounts:
+        - mountPath: /usr/src/
+          name: playbooks
+        - mountPath: /var/projects/
+          name: projects
+
+    - name: zk
+      image: zookeeper:3.4.14
+
+    - name: mysql
+      image: "mariadb:10.3.14-bionic"
+      env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: rootpassword
+        - name: MYSQL_DATABASE
+          value: zuul
+        - name: MYSQL_USER
+          value: zuul
+        - name: MYSQL_PASSWORD
+          value: secret
+
+    - name: scheduler
+      image: rdoci/zuul-scheduler:stable
+      env:
+        - name: no_proxy
+          value: "${no_proxy},gerrit"
+      envFrom:
+        - configMapRef:
+            name: secrets
+      command:
+        - /bin/sh
+        - -c
+        - pip install 'ansible<2.11' &&
+          cd /usr/src/ &&
+          ansible-playbook -vv
+          inject-ssh-keys.yaml
+          wait-gerrit.yaml
+          add-gerrit-host-keys.yaml &&
+          zuul-scheduler -d
+      volumeMounts:
+        - mountPath: /etc/zuul
+          name: etc-zuul
+        - mountPath: /usr/src/
+          name: playbooks
+        - mountPath: /var/projects/
+          name: projects
+        - mountPath: /var/lib/zuul
+          name: var-lib-zuul
+
+    - name: web
+      image: rdoci/zuul-web:stable
+      command:
+        - /bin/sh
+        - -c
+        - pip install 'ansible<2.11' &&
+          cd /usr/src/ &&
+          ansible-playbook -vv wait-mysql.yaml &&
+          zuul-web -d
+      ports:
+        - containerPort: 9000
+          hostPort: 9000
+      volumeMounts:
+        - mountPath: /etc/zuul
+          name: etc-zuul
+        - mountPath: /usr/src/
+          name: playbooks
+
+    - name: executor
+      image: rdoci/zuul-executor:stable
+      securityContext:
+        privileged: true
+      env:
+        - name: no_proxy
+          value: "${no_proxy},gerrit"
+      envFrom:
+        - configMapRef:
+            name: secrets
+      command:
+        - /bin/sh
+        - -c
+        - cd /usr/src/ &&
+          pip install 'ansible<2.11' &&
+          ansible-playbook -vv inject-ssh-keys.yaml
+          wait-gerrit.yaml
+          add-gerrit-host-keys.yaml &&
+          zuul-executor -d
+      volumeMounts:
+        - mountPath: /etc/zuul
+          name: etc-zuul
+        - mountPath: /usr/src/
+          name: playbooks
+        - mountPath: /var/projects/
+          name: projects
+        - mountPath: /srv/static/logs
+          name: logs-dir
+
+    - name: fingergw
+      image: rdoci/zuul-fingergw:stable
+      env:
+        - name: no_proxy
+          value: "${no_proxy},gerrit"
+      command:
+        - zuul-fingergw
+        - -d
+      volumeMounts:
+        - mountPath: /etc/zuul
+          name: etc-zuul
+        - mountPath: /var/lib/zuul
+          name: var-lib-zuul
+
+    - name: launcher
+      image: rdoci/nodepool-launcher:stable
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0
+      env:
+        - name: REQUESTS_CA_BUNDLE
+          value: /etc/pki/tls/certs/ca-bundle.crt
+      command:
+        - nodepool-launcher
+        - -d
+        - -l
+        - /etc/nodepool/launcher-logging.yaml
+      ports:
+        - containerPort: 8022
+          hostPort: 8022
+        - containerPort: 8005
+          hostPort: 8005
+      volumeMounts:
+        - mountPath: /etc/nodepool
+          name: etc-nodepool
+        - mountPath: /etc/openstack
+          name: openstack-config
+        - mountPath: /etc/pki
+          name: etc-pki
+
+    - name: logs
+      image: httpd:2.4.39-alpine
+      ports:
+        - containerPort: 80
+          hostPort: 8000
+      volumeMounts:
+        - mountPath: /usr/local/apache2/htdocs
+          name: logs-dir
+        - mountPath: /usr/local/apache2/conf/httpd.conf
+          name: httpd-conf
+
+{% for i in range(mergers|int) %}
+    - name: merger{{ i }}
+      image: rdoci/zuul-merger:stable
+      env:
+        - name: no_proxy
+          value: "${no_proxy},gerrit"
+      envFrom:
+        - configMapRef:
+            name: secrets
+      command:
+        - /bin/sh
+        - -c
+        - cd /usr/src/ &&
+          pip install 'ansible<2.11' &&
+          ansible-playbook -vv inject-ssh-keys.yaml
+          wait-gerrit.yaml
+          add-gerrit-host-keys.yaml &&
+          zuul-merger -d
+      volumeMounts:
+        - mountPath: /etc/zuul
+          name: etc-zuul
+        - mountPath: /srv/static/logs
+          name: logs-dir
+        - mountPath: /usr/src/
+          name: playbooks
+{% endfor %}
+
+  volumes:
+    - name: playbooks
+      hostPath:
+        path: {{ install_path }}/playbooks/
+        type: Directory
+    - name: projects
+      hostPath:
+        path: {{ install_path }}/projects/
+        type: Directory
+    - name: etc-zuul
+      hostPath:
+        path: {{ install_path }}/etc_zuul/
+        type: Directory
+    - name: logs-dir
+      hostPath:
+        path: {{ install_path }}/logs/
+        type: Directory
+    - name: etc-nodepool
+      hostPath:
+        path: {{ install_path }}/etc_nodepool/
+        type: Directory
+    - name: openstack-config
+      hostPath:
+        path: {{ ansible_user_dir }}/.config/openstack/
+        type: Directory
+    - name: etc-pki
+      hostPath:
+        path: {{ install_path }}/etc/pki/
+        type: Directory
+    - name: httpd-conf
+      hostPath:
+        path: {{ install_path }}/httpd.conf
+        type: File
+
+    - name: var-lib-zuul
+      persistentVolumeClaim:
+        claimName: var-lib-zuul
