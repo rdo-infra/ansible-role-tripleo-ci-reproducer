@@ -6,7 +6,7 @@
 
     - name: Shut down reproducer
       become: "{{ not rootless|bool }}"
-      command: "{{ ansible_user_dir }}/tripleo-ci-reproducer/tripleo-ci-reproducer.sh --stop"
+      command: "podman pod stop tripleo-reproducer"
       changed_when: true
       ignore_errors: true
       when: container_mode == 'podman'
