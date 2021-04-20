@@ -16,6 +16,8 @@
     timeout: 3600
     vars:
       container_mode: podman
+      play_kube: true
+      mergers: 4
       upstream_gerrit_user: os-tripleo-ci
       rdo_gerrit_user: os-tripleo-ci
       ci_job: hello_job
@@ -56,6 +58,8 @@
 - job:
     name: tripleo-ci-reproducer-fedora-32-host-podman
     parent: tripleo-ci-reproducer-host
+    vars:
+      play_kube: false
     nodeset: single-fedora-32-node
 
 - job:

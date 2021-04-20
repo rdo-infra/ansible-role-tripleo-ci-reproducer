@@ -131,7 +131,7 @@ services:
       - "{{ logs_path }}:/usr/local/apache2/htdocs:z"
       - "./httpd.conf:/usr/local/apache2/conf/httpd.conf:z"
 
-{% for i in range(mergers) %}
+{% for i in range(mergers|int) %}
   merger{{ i }}:
     environment:
       no_proxy: "${no_proxy},gerrit"
