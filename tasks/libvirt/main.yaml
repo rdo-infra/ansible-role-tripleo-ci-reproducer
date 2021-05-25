@@ -35,6 +35,7 @@
 
   block:
     - name: Start nodes
+      when: teardown|default(true)|bool
       block:
         - name: Tear down nodes
           include_role:
@@ -48,18 +49,18 @@
           include_role:
             name: tripleo-inventory
 
-    - name: prepare nodes
-      # We call playbook to parallelize
-      shell: |
-        set -e
-        PATH=$PATH:$HOME/.local/bin
-        ANSIBLE_STDOUT_CALLBACK=debug
-        ansible-playbook -i {{ install_path }}/hosts -vv \
-          {{ role_path }}/playbooks/prepare.yaml
-    - name: Create libvirt snapshot
-      when: create_snapshot
-      vars:
-        ansible_become: true
-        snapshot_create: true
-      include_role:
-        name: snapshot-libvirt
+        - name: prepare nodes
+          # We call playbook to parallelize
+          shell: |
+            set -e
+            PATH=$PATH:$HOME/.local/bin
+            ANSIBLE_STDOUT_CALLBACK=debug
+            ansible-playbook -i {{ install_path }}/hosts -vv \
+              {{ role_path }}/playbooks/prepare.yaml
+        - name: Create libvirt snapshot
+          when: create_snapshot
+          vars:
+            ansible_become: true
+            snapshot_create: true
+          include_role:
+            name: snapshot-libvirt
