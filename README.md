@@ -114,6 +114,7 @@ Role Variables
   - host: Use the host where docker-compose runs
   - libvirt: Start up a pair of libvirt nodes at install and connects nodepool
     to it
+- `teardown` -- controls (re)provisioning of VM subnodes for libvirt provider
 - `zuul_job` -- zuul job to executo
 - `zuul_job_retries` --  wait time for zuul job to start, default "20"
 - `zuul_yaml` -- zuul config to run it overwrite zuul_job
