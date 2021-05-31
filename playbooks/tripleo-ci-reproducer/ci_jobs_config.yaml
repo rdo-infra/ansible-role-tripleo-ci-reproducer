@@ -13,7 +13,6 @@ ci_jobs_config:
             mirror_fqdn: "{{ mirror_fqdn }}"
             zuul_site_mirror_fqdn: "{{ zuul_site_mirror_fqdn | default(mirror_fqdn) }}"
             pypi_fqdn: "{{ pypi_fqdn | default(mirror_fqdn) }}"
-            package_mirror: "{{  package_mirror | default(omit) }}"
             dryrun: true
             featureset_override:
               tempest_format: container
@@ -32,7 +31,6 @@ ci_jobs_config:
             mirror_fqdn: "{{ mirror_fqdn }}"
             zuul_site_mirror_fqdn: "{{ zuul_site_mirror_fqdn | default(mirror_fqdn) }}"
             pypi_fqdn: "{{ pypi_fqdn | default(mirror_fqdn) }}"
-            package_mirror: "{{  package_mirror | default(omit) }}"
             featureset_override:
               tempest_format: container
 
