@@ -16,6 +16,10 @@
       set_fact:
         mirror_fqdn: "mirror.{{ nodepool.region | lower }}.{{ nodepool.cloud | lower }}.rdoproject.org"
       when: mirror_fqdn is not defined
+    - name: Set facts for packages mirror
+      set_fact:
+        package_mirror: "https://{{ mirror_fqdn }}/{{ ansible_facts['distribution'].split(' ')[0] | lower }}"
+      when: package_mirror is not defined
     - name: Set facts for zuul site mirror fqdn
       set_fact:
         zuul_site_mirror_fqdn: "{{ mirror_fqdn }}"
