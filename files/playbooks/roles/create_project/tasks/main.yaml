@@ -40,25 +40,6 @@
               check:
                 jobs: []
           EOF
-          {% else %}
-          if [ -f $job_config ]; then
-            sed -i "s/ZUUL_SITE_MFQDN/{{ zuul_site_mirror_fqdn }}/g" $job_config
-            {% if mirror_fqdn is not defined %}
-            sed -i "s/MIRROR_FQDN/{{ zuul_site_mirror_fqdn }}/g" $job_config
-            {% else %}
-            sed -i "s/MIRROR_FQDN/{{ mirror_fqdn }}/g" $job_config
-            {% endif %}
-            {% if pypi_fqdn is not defined %}
-            sed -i '/PYPI_FQDN/d' $job_config
-            {% else %}
-            sed -i "s/PYPI_FQDN/{{ pypi_fqdn }}/g" $job_config
-            {% endif %}
-            {% if package_mirror is not defined %}
-            sed -i '/PACKAGE_MIRROR/d' $job_config
-            {% else %}
-            sed -i "s/PACKAGE_MIRROR/{{ package_mirror }}/g" $job_config
-            {% endif %}
-          fi
           {% endif %}
           if [ -d $project_dir ]; then
             cp -rf $project_dir/* .
@@ -67,6 +48,34 @@
           git commit -m "Initial commit"
           git remote add gerrit http://admin:secret@gerrit:8080/{{ project }}
           git push -f --set-upstream gerrit +HEAD:master
+    - name: Commit mirrors configs changes in zuul-config
+      when: project == 'zuul-config'
+      shell:
+        executable: /bin/sh
+        chdir: "{{ project_tmp.path }}"
+        cmd: |
+          job_config="zuul.d/jobs.yaml"
+          sed -i "s/ZUUL_SITE_MFQDN/{{ zuul_site_mirror_fqdn }}/g" $job_config
+          {% if mirror_fqdn is not defined %}
+          sed -i "s/MIRROR_FQDN/{{ zuul_site_mirror_fqdn }}/g" $job_config
+          {% else %}
+          sed -i "s/MIRROR_FQDN/{{ mirror_fqdn }}/g" $job_config
+          {% endif %}
+          {% if pypi_fqdn is not defined %}
+          sed -i '/PYPI_FQDN/d' $job_config
+          {% else %}
+          sed -i "s/PYPI_FQDN/{{ pypi_fqdn }}/g" $job_config
+          {% endif %}
+          {% if package_mirror is not defined %}
+          sed -i '/PACKAGE_MIRROR/d' $job_config
+          {% else %}
+          sed -i "s,PACKAGE_MIRROR,{{ package_mirror }},g" $job_config
+          {% endif %}
+          if [ -n "$(git status --porcelain)" ]; then
+            git add -A
+            git commit -m "Update mirrors config"
+            git push -f gerrit +HEAD:master
+          fi
 
     - name: Create branches
       command: ssh -i /var/ssh/id_rsa -p 29418 admin@gerrit gerrit create-branch {{ project }} {{ item }} master

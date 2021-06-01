@@ -27,6 +27,18 @@ services:
       /bin/sh -c '\
         pip install ansible &&
         ansible-playbook -vv \
+            {% if mirror_fqdn is defined %}
+            -e mirror_fqdn={{ mirror_fqdn }} \
+            {% endif %}
+            {% if zuul_site_mirror_fqdn is defined %}
+            -e zuul_site_mirror_fqdn={{ zuul_site_mirror_fqdn }} \
+            {% endif %}
+            {% if pypi_fqdn is defined %}
+            -e pypi_fqdn={{ pypi_fqdn }} \
+            {% endif %}
+            {% if package_mirror is defined %}
+            -e package_mirror={{ package_mirror }} \
+            {% endif %}
             /usr/src/inject-ssh-keys.yaml \
             /usr/src/setup-gerrit.yaml'
   zk:

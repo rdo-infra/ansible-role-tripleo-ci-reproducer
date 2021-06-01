@@ -3,14 +3,16 @@
   git:
     repo: 'https://github.com/rdo-infra/review.rdoproject.org-config.git'
     dest: rdo_config_repo
-    update: false
+    update: true
+    force: true
     version: master
 
 - name: Complete zuul-config from RDO config
   git:
     repo: 'http://gerrit:8080/zuul-config'
     dest: zuul_config_repo
-    update: false
+    update: true
+    force: true
     version: master
 
 - name: Execute script
