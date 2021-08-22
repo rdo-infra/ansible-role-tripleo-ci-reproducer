@@ -16,7 +16,7 @@
     timeout: 3600
     vars:
       container_mode: podman
-      play_kube: true
+      play_kube: false
       mergers: 4
       upstream_gerrit_user: os-tripleo-ci
       rdo_gerrit_user: os-tripleo-ci
@@ -54,13 +54,6 @@
       os_autohold_node: false
       setup_nodepool: false
       flavor_name: nodepool
-
-- job:
-    name: tripleo-ci-reproducer-fedora-32-host-podman
-    parent: tripleo-ci-reproducer-host
-    vars:
-      play_kube: false
-    nodeset: single-fedora-32-node
 
 - job:
     name: tripleo-ci-reproducer-fedora-rawhide-host-podman
@@ -137,7 +130,6 @@
     check:
       jobs:
         - tox-linters
-        - tripleo-ci-reproducer-fedora-32-host-podman
         - tripleo-ci-reproducer-centos-7-host:
             voting: false
         - tripleo-ci-reproducer-centos-8-host
@@ -148,7 +140,6 @@
     gate:
       jobs:
         - tox-linters
-        - tripleo-ci-reproducer-fedora-32-host-podman
         # - tripleo-ci-reproducer-centos-7-host
         - tripleo-ci-reproducer-centos-8-host
 
@@ -163,7 +154,7 @@
         - periodic-tripleo-centos-8-reproducer-update-images-start:
             vars:
               push_tag: promotion-test
-        - tripleo-ci-reproducer-fedora-32-host-podman:
+        - tripleo-ci-reproducer-centos-8-host:
             vars: &promotion
               override:
                 zuul_image: rdoci/zuul:promotion-test
@@ -173,10 +164,6 @@
                 zuul_merger_image: rdoci/zuul-merger:promotion-test
                 zuul_fingergw_image: rdoci/zuul-fingergw:promotion-test
                 nodepool_launcher_image: rdoci/nodepool-launcher:promotion-test
-            dependencies:
-              - periodic-tripleo-centos-8-reproducer-update-images-start
-        - tripleo-ci-reproducer-centos-8-host:
-            vars: *promotion
             dependencies:
               - periodic-tripleo-centos-8-reproducer-update-images-start
         - tripleo-ci-reproducer-centos-8-libvirt-standalone-dryrun-vexxhost:
@@ -193,6 +180,5 @@
               original_tag: promotion-test
               push_tag: stable
             dependencies:
-              - tripleo-ci-reproducer-fedora-32-host-podman
               - tripleo-ci-reproducer-centos-8-host
               - tripleo-ci-reproducer-centos-8-openstack-standalone-dryrun

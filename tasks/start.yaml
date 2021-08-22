@@ -35,6 +35,12 @@
       when:
         - play_kube|bool
 
+    - name: Remove old podman pod
+      command: "podman pod rm -f tripleo-reproducer"
+      ignore_errors: true
+      when:
+        - play_kube|bool
+
     - name: Pull all images for podman
       command: "{{ install_path }}/tripleo-ci-reproducer.sh --pull"
       register: result

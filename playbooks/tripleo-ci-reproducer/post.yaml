@@ -40,6 +40,16 @@
         - web
         - executor
         - fingergw
+        - tripleo-reproducer-zk
+        - tripleo-reproducer-mysql
+        - tripleo-reproducer-gerrit
+        - tripleo-reproducer-logs
+        - tripleo-reproducer-launcher
+        - tripleo-reproducer-gerritconfig
+        - tripleo-reproducer-scheduler
+        - tripleo-reproducer-web
+        - tripleo-reproducer-executor
+        - tripleo-reproducer-fingergw
 
     - name: Get reproducer mergers logs
       become: "{{ true if container_mode == 'podman' else false }}"
