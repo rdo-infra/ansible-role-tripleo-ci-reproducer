@@ -85,19 +85,27 @@
       changed_when: false
       register: pip_exists
 
-    - when: pip_exists.rc != 0
-      name: Install pip
+    - name: Install pip, if missing
+      when:
+        - pip_exists.rc != 0
+        - ansible_distribution|lower != 'fedora'
+      become: true
       block:
-        - when: ansible_distribution == "CentOS"
+        - when: ansible_distribution_major_version|int != 9
           name: Install EPEL
           become: true
           package:
             name: epel-release
+        - name: Install rhel9/cs9 EPEL
+          when: ansible_distribution_major_version|int == 9
+          shell: |
+            rpm --import https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-9
+            rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
         - name: Install pip
           become: true
           package:
             name:
-              - python{{ '3' if ansible_distribution_major_version|int == 8 else '' }}-pip
+              - python{{ '3' if ansible_distribution_major_version|int >= 8 else '' }}-pip
 
     - name: Install bindep
       register: result_bindep

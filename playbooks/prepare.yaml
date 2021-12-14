@@ -30,7 +30,18 @@
       with_items:
         - epel-release
       become: true
-      when: ansible_distribution|lower != 'fedora'
+      when:
+        - ansible_distribution|lower != 'fedora'
+        - ansible_distribution_major_version|int != 9
+
+    - name: Install rhel9/cs9 repos (will be removed by toci_gate_test)
+      shell: |
+        rpm --import https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-9
+        rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
+      become: true
+      when:
+        - ansible_distribution|lower != 'fedora'
+        - ansible_distribution_major_version|int == 9
 
     - name: Install packages
       package:
