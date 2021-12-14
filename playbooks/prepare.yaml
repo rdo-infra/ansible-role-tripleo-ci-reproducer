@@ -12,8 +12,8 @@
       - tmux
       - vim
       - wget
-      - "{% if ansible_python.version.major == 3 -%}python3-virtualenv{%-
-          else -%}python-virtualenv{%- endif -%}"
+      - "{% if ansible_python.version.major == 3 and ansible_distribution_major_version|int != 9 -%}python3-virtualenv{%-
+          elif ansible_distribution_major_version|int != 9 -%}python-virtualenv{%- else -%}python3{%- endif -%}"
   tasks:
     - name: Create /etc/nodepool directory
       file:
@@ -30,7 +30,9 @@
       with_items:
         - epel-release
       become: true
-      when: ansible_distribution|lower != 'fedora'
+      when:
+        - ansible_distribution|lower != 'fedora'
+        - ansible_distribution_major_version|int != 9
 
     - name: Install packages
       package:
