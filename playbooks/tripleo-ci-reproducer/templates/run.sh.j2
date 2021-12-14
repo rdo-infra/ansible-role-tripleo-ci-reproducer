@@ -8,8 +8,6 @@ export ANSIBLE_ROLES_PATH="${tq}/roles"
 
 {% endif %}
 
-export ANSIBLE_STDOUT_CALLBACK=debug
-
 # To be able to use stuff installed with pip --user
 # At zuul images we don't have any .bash_profile or .profile
 export PATH=$PATH:$HOME/.local/bin
