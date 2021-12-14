@@ -25,7 +25,7 @@
     name: snapshot-libvirt
 
 - name: Setup libvirt nodes
-  when: not restore_snapshot
+  when: not restore_snapshot or teardown|default(true)|bool
   vars:
     libvirt_nodepool: true
     local_working_dir: "{{ install_path }}"
@@ -38,10 +38,12 @@
       when: teardown|default(true)|bool
       block:
         - name: Tear down nodes
+          when: not restore_snapshot
           include_role:
             name: libvirt/teardown/nodes
 
         - name: Set up nodes
+          when: not restore_snapshot
           include_role:
             name: libvirt/setup/overcloud
 
@@ -57,7 +59,9 @@
             ansible-playbook -i {{ install_path }}/hosts -vv \
               {{ role_path }}/playbooks/prepare.yaml
         - name: Create libvirt snapshot
-          when: create_snapshot
+          when:
+            - create_snapshot
+            - not restore_snapshot
           vars:
             ansible_become: true
             snapshot_create: true
