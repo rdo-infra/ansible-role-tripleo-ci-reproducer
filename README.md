@@ -114,7 +114,12 @@ Role Variables
   - host: Use the host where docker-compose runs
   - libvirt: Start up a pair of libvirt nodes at install and connects nodepool
     to it
-- `teardown` -- controls (re)provisioning of VM subnodes for libvirt provider
+- `teardown` -- Bootstraps VMs for libvirt provider from a scratch (default).
+   No snapshots will be carried on (until combined with `restore_snapshot`).
+- `create_snapshot` -- snapshots libvirt VMs before configuring it for Nodepool
+- `restore_snapshot` -- restores libvirt VMs from a snapshot. Zuul will be
+   reconfigured after that, and restored nodes will be added into Nodepool. If
+   combined with `teardown`, restored nodes will re-run preparations playbook
 - `zuul_job` -- zuul job to executo
 - `zuul_job_retries` --  wait time for zuul job to start, default "20"
 - `zuul_yaml` -- zuul config to run it overwrite zuul_job
