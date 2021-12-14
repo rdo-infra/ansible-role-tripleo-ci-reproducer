@@ -88,7 +88,9 @@
     - when: pip_exists.rc != 0
       name: Install pip
       block:
-        - when: ansible_distribution == "CentOS"
+        - when:
+          - ansible_distribution == "CentOS"
+          - ansible_distribution_major_version|int != 9
           name: Install EPEL
           become: true
           package:
@@ -97,7 +99,7 @@
           become: true
           package:
             name:
-              - python{{ '3' if ansible_distribution_major_version|int == 8 else '' }}-pip
+              - python{{ '3' if ansible_distribution_major_version|int >= 8 else '' }}-pip
 
     - name: Install bindep
       register: result_bindep
