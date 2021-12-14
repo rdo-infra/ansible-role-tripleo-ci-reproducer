@@ -88,7 +88,9 @@
     - when: pip_exists.rc != 0
       name: Install pip
       block:
-        - when: ansible_distribution == "CentOS"
+        - when:
+          - ansible_distribution == "CentOS"
+          - ansible_distribution_major_version|int != 9
           name: Install EPEL
           become: true
           package:
