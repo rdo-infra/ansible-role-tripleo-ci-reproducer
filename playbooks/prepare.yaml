@@ -64,6 +64,7 @@
 
     - name: Scan SSH keys from subnodes
       shell: |
+        set -e
         for key in {{ hostvars[item].subnode_public_ip }} \
           {{ hostvars[item].subnode_private_ip }}; do
           if ! grep -q $key /etc/ssh/ssh_known_hosts ; then

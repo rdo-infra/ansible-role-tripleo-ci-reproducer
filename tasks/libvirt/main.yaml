@@ -24,6 +24,29 @@
   include_role:
     name: snapshot-libvirt
 
+- name: Rescan keys after restore snapshot
+  when: restore_snapshot and teardown|default(true)|bool
+  vars:
+    hostsfile: /home/{{ ansible_user }}/.ssh/known_hosts
+  shell: |
+    set -e -o pipefail
+    for h in $(grep subnode {{ install_path }}/hosts | awk 'BEGIN {FS="subnode_private_ip=|$"} {if ($2) print $2}'); do
+      sed -rin "/$h/d" {{ hostsfile }}
+      ssh-keyscan "$h" >> {{ hostsfile }}
+    done
+  changed_when: true
+  register: output
+  retries: 5
+  delay: 5
+  until: output.rc == 0
+
+- name: wait for restored subnodes
+  when: restore_snapshot
+  # We call playbook to parallelize
+  shell: |
+    PATH=$PATH:$HOME/.local/bin
+    ansible -i {{ install_path }}/hosts -vv subnodes -m wait_for_connection
+
 - name: Setup libvirt nodes
   when: not restore_snapshot or teardown
   vars:
