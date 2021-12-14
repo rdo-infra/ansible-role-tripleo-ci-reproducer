@@ -8,7 +8,7 @@
     tempest_test_image_path: /opt/cache/files/{{ tempest_test_image_name }}
     packages_list:
       - git
-      - unbound
+      - "{% if ansible_distribution_major_version|int != 9 -%}unbound{%- endif -%}"
       - tmux
       - vim
       - wget
