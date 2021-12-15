@@ -97,7 +97,7 @@
           become: true
           package:
             name:
-              - python{{ '3' if ansible_distribution_major_version|int == 8 else '' }}-pip
+              - python{{ '3' if ansible_distribution_major_version|int >= 8 else '' }}-pip
 
     - name: Install bindep
       register: result_bindep
