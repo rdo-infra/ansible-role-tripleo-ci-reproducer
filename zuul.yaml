@@ -43,6 +43,7 @@
       nodepool_provider: libvirt
     required-projects:
       - openstack/tripleo-quickstart
+      - openstack/tripleo-quickstart-extras
 
 - job:
     name: tripleo-ci-reproducer-openstack

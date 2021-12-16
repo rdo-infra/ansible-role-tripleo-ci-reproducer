@@ -3,8 +3,9 @@
 {% if 'opendev.org/openstack/tripleo-quickstart' in zuul.projects %}
 
 tq={{ ansible_user_dir }}/{{ zuul.projects['opendev.org/openstack/tripleo-quickstart'].src_dir }}
+tqe={{ ansible_user_dir }}/{{ zuul.projects['opendev.org/openstack/tripleo-quickstart-extras'].src_dir }}
 export ANSIBLE_LIBRARY="${tq}/library"
-export ANSIBLE_ROLES_PATH="${tq}/roles"
+export ANSIBLE_ROLES_PATH="${ANSIBLE_ROLES_PATH}:${tq}/roles:${tqe}/roles"
 
 {% endif %}
 
