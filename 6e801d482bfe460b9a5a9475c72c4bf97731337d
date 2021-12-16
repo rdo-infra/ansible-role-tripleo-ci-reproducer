@@ -1,0 +1,9 @@
+Code-Review+2: Sagi Shnaidman <sshnaidm@redhat.com>
+Code-Review+2: Yatin Karel <ykarel@redhat.com>
+Workflow+1: Sagi Shnaidman <sshnaidm@redhat.com>
+Verified+2: Zuul CI <zuul@review.rdoproject.org>
+Submitted-by: Zuul CI <zuul@review.rdoproject.org>
+Submitted-at: Thu, 16 Dec 2021 11:46:43 +0000
+Reviewed-on: https://review.rdoproject.org/r/c/rdo-infra/ansible-role-tripleo-ci-reproducer/+/37235
+Project: rdo-infra/ansible-role-tripleo-ci-reproducer
+Branch: refs/heads/master
