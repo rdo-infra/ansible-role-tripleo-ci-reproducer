@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "8a150dc8_8286e28b",
+        "filename": "tasks/launch-job.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 155
+      },
+      "writtenOn": "2021-12-16T19:47:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8c7f0174_717d2960",
+      "range": {
+        "startLine": 27,
+        "startChar": 17,
+        "endLine": 27,
+        "endChar": 21
+      },
+      "revId": "d9621b25601d815c54abfb2f098d06853ded08f4",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "32e1fadc_7de1575d",
         "filename": "tasks/launch-job.yaml",
         "patchSetId": 1
@@ -45,6 +69,30 @@
       "revId": "d9621b25601d815c54abfb2f098d06853ded08f4",
       "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1ba368ce_d2dc7476",
+        "filename": "tasks/launch-job.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 155
+      },
+      "writtenOn": "2021-12-16T19:47:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "32e1fadc_7de1575d",
+      "range": {
+        "startLine": 28,
+        "startChar": 16,
+        "endLine": 28,
+        "endChar": 20
+      },
+      "revId": "d9621b25601d815c54abfb2f098d06853ded08f4",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
     }
   ]
 }
