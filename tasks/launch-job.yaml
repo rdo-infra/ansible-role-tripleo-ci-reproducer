@@ -22,12 +22,11 @@
     chdir: "{{ testproject.path }}"
     cmd: |
       set -e
-      #FIXME: for centos7 the git version is too old for the local gerrit
-      #       hooks so we get them from upstream
-      mkdir -p .git/hooks/
-      scp -p -P 29418 -i {{ ssh_path }}/{{ upstream_gerrit_key }} \
-      {{ upstream_gerrit_user }}@review.opendev.org:hooks/commit-msg \
-        .git/hooks/
+      gitdir=$(git rev-parse --git-dir)
+      mkdir -p "${gitdir}/hooks"
+      curl -sfko ${gitdir}/hooks/commit-msg https://review.opendev.org/tools/hooks/commit-msg
+      chmod u+x ${gitdir}/hooks/commit-msg
+      git config --local http.sslverify false
       git config --local user.name Admin
       git config --local user.email admin@example.com
       git remote add gerrit ssh://admin@localhost:29418/test1
