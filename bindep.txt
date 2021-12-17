@@ -1,9 +1,9 @@
 # epel-release is required for python-pip
 # epel is not installed on nodepool nodes.
-ansible [!platform:centos-8]
+ansible [platform:fedora platform:centos-7]
 podman [platform:rpm]
-docker [!platform:centos-8]
-epel-release [platform:centos]
+docker [platform:fedora platform:centos-7]
+epel-release [platform:centos-7 platform:centos-8]
 gcc [platform:rpm]
 git [platform:rpm]
 python3-libselinux [platform:fedora platform:centos-8]
