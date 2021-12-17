@@ -17,7 +17,7 @@
 - name: reset ssh connection to allow user changes to affect
   meta: reset_connection
 - name: Restore a libvirt snapshot
-  when: restore_snapshot
+  when: restore_snapshot|bool
   vars:
     ansible_become: true
     snapshot_restore: true
@@ -41,14 +41,14 @@
   until: output.rc == 0
 
 - name: wait for restored subnodes
-  when: restore_snapshot
+  when: restore_snapshot|bool
   # We call playbook to parallelize
   shell: |
     PATH=$PATH:$HOME/.local/bin
     ansible -i {{ install_path }}/hosts -vv subnodes -m wait_for_connection
 
 - name: Setup libvirt nodes
-  when: not restore_snapshot or teardown
+  when: not restore_snapshot|bool or teardown|bool
   vars:
     libvirt_nodepool: true
     local_working_dir: "{{ install_path }}"
@@ -58,15 +58,15 @@
 
   block:
     - name: Start nodes
-      when: teardown
+      when: teardown|bool
       block:
         - name: Tear down nodes
-          when: not restore_snapshot
+          when: not restore_snapshot|bool
           include_role:
             name: libvirt/teardown/nodes
 
         - name: Set up nodes
-          when: not restore_snapshot
+          when: not restore_snapshot|bool
           include_role:
             name: libvirt/setup/overcloud
 
@@ -83,8 +83,8 @@
               {{ role_path }}/playbooks/prepare.yaml
         - name: Create libvirt snapshot
           when:
-            - create_snapshot
-            - not restore_snapshot
+            - create_snapshot|bool
+            - not restore_snapshot|bool
           vars:
             ansible_become: true
             snapshot_create: true
