@@ -3,7 +3,7 @@
 ansible [!platform:centos-8]
 podman [platform:rpm]
 docker [!platform:centos-8]
-epel-release [platform:centos]
+epel-release [platform:centos-7 platform:centos-8]
 gcc [platform:rpm]
 git [platform:rpm]
 python3-libselinux [platform:fedora platform:centos-8]
