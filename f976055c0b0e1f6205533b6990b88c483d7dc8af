@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "ceb74192_22f12f1d",
+        "filename": "playbooks/prepare.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 411
+      },
+      "writtenOn": "2021-12-17T09:14:39Z",
+      "side": 1,
+      "message": "it doesn\u0027t fail upon a coonection timeout to a host, and keeps iterating",
+      "parentUuid": "613584d9_7a1ab0aa",
+      "range": {
+        "startLine": 65,
+        "startChar": 8,
+        "endLine": 65,
+        "endChar": 14
+      },
+      "revId": "f976055c0b0e1f6205533b6990b88c483d7dc8af",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "6dcec664_a9a316d4",
         "filename": "tasks/libvirt/main.yaml",
         "patchSetId": 1
