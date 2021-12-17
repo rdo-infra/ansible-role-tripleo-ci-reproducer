@@ -45,6 +45,30 @@
       "revId": "f976055c0b0e1f6205533b6990b88c483d7dc8af",
       "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2c5a83d9_7d3dd840",
+        "filename": "tasks/libvirt/main.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 411
+      },
+      "writtenOn": "2021-12-17T09:13:38Z",
+      "side": 1,
+      "message": "without set -e I\u0027ve had the error masked by the loop done command",
+      "parentUuid": "6dcec664_a9a316d4",
+      "range": {
+        "startLine": 32,
+        "startChar": 4,
+        "endLine": 32,
+        "endChar": 10
+      },
+      "revId": "f976055c0b0e1f6205533b6990b88c483d7dc8af",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": true
     }
   ]
 }
