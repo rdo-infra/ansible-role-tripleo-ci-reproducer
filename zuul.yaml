@@ -17,11 +17,10 @@
     vars:
       container_mode: podman
       play_kube: false
-      mergers: 4
+      mergers: 2
       upstream_gerrit_user: os-tripleo-ci
       rdo_gerrit_user: os-tripleo-ci
       ci_job: hello_job
-      # mergers: 3
       reproducer_role_top_dir: >-
         {{ ansible_user_dir }}/{{ zuul.projects[
           'review.rdoproject.org/rdo-infra/ansible-role-tripleo-ci-reproducer'
@@ -73,6 +72,11 @@
     name: tripleo-ci-reproducer-centos-8-host
     parent: tripleo-ci-reproducer-host
     nodeset: single-centos-8-node-vexxhost
+
+- job:
+    name: tripleo-ci-reproducer-centos-9-host
+    parent: tripleo-ci-reproducer-host
+    nodeset: single-centos-9-stream-node-vexxhost
 
 - job:
     name: tripleo-ci-reproducer-centos-8-openstack-standalone-dryrun
@@ -134,6 +138,7 @@
         - tripleo-ci-reproducer-centos-7-host:
             voting: false
         - tripleo-ci-reproducer-centos-8-host
+        - tripleo-ci-reproducer-centos-9-host
         - tripleo-ci-reproducer-centos-8-libvirt-standalone-dryrun-vexxhost
         - tripleo-ci-reproducer-centos-8-openstack-standalone
         - tripleo-ci-reproducer-centos-8-openstack-standalone-dryrun
@@ -143,6 +148,7 @@
         - tox-linters
         # - tripleo-ci-reproducer-centos-7-host
         - tripleo-ci-reproducer-centos-8-host
+        - tripleo-ci-reproducer-centos-9-host
 
     openstack-periodic-daily:
       jobs:
@@ -158,13 +164,17 @@
         - tripleo-ci-reproducer-centos-8-host:
             vars: &promotion
               override:
-                zuul_image: rdoci/zuul:promotion-test
-                zuul_scheduler_image: rdoci/zuul-scheduler:promotion-test
-                zuul_web_image: rdoci/zuul-web:promotion-test
-                zuul_executor_image: rdoci/zuul-executor:promotion-test
-                zuul_merger_image: rdoci/zuul-merger:promotion-test
-                zuul_fingergw_image: rdoci/zuul-fingergw:promotion-test
-                nodepool_launcher_image: rdoci/nodepool-launcher:promotion-test
+                zuul_image: docker.io/rdoci/zuul:promotion-test
+                zuul_scheduler_image: docker.io/rdoci/zuul-scheduler:promotion-test
+                zuul_web_image: docker.io/rdoci/zuul-web:promotion-test
+                zuul_executor_image: docker.io/rdoci/zuul-executor:promotion-test
+                zuul_merger_image: docker.io/rdoci/zuul-merger:promotion-test
+                zuul_fingergw_image: docker.io/rdoci/zuul-fingergw:promotion-test
+                nodepool_launcher_image: docker.io/rdoci/nodepool-launcher:promotion-test
+            dependencies:
+              - periodic-tripleo-centos-8-reproducer-update-images-start
+        - tripleo-ci-reproducer-centos-9-host:
+            vars: *promotion
             dependencies:
               - periodic-tripleo-centos-8-reproducer-update-images-start
         - tripleo-ci-reproducer-centos-8-libvirt-standalone-dryrun-vexxhost:
