@@ -27,6 +27,17 @@
         - ansible_distribution == 'CentOS'
         - ansible_distribution_major_version|int >= 8
 
+    - name: Fix SSH config for Gerrit connection
+      copy:
+        dest: ~/.ssh/config
+        content: |
+          Host *
+            PubkeyAcceptedKeyTypes +ssh-rsa
+        mode: '0600'
+      when: >-
+        (ansible_distribution == 'CentOS' and ansible_distribution_major_version|int >= 9) or
+        (ansible_distribution == 'Fedora' and ansible_distribution_major_version|int >= 33)
+
     - when:
         - ansible_distribution == 'CentOS'
         - ansible_distribution_major_version|int == 7

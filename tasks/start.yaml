@@ -41,6 +41,13 @@
       when:
         - play_kube|bool
 
+    - name: Change logging driver for podman (CentOS 9)
+      become: true
+      lineinfile:
+        path: /usr/share/containers/containers.conf
+        regexp: '^events_logger.*='
+        line: 'events_logger = "file"'
+
     - name: Pull all images for podman
       command: "{{ install_path }}/tripleo-ci-reproducer.sh --pull"
       register: result
