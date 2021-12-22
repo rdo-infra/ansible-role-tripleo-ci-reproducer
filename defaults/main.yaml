@@ -12,6 +12,7 @@ os_cloud_name: rdo-cloud
 os_centos7_image: upstream-cloudinit-centos-7
 os_rhel8_image: upstream-cloudinit-rhel-8
 os_centos8_image: upstream-cloudinit-centos-8
+os_centos9_image: upstream-cloudinit-centos-9
 os_flavor_name: "m1.large"
 os_nodepool_name: "{{ ansible_hostname }}-{{ os_cloud_name }}"
 os_autohold_node: true

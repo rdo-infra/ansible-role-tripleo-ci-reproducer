@@ -9,6 +9,8 @@ labels:
   - name: centos-8
   - name: centos-8-stream
   - name: tripleo-ovb-centos-8
+  - name: tripleo-ovb-centos-9
+  - name: centos-9-stream
 
 providers:
   - name: {{ os_nodepool_name }}
@@ -30,6 +32,10 @@ providers:
       - name: centos-8
         config-drive: true
         image-name: {{ os_centos8_image }}
+        username: zuul
+      - name: centos-9
+        config-drive: true
+        image-name: {{ os_centos9_image }}
         username: zuul
     pools:
       - name: main
@@ -74,5 +80,17 @@ providers:
             min-ram: 8192
             flavor-name: {{ os_flavor_name }}
             cloud-image: centos-8
+            console-log: true
+            {{ cloud_config_centos8_ovb | indent(12) }}
+          - name: centos-9-stream
+            min-ram: 8192
+            flavor-name: {{ os_flavor_name }}
+            cloud-image: centos-9
+            console-log: true
+            {{ cloud_config_centos8 | indent(12) }}
+          - name: tripleo-ovb-centos-9
+            min-ram: 8192
+            flavor-name: {{ os_flavor_name }}
+            cloud-image: centos-9
             console-log: true
             {{ cloud_config_centos8_ovb | indent(12) }}
