@@ -1,0 +1,44 @@
+- become: "{{ not rootless|bool }}"
+  block:
+    - name: Stop up zuul and friends with podman and script
+      command: "{{ install_path }}/tripleo-ci-reproducer.sh --stop"
+      ignore_errors: true
+      when:
+        - not play_kube|bool
+
+    - name: Stop up zuul and friends with podman
+      command: "podman pod stop tripleo-reproducer"
+      ignore_errors: true
+      when:
+        - play_kube|bool
+
+    - name: Remove old podman pod
+      command: "podman pod rm -f tripleo-reproducer"
+      ignore_errors: true
+      when:
+        - play_kube|bool
+
+    - name: Pull all images for podman
+      command: "{{ install_path }}/tripleo-ci-reproducer.sh --pull"
+      register: result
+      until: result is success
+      retries: 5
+      delay: 10
+
+    - name: Create podman pod
+      command: >-
+        podman play kube {{ install_path }}/tripleo-reproducer.yaml
+        --configmap {{ install_path }}/secrets.yaml
+        --start=false
+      when:
+        - play_kube|bool
+
+    - name: Start podman pod with kube
+      command: "podman pod start tripleo-reproducer"
+      when:
+        - play_kube|bool
+
+    - name: Start podman pod with script
+      command: "{{ install_path }}/tripleo-ci-reproducer.sh --run"
+      when:
+        - not play_kube|bool
