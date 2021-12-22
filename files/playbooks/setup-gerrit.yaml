@@ -111,4 +111,4 @@
           ssh_key: "{{ lookup('file', '/var/ssh/id_rsa.pub') }}"
           http_password: secret
           groups:
-            - "Non-Interactive Users"
+            - "Service Users"

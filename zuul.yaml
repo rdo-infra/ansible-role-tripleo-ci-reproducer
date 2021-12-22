@@ -176,10 +176,6 @@
             vars: *promotion
             dependencies:
               - periodic-tripleo-centos-8-reproducer-update-images-start
-        - tripleo-ci-reproducer-centos-8-libvirt-standalone-dryrun-vexxhost:
-            vars: *promotion
-            dependencies:
-              - periodic-tripleo-centos-8-reproducer-update-images-start
         - tripleo-ci-reproducer-centos-8-openstack-standalone-dryrun:
             vars: *promotion
             dependencies:
@@ -191,4 +187,5 @@
               push_tag: stable
             dependencies:
               - tripleo-ci-reproducer-centos-8-host
+              - tripleo-ci-reproducer-centos-9-host
               - tripleo-ci-reproducer-centos-8-openstack-standalone-dryrun

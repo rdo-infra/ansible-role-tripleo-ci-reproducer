@@ -30,15 +30,15 @@ spec:
 
   containers:
     - name: gerrit
-      image: "gerritcodereview/gerrit:2.16.7-centos7"
+      image: "gerritcodereview/gerrit:3.3.8-centos8"
       command:
         - /bin/sh
         - -c
-        - git config -f /var/gerrit/etc/gerrit.config gerrit.canonicalWebUrl http://localhost:8080/ &&
+        - 'git config -f /var/gerrit/etc/gerrit.config gerrit.canonicalWebUrl http://localhost:8080/ &&
           git config -f /var/gerrit/etc/gerrit.config gerrit.ui POLYGERRIT &&
           git config -f /var/gerrit/etc/gerrit.config sendemail.enable false &&
           git config -f /var/gerrit/etc/gerrit.config noteDb.changes.autoMigrate true &&
-          /var/gerrit/bin/gerrit.sh run
+          /entrypoint.sh'
       ports:
         - containerPort: 8080
           hostPort: 8080

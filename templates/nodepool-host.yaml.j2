@@ -8,6 +8,7 @@ labels:
   - name: rhel-8
   - name: centos-8
   - name: centos-8-stream
+  - name: centos-9-stream
 
 providers:
   - name: static-{{ nodepool_provider }}
@@ -21,6 +22,7 @@ providers:
                 - tripleo-ovb-centos-7
                 - centos-8
                 - centos-8-stream
+                - centos-9-stream
             username: {{ ansible_user }}
             host-key: {{ lookup('pipe', 'ssh-keyscan -t ed25519 ' + ansible_default_ipv4.address ).split(" ", 1)[1] }}
             python-path: auto
