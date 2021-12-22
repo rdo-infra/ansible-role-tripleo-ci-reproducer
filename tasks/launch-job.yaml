@@ -74,35 +74,58 @@
     - zuul_status.json.0.jobs | length != 0
     - zuul_status.json.0.jobs.0.uuid
   changed_when: false
+  ignore_errors: true
 
-- name: Print stream command
-  debug:
-    msg: 'finger {{ zuul_status.json.0.jobs.0.uuid }}@localhost'
+- name: Check if job finished quickly
+  uri:
+    url: http://localhost:9000/api/tenant/tripleo-ci-reproducer/builds?change={{ change }}
+    method: GET
+    return_content: true
+    status_code: 200
+    body_format: json
+  register: zuul_builds_finished
+  changed_when: false
+  ignore_errors: true
+  when: zuul_status is failure
 
-- name: Do autohold to have the nodes in case of job failure - podman
-  become: "{{ not rootless|bool }}"
-  command: |
-    podman exec {{ 'tripleo-reproducer-' if play_kube|bool else '' }}scheduler zuul autohold
-      --project test1
-      --tenant tripleo-ci-reproducer
-      --job {{ zuul_status.json.0.jobs.0.name }}
-      --reason reproducer_forensics
+- name: Fail if job didn't start
+  fail:
+    msg: "The job didn't start!"
   when:
-    - os_autohold_node
-    - container_mode == 'podman'
+    - zuul_status is failure
+    - zuul_builds_finished.json | default([]) | length == 0
 
-- name: Do autohold to have the nodes in case of job failure - docker
-  command: |
-    docker-compose exec -T scheduler zuul autohold
-      --project test1
-      --tenant tripleo-ci-reproducer
-      --job {{ zuul_status.json.0.jobs.0.name }}
-      --reason reproducer_forensics
-  args:
-    chdir: ~/tripleo-ci-reproducer
-  when:
-    - os_autohold_node
-    - container_mode == 'docker'
+- when: zuul_status is success
+  block:
+
+    - name: Print stream command
+      debug:
+        msg: 'finger {{ zuul_status.json.0.jobs.0.uuid }}@localhost'
+
+    - name: Do autohold to have the nodes in case of job failure - podman
+      become: "{{ not rootless|bool }}"
+      command: |
+        podman exec {{ 'tripleo-reproducer-' if play_kube|bool else '' }}scheduler zuul autohold
+          --project test1
+          --tenant tripleo-ci-reproducer
+          --job {{ zuul_status.json.0.jobs.0.name }}
+          --reason reproducer_forensics
+      when:
+        - os_autohold_node
+        - container_mode == 'podman'
+
+    - name: Do autohold to have the nodes in case of job failure - docker
+      command: |
+        docker-compose exec -T scheduler zuul autohold
+          --project test1
+          --tenant tripleo-ci-reproducer
+          --job {{ zuul_status.json.0.jobs.0.name }}
+          --reason reproducer_forensics
+      args:
+        chdir: ~/tripleo-ci-reproducer
+      when:
+        - os_autohold_node
+        - container_mode == 'docker'
 
 - name: Wait for job to finish
   uri:
