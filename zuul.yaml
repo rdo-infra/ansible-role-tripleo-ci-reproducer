@@ -114,6 +114,21 @@
       ci_job: standalone-dryrun
 
 - job:
+    name: tripleo-ci-reproducer-centos-9-libvirt-standalone-dryrun-vexxhost
+    parent: tripleo-ci-reproducer-centos-8-libvirt-standalone-dryrun-vexxhost
+    nodeset: single-centos-8-node-vexxhost
+
+- job:
+    name: tripleo-ci-reproducer-centos-9-openstack-standalone-dryrun
+    parent: tripleo-ci-reproducer-centos-8-openstack-standalone-dryrun
+    nodeset: single-centos-8-node-vexxhost
+
+- job:
+    name: tripleo-ci-reproducer-centos-9-openstack-standalone
+    parent: tripleo-ci-reproducer-centos-8-openstack-standalone
+    nodeset: single-centos-8-node-vexxhost
+
+- job:
     name: periodic-tripleo-ci-reproducer-centos-8-openstack-standalone
     parent: tripleo-ci-reproducer-centos-8-openstack-standalone
 
@@ -129,19 +144,29 @@
     name: periodic-tripleo-centos-8-reproducer-update-images-start
     parent: periodic-tripleo-centos-8-reproducer-update-images
 
+- job:
+    name: periodic-tripleo-ci-reproducer-centos-9-openstack-standalone-dryrun
+    parent: tripleo-ci-reproducer-centos-9-openstack-standalone-dryrun
+
+- job:
+    name: periodic-tripleo-ci-reproducer-centos-9-openstack-standalone
+    parent: tripleo-ci-reproducer-centos-9-openstack-standalone
+
 - project:
     name: rdo-infra/ansible-role-tripleo-ci-reproducer
 
     check:
       jobs:
         - tox-linters
+        - tripleo-ci-reproducer-centos-9-libvirt-standalone-dryrun-vexxhost
+        - tripleo-ci-reproducer-centos-9-openstack-standalone-dryrun
         - tripleo-ci-reproducer-centos-7-host:
             voting: false
         - tripleo-ci-reproducer-centos-8-host
         - tripleo-ci-reproducer-centos-9-host
-        - tripleo-ci-reproducer-centos-8-libvirt-standalone-dryrun-vexxhost
-        - tripleo-ci-reproducer-centos-8-openstack-standalone
         - tripleo-ci-reproducer-centos-8-openstack-standalone-dryrun
+        - tripleo-ci-reproducer-centos-9-openstack-standalone-dryrun
+        - tripleo-ci-reproducer-centos-9-openstack-standalone
 
     gate:
       jobs:
@@ -154,6 +179,8 @@
         - periodic-tripleo-ci-reproducer-centos-8-libvirt-standalone-dryrun-vexxhost
         - periodic-tripleo-ci-reproducer-centos-8-openstack-standalone
         - periodic-tripleo-ci-reproducer-centos-8-openstack-standalone-dryrun
+        - periodic-tripleo-ci-reproducer-centos-9-openstack-standalone-dryrun
+        - periodic-tripleo-ci-reproducer-centos-9-openstack-standalone
 
     periodic:
       jobs:
@@ -176,7 +203,7 @@
             vars: *promotion
             dependencies:
               - periodic-tripleo-centos-8-reproducer-update-images-start
-        - tripleo-ci-reproducer-centos-8-openstack-standalone-dryrun:
+        - tripleo-ci-reproducer-centos-9-openstack-standalone-dryrun:
             vars: *promotion
             dependencies:
               - periodic-tripleo-centos-8-reproducer-update-images-start

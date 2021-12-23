@@ -4,38 +4,34 @@ ci_jobs_config:
       - project:
           check:
             jobs:
-              - tripleo-ci-centos-8-standalone-dlrn-hash-tag
+              - tripleo-ci-centos-9-standalone-dlrn-hash-tag
 
       - job:
-          name: tripleo-ci-centos-8-standalone-dlrn-hash-tag
-          parent: tripleo-ci-centos-8-standalone
+          name: tripleo-ci-centos-9-standalone-dlrn-hash-tag
+          parent: tripleo-ci-centos-9-standalone
           vars:
             mirror_fqdn: "{{ mirror_fqdn }}"
             zuul_site_mirror_fqdn: "{{ zuul_site_mirror_fqdn | default(mirror_fqdn) }}"
             pypi_fqdn: "{{ pypi_fqdn | default(mirror_fqdn) }}"
             package_mirror: "{{  package_mirror | default(omit) }}"
             dryrun: true
-            featureset_override:
-              tempest_format: container
+
   standalone:
     zuul_yaml:
       - project:
           check:
             jobs:
-              - tripleo-ci-centos-8-standalone-dlrn-hash-tag
+              - tripleo-ci-centos-9-standalone-dlrn-hash-tag
 
       - job:
-          name: tripleo-ci-centos-8-standalone-dlrn-hash-tag
-          parent: tripleo-ci-centos-8-standalone
+          name: tripleo-ci-centos-9-standalone-dlrn-hash-tag
+          parent: tripleo-ci-centos-9-standalone
           timeout: 9000
           vars:
             mirror_fqdn: "{{ mirror_fqdn }}"
             zuul_site_mirror_fqdn: "{{ zuul_site_mirror_fqdn | default(mirror_fqdn) }}"
             pypi_fqdn: "{{ pypi_fqdn | default(mirror_fqdn) }}"
             package_mirror: "{{  package_mirror | default(omit) }}"
-            featureset_override:
-              tempest_format: container
-
 
   hello_job:
     zuul_yaml:
