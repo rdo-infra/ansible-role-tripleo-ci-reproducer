@@ -45,6 +45,8 @@ os_cloud_networks:
     - private
   upshift:
     - private
+  "ovb-test":
+    - public
 cloud_networks: "{{ os_cloud_networks[os_cloud_name]|default(['private']) }}"
 
 depends_on: []
