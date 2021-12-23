@@ -167,3 +167,6 @@
 - name: Print gerrit info
   debug:
     msg: "{{ gerrit_info.stdout }}"
+
+- name: Sleep
+  shell: sleep 5h
