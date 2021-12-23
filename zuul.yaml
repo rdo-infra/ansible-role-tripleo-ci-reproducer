@@ -114,6 +114,16 @@
       ci_job: standalone-dryrun
 
 - job:
+    name: tripleo-ci-reproducer-centos-9-libvirt-standalone-dryrun-vexxhost
+    parent: tripleo-ci-reproducer-centos-8-libvirt-standalone-dryrun-vexxhost
+    nodeset: single-centos-8-node-vexxhost
+
+- job:
+    name: tripleo-ci-reproducer-centos-9-openstack-standalone-dryrun
+    parent: tripleo-ci-reproducer-centos-8-openstack-standalone-dryrun
+    nodeset: single-centos-8-node-vexxhost
+
+- job:
     name: periodic-tripleo-ci-reproducer-centos-8-openstack-standalone
     parent: tripleo-ci-reproducer-centos-8-openstack-standalone
 
@@ -135,13 +145,15 @@
     check:
       jobs:
         - tox-linters
-        - tripleo-ci-reproducer-centos-7-host:
-            voting: false
-        - tripleo-ci-reproducer-centos-8-host
-        - tripleo-ci-reproducer-centos-9-host
-        - tripleo-ci-reproducer-centos-8-libvirt-standalone-dryrun-vexxhost
-        - tripleo-ci-reproducer-centos-8-openstack-standalone
-        - tripleo-ci-reproducer-centos-8-openstack-standalone-dryrun
+        - tripleo-ci-reproducer-centos-9-libvirt-standalone-dryrun-vexxhost
+        - tripleo-ci-reproducer-centos-9-openstack-standalone-dryrun
+        # - tripleo-ci-reproducer-centos-7-host:
+        #     voting: false
+        # - tripleo-ci-reproducer-centos-8-host
+        # - tripleo-ci-reproducer-centos-9-host
+        # - tripleo-ci-reproducer-centos-8-libvirt-standalone-dryrun-vexxhost
+        # - tripleo-ci-reproducer-centos-8-openstack-standalone
+        # - tripleo-ci-reproducer-centos-8-openstack-standalone-dryrun
 
     gate:
       jobs:
