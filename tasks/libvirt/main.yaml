@@ -16,6 +16,7 @@
     append: true
 - name: reset ssh connection to allow user changes to affect
   meta: reset_connection
+
 - name: Restore a libvirt snapshot
   when: restore_snapshot|bool
   vars:
@@ -49,17 +50,22 @@
 
 - name: Setup libvirt nodes
   when: not restore_snapshot|bool or teardown|bool
-  vars:
-    libvirt_nodepool: true
-    local_working_dir: "{{ install_path }}"
-    working_dir: "{{ install_path }}"
-    non_root_user: "{{ ansible_user }}"
-    non_root_group: "{{ ansible_user }}"
 
   block:
     - name: Start nodes
       when: teardown|bool
       block:
+
+        - name: Set facts for libvirt
+          set_fact:
+            libvirt_nodepool: true
+            local_working_dir: "{{ install_path }}"
+            working_dir: "{{ install_path }}"
+            non_root_user: "{{ ansible_user }}"
+            non_root_group: "{{ ansible_user }}"
+            images: "{{ images }}"
+            overcloud_nodes: "{{ overcloud_nodes }}"
+
         - name: Tear down nodes
           when: not restore_snapshot|bool
           include_role:
