@@ -163,6 +163,23 @@
       retries: 3
       delay: 5
 
+    - when: container_mode == 'podman'
+      block:
+
+        - name: Configure events to be in containers, not in journal
+          lineinfile:
+            path: /usr/share/containers/containers.conf
+            regexp: '^events_logger *='
+            line: events_logger = "file"
+          become: true
+
+        - name: Configure logging to be in containers, not in journal
+          lineinfile:
+            path: /usr/share/containers/containers.conf
+            regexp: '^log_driver *='
+            line: log_driver = "k8s-file"
+          become: true
+
     - when: container_mode == 'docker'
       block:
 
