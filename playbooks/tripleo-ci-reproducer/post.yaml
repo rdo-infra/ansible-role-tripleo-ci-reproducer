@@ -20,36 +20,15 @@
       ignore_errors: true
 
     - name: Get reproducer services logs
-      become: "{{ true if container_mode == 'podman' else false }}"
       shell: >-
-        {{ container_mode if container_mode == 'podman' else docker_compose_cli }}
-        logs {{ '' if container_mode == 'podman' else '--no-color' }} {{ item }} 2>&1 >
-        {{ item }}.log
+        for container in $({{ container_mode }} ps -a --format '{{ {{ }}.Names{{ }} }}'); do
+        {{ container_mode }} logs {{ '' if container_mode == 'podman' else '--no-color' }} $container 2>&1 >
+        $container.log;
+        done
       args:
         chdir: "{{ ansible_user_dir }}/tripleo-ci-reproducer"
       changed_when: true
       ignore_errors: true
-      with_items:
-        - zk
-        - mysql
-        - gerrit
-        - logs
-        - launcher
-        - gerritconfig
-        - scheduler
-        - web
-        - executor
-        - fingergw
-        - tripleo-reproducer-zk
-        - tripleo-reproducer-mysql
-        - tripleo-reproducer-gerrit
-        - tripleo-reproducer-logs
-        - tripleo-reproducer-launcher
-        - tripleo-reproducer-gerritconfig
-        - tripleo-reproducer-scheduler
-        - tripleo-reproducer-web
-        - tripleo-reproducer-executor
-        - tripleo-reproducer-fingergw
 
     - name: Get reproducer mergers logs
       become: "{{ true if container_mode == 'podman' else false }}"
