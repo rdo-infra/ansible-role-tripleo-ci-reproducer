@@ -128,6 +128,7 @@ Role Variables
 - `user_pub_key` -- ssh public key to use for the user, default "id_rsa.pub"
 - `ssh_path` --  path where the ssh keys are present, default "~/.ssh"
 - `launch_job_branch` -- branch to launch the job from, default "master"
+- `podman_pull` -- run podman pull on containers before launching the pod
 
 Example Playbook
 ----------------
