@@ -55,7 +55,8 @@ spec:
       command:
         - /bin/sh
         - -c
-        - pip install 'ansible<2.11' &&
+        - bash /usr/src/inject-ssh-keys.sh &&
+          pip install 'ansible<2.11' &&
           ansible-playbook -vv
           {% if mirror_fqdn is defined -%}
           -e mirror_fqdn={{ mirror_fqdn }}
@@ -69,7 +70,6 @@ spec:
           {% if package_mirror is defined -%}
           -e package_mirror={{ package_mirror }}
           {%- endif %}
-          /usr/src/inject-ssh-keys.yaml
           /usr/src/setup-gerrit.yaml
       volumeMounts:
         - mountPath: /usr/src/
@@ -103,12 +103,10 @@ spec:
       command:
         - /bin/sh
         - -c
-        - pip install 'ansible<2.11' &&
-          cd /usr/src/ &&
-          ansible-playbook -vv
-          inject-ssh-keys.yaml
-          wait-gerrit.yaml
-          add-gerrit-host-keys.yaml &&
+        - cd /usr/src/ &&
+          bash inject-ssh-keys.sh &&
+          bash wait-gerrit.sh &&
+          bash add-gerrit-host-keys.sh &&
           zuul-scheduler -d
       volumeMounts:
         - mountPath: /etc/zuul
@@ -125,9 +123,8 @@ spec:
       command:
         - /bin/sh
         - -c
-        - pip install 'ansible<2.11' &&
-          cd /usr/src/ &&
-          ansible-playbook -vv wait-mysql.yaml &&
+        - cd /usr/src/ &&
+          bash wait-mysql.sh &&
           zuul-web -d
       ports:
         - containerPort: 9000
@@ -152,10 +149,9 @@ spec:
         - /bin/sh
         - -c
         - cd /usr/src/ &&
-          pip install 'ansible<2.11' &&
-          ansible-playbook -vv inject-ssh-keys.yaml
-          wait-gerrit.yaml
-          add-gerrit-host-keys.yaml &&
+          bash inject-ssh-keys.sh &&
+          bash wait-gerrit.sh &&
+          bash add-gerrit-host-keys.sh &&
           zuul-executor -d
       volumeMounts:
         - mountPath: /etc/zuul
@@ -231,10 +227,9 @@ spec:
         - /bin/sh
         - -c
         - cd /usr/src/ &&
-          pip install 'ansible<2.11' &&
-          ansible-playbook -vv inject-ssh-keys.yaml
-          wait-gerrit.yaml
-          add-gerrit-host-keys.yaml &&
+          bash inject-ssh-keys.sh &&
+          bash wait-gerrit.sh &&
+          bash add-gerrit-host-keys.sh &&
           zuul-merger -d
       volumeMounts:
         - mountPath: /etc/zuul
