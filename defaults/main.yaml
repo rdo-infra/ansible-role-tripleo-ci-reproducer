@@ -5,6 +5,7 @@ container_mode: podman
 play_kube: true
 rootless: true
 ansible_user: "{{ ansible_user_id }}"
+podman_pull: true
 ##############
 # Configuration for openstack nodepool
 ###############
