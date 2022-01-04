@@ -24,6 +24,8 @@
       until: result is success
       retries: 5
       delay: 10
+      when:
+        - podman_pull|default(true)|bool
 
     - name: Create podman pod
       command: >-

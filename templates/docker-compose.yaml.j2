@@ -25,6 +25,7 @@ services:
     env_file: secrets.env
     command: |
       /bin/sh -c '\
+        bash /usr/src/inject-ssh-keys.sh && \
         pip install ansible &&
         ansible-playbook -vv \
             {% if mirror_fqdn is defined %}
@@ -39,7 +40,6 @@ services:
             {% if package_mirror is defined %}
             -e package_mirror={{ package_mirror }} \
             {% endif %}
-            /usr/src/inject-ssh-keys.yaml \
             /usr/src/setup-gerrit.yaml'
   zk:
     image: "{{ zk_image }}"
@@ -59,13 +59,11 @@ services:
       no_proxy: "${no_proxy},gerrit"
     command: |
         sh -c '\
-          pip install ansible && \
           cd /usr/src/ && \
-          ansible-playbook -vv \
-            inject-ssh-keys.yaml \
-            wait-gerrit.yaml \
-            add-gerrit-host-keys.yaml; \
-            zuul-scheduler -d'
+          bash inject-ssh-keys.sh && \
+          bash wait-gerrit.sh && \
+          bash add-gerrit-host-keys.sh && \
+          zuul-scheduler -d'
     image: "{{ zuul_scheduler_image }}"
     volumes:
       - "./etc_zuul/:/etc/zuul/:z"
@@ -76,9 +74,9 @@ services:
   web:
     command: |
         sh -c '\
-          pip install ansible && \
           cd /usr/src/ && \
-          ansible-playbook -vv wait-mysql.yaml; zuul-web -d'
+          bash wait-mysql.sh && \
+          zuul-web -d'
     depends_on:
       - scheduler
       - mysql
@@ -92,7 +90,7 @@ services:
     privileged: true
     environment:
       no_proxy: "${no_proxy},gerrit"
-    command: "sh -c 'cd /usr/src/; pip install ansible; ansible-playbook -vv inject-ssh-keys.yaml wait-gerrit.yaml add-gerrit-host-keys.yaml && zuul-executor -d'"
+    command: "sh -c 'cd /usr/src/; bash inject-ssh-keys.sh && bash wait-gerrit.sh && bash add-gerrit-host-keys.sh && zuul-executor -d'"
     depends_on:
       - scheduler
     image: "{{ zuul_executor_image }}"
@@ -149,11 +147,9 @@ services:
       no_proxy: "${no_proxy},gerrit"
     command: |
         sh -c ' cd /usr/src/; \
-            pip install ansible && \
-            ansible-playbook \
-                inject-ssh-keys.yaml \
-                wait-gerrit.yaml \
-                add-gerrit-host-keys.yaml && \
+            bash inject-ssh-keys.sh && \
+            bash wait-gerrit.sh && \
+            bash add-gerrit-host-keys.sh && \
             zuul-merger -d'
     depends_on:
       - scheduler
