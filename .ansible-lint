@@ -4,3 +4,5 @@ skip_list:
   - ANSIBLE0006
   - '405'  # [E405] Remote package tasks should have a retry (too new, TBD in separate change)
   - '206'  # temporary until https://github.com/ansible/ansible-lint/pull/500 is released
+exclude_paths:
+  - files/playbooks/add_rdo_config.yml
