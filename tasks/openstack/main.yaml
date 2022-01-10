@@ -12,9 +12,10 @@
     - 22
 
 - name: Get installed images names
-  os_image_facts:
+  os_image_info:
     cloud: "{{ os_cloud_name }}"
-  until: openstack_image is defined and openstack_image|list|length > 0
+  until: os_image_data.openstack_image is defined and os_image_data.openstack_image|list|length > 0
+  register: os_image_data
   retries: 3
   delay: 5
 
@@ -25,16 +26,17 @@
       https://nb02.openstack.org/images/ and add your ssh pub key with
       virt-edit and upload it to your openstack cloud.
   when: |
-    openstack_image|selectattr( 'name', 'equalto', item )|list|length == 0
+    os_image_data.openstack_image|selectattr( 'name', 'equalto', item )|list|length == 0
   with_items:
     - "{{ os_centos7_image }}"
 
 - name: Gather facts about a previously created network by name
-  os_networks_facts:
+  os_networks_info:
     cloud: "{{ os_cloud_name }}"
+  register: os_network_data
 
 - name: Check if networks present in the tenant
   fail:
     msg: 'Network "{{ item }} is not found!'
-  when: "item not in openstack_networks|map(attribute='name')|list"
+  when: "item not in os_network_data.openstack_networks|map(attribute='name')|list"
   with_items: "{{ cloud_networks }}"
