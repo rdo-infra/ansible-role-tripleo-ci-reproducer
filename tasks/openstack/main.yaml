@@ -1,6 +1,6 @@
 ---
 - name: Open needed ports at default security group
-  os_security_group_rule:
+  openstack.cloud.security_group_rule:
     cloud: "{{ os_cloud_name }}"
     security_group: default
     protocol: tcp
@@ -12,7 +12,7 @@
     - 22
 
 - name: Get installed images names
-  os_image_info:
+  openstack.cloud.image_info:
     cloud: "{{ os_cloud_name }}"
   until: os_image_data.openstack_image is defined and os_image_data.openstack_image|list|length > 0
   register: os_image_data
@@ -32,7 +32,7 @@
     - "{{ os_centos8_image }}"
 
 - name: Gather facts about a previously created network by name
-  os_networks_info:
+  openstack.cloud.networks_info:
     cloud: "{{ os_cloud_name }}"
   register: os_network_data
 
