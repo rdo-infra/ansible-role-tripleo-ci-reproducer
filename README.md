@@ -28,7 +28,7 @@ Packages:
 System:
 
 - [openstack auth config at clouds.yaml](#tenant-configuration)
-- [centos/fedora images](https://nb02.openstack.org/images/)
+- [centos/fedora images](https://nb02.opendev.org/images/)
 - [virt-edit to inject pub keys to images](https://docs.openstack.org/image-guide/modify-images.html)
 - Sudo permissions
 
@@ -89,7 +89,13 @@ Role Variables
 - `os_cloud_name` -- openstack cloud to use, it has to be defined at
   clouds.yaml
 - `os_centos7_image` -- Image to use at centos-7 nodesets,
-  default value is penstack-infra-centos-7
+  default value is upstream-cloudinit-centos-7
+- `os_centos8_image` -- Image to use at centos-8 nodesets,
+  default value is upstream-cloudinit-centos-8
+- `os_rhel8_image` -- Image to use at centos-8 nodesets,
+  default value is upstream-cloudinit-rhel-8
+- `os_centos9_image` -- Image to use at centos-9 nodesets,
+  default value is upstream-cloudinit-centos-9
 - `upstream_gerrit_user` -- User clone repos from review.opendev.org,
 - `rdo_gerrit_user` -- User clone repos from review.rdoproject.org,
   default value is ansible_user

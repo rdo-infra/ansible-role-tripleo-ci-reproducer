@@ -22,12 +22,13 @@
   fail:
     msg: |
       Cannot find {{ item }} at the openstack cloud, you can upload one from
-      https://nb02.openstack.org/images/ and add your ssh pub key with
+      https://nb02.opendev.org/images/ and add your ssh pub key with
       virt-edit and upload it to your openstack cloud.
+      e.g. virt-sysprep -a centos-8-stream-00001.qcow2 --ssh-inject zuul:file:/home/user/.ssh/id_rsa.pub --selinux-relabel
   when: |
     openstack_image|selectattr( 'name', 'equalto', item )|list|length == 0
   with_items:
-    - "{{ os_centos7_image }}"
+    - "{{ os_centos8_image }}"
 
 - name: Gather facts about a previously created network by name
   os_networks_facts:
