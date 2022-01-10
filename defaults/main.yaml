@@ -101,6 +101,7 @@ cloud_config: |
     users:
     - default
     - name: zuul
+      sudo: ALL=(ALL) NOPASSWD:ALL
       ssh_authorized_keys:
         - {{ lookup('file', ssh_path + '/' + user_pub_key ) }}
 
