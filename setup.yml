@@ -2,10 +2,6 @@
 - name: Set up reproducer
   hosts: localhost
   tasks:
-
     - name: Set up reproducer
       include_role:
-        name: "../ansible-role-tripleo-ci-reproducer"
-      vars:
-        upstream_gerrit_user: "{{ upstream_gerrit_username }}"
-        rdo_gerrit_user: "{{ rdo_gerrit_username }}"
+        name: tripleo-ci-reproducer
