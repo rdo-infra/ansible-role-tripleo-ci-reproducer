@@ -4,12 +4,19 @@ server=scheduler
 [gearman_server]
 start=true
 
+[keystore]
+password=password
+
 [zookeeper]
-hosts=zk
+hosts=zk:2281
+tls_cert=/var/certs/certs/client.pem
+tls_key=/var/certs/keys/clientkey.pem
+tls_ca=/var/certs/certs/cacert.pem
 
 [scheduler]
 tenant_config=/etc/zuul/main.yaml
 log_config=/etc/zuul/scheduler-logging.yaml
+pidfile=/tmp/scheduler.pid
 
 [connection "opendev.org"]
 name=opendev.org
@@ -46,14 +53,13 @@ password=secret
 baseurl=http://gerrit:8080
 auth_type=basic
 
-[connection "mysql"]
-name=mysql
-driver=sql
+[database]
 dburi=mysql+pymysql://zuul:secret@mysql/zuul
 
 [web]
 listen_address=0.0.0.0
 log_config=/etc/zuul/web-logging.yaml
+pidfile=/tmp/web.pid
 
 [executor]
 private_key_file=/var/ssh/id_rsa
@@ -61,12 +67,15 @@ default_username=zuul
 trusted_rw_paths=/srv/static/logs
 log_config=/etc/zuul/executor-logging.yaml
 disk_limit_per_job=5000
+pidfile=/tmp/executor.pid
 
 [merger]
 git_user_email="os-tripleo-ci@redhat.com"
 git_user_name="Openstack Triple CI"
 log_config=/etc/zuul/merger-logging.yaml
+pidfile=/tmp/merger.pid
 
 [fingergw]
 user=root
 log_config=/etc/zuul/fingergw-logging.yaml
+pidfile=/tmp/fingergw.pid

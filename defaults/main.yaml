@@ -72,7 +72,7 @@ launch_job_branch: master
 # gerrit_image: rdoci/gerrit:stable
 gerrit_image: docker.io/gerritcodereview/gerrit:3.3.8-centos8
 # zk_image: rdoci/zookeeper:stable
-zk_image: docker.io/zookeeper:3.4.14
+zk_image: docker.io/zookeeper:3.7.0
 # mariadb_image: rdoci/mariadb:stable
 mariadb_image: docker.io/mariadb:10.3.14-bionic
 # logs_image: rdoci/httpd:stable

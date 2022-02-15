@@ -26,6 +26,7 @@ create_containers () {
         --add-host gerrit:127.0.0.1 \
         -v {{ install_path }}/playbooks/:/usr/src/:z \
         -v {{ install_path }}/projects/:/var/projects/:z \
+        -v {{ install_path }}/certs:/var/certs:z \
         --env-file={{ install_path }}/secrets.env  \
         {{ zuul_image }} \
         /bin/sh -c 'bash /usr/src/inject-ssh-keys.sh && pip install ansible && ansible-playbook -vv \
@@ -58,19 +59,21 @@ create_containers () {
         -v {{ install_path }}/playbooks/:/usr/src/:z \
         -v {{ install_path }}/projects/:/var/projects/:z \
         -v {{ install_path }}/zuul:/var/lib/zuul:z \
+        -v {{ install_path }}/certs:/var/certs:z \
         --env-file={{ install_path }}/secrets.env \
         --add-host gerrit:127.0.0.1 \
         --add-host scheduler:127.0.0.1 \
         --add-host mysql:127.0.0.1 \
         --add-host zk:127.0.0.1 \
         {{ zuul_scheduler_image }} \
-        sh -c 'cd /usr/src/ && bash inject-ssh-keys.sh && bash wait-gerrit.sh && bash add-gerrit-host-keys.sh && zuul-scheduler -d'
+        sh -c 'cd /usr/src/ && bash inject-ssh-keys.sh && bash wait-gerrit.sh && bash add-gerrit-host-keys.sh && zuul-scheduler -df'
 
     podman create \
         --pod $pod_name \
         --name web --hostname web \
         -v {{ install_path }}/etc_zuul/:/etc/zuul/:z \
         -v {{ install_path }}/playbooks/:/usr/src/:z \
+        -v {{ install_path }}/certs:/var/certs:z \
         --add-host scheduler:127.0.0.1 \
         --add-host mysql:127.0.0.1 \
         --add-host zk:127.0.0.1 \
@@ -78,11 +81,12 @@ create_containers () {
         --add-host merger{{ i }}:127.0.0.1 \
     {% endfor %}
         {{ zuul_web_image }} \
-        sh -c 'cd /usr/src/ && bash wait-mysql.sh && zuul-web -d'
+        sh -c 'cd /usr/src/ && bash wait-mysql.sh && zuul-web -df'
 
     podman create \
         --pod $pod_name \
         --name executor --hostname executor --privileged=true  \
+        -v {{ install_path }}/certs:/var/certs:z \
         --add-host scheduler:127.0.0.1 \
         --add-host gerrit:127.0.0.1 \
         --add-host zk:127.0.0.1 \
@@ -92,7 +96,7 @@ create_containers () {
         -v {{ install_path }}/projects/:/var/projects/:z \
         -v {{ install_path }}/logs:/srv/static/logs:z \
         {{ zuul_executor_image }} \
-        sh -c 'cd /usr/src/; bash inject-ssh-keys.sh && bash wait-gerrit.sh && bash add-gerrit-host-keys.sh && zuul-executor -d'
+        sh -c 'cd /usr/src/; bash inject-ssh-keys.sh && bash wait-gerrit.sh && bash add-gerrit-host-keys.sh && zuul-executor -df'
 
     podman create \
         --pod $pod_name \
@@ -104,7 +108,8 @@ create_containers () {
     {% endfor %}
         -v {{ install_path }}/zuul:/var/lib/zuul:z \
         -v {{ install_path }}/etc_zuul/:/etc/zuul/:z \
-        {{ zuul_fingergw_image }} zuul-fingergw -d
+        -v {{ install_path }}/certs:/var/certs:z \
+        {{ zuul_fingergw_image }} zuul-fingergw -df
 
     podman create \
         --pod $pod_name \
@@ -112,6 +117,7 @@ create_containers () {
         -v {{ install_path }}/etc_nodepool/:/etc/nodepool/:z \
         -v {{ ansible_user_dir }}/.config/openstack/:/etc/openstack/:z \
         -v {{ install_path }}/etc/pki/:/etc/pki/:z \
+        -v {{ install_path }}/certs:/var/certs:z \
         --add-host zk:127.0.0.1 \
         --user root \
         {{ nodepool_launcher_image }} \
@@ -127,14 +133,17 @@ create_containers () {
         -v {{ install_path }}/etc_zuul/:/etc/zuul/:z  \
         -v {{ install_path }}/playbooks/:/usr/src/:z \
         -v {{ install_path }}/logs:/srv/static/logs:z \
+        -v {{ install_path }}/certs:/var/certs:z \
         --env-file={{ install_path }}/secrets.env \
         {{ zuul_merger_image }} \
-        sh -c ' cd /usr/src/;  bash inject-ssh-keys.sh && bash wait-gerrit.sh && bash add-gerrit-host-keys.sh && zuul-merger -d'
+        sh -c ' cd /usr/src/;  bash inject-ssh-keys.sh && bash wait-gerrit.sh && bash add-gerrit-host-keys.sh && zuul-merger -df'
     {% endfor %}
 
     podman create \
         --pod $pod_name \
-        --name zk --hostname zk {{ zk_image }}
+        -v {{ install_path }}/certs:/var/certs:z \
+        -v {{ install_path }}/zoo.cfg:/conf/zoo.cfg:z \
+        --name zk --hostname zk {{ zk_image }} /bin/sh -c 'chown -R zookeeper:zookeeper /var/certs && zkServer.sh start-foreground'
 
     podman create \
         --pod $pod_name \
