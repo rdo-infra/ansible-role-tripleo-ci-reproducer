@@ -158,15 +158,31 @@
     check:
       jobs:
         - tox-linters
-        - tripleo-ci-reproducer-centos-9-libvirt-standalone-dryrun-vexxhost
-        - tripleo-ci-reproducer-centos-9-openstack-standalone-dryrun
-        - tripleo-ci-reproducer-centos-7-host:
-            voting: false
-        - tripleo-ci-reproducer-centos-8-host
-        - tripleo-ci-reproducer-centos-9-host
-        - tripleo-ci-reproducer-centos-8-openstack-standalone-dryrun
-        - tripleo-ci-reproducer-centos-9-openstack-standalone-dryrun
-        - tripleo-ci-reproducer-centos-9-openstack-standalone
+        - tripleo-ci-reproducer-centos-9-libvirt-standalone-dryrun-vexxhost:
+            vars: &new_img
+              override:
+                zuul_image: docker.io/zuul/zuul
+                zuul_scheduler_image: docker.io/zuul/zuul-scheduler
+                zuul_web_image: docker.io/zuul/zuul-web
+                zuul_executor_image: docker.io/zuul/zuul-executor
+                zuul_merger_image: docker.io/zuul/zuul-merger
+                zuul_fingergw_image: docker.io/zuul/zuul-fingergw
+                nodepool_launcher_image: docker.io/zuul/nodepool-launcher
+        # - tripleo-ci-reproducer-centos-9-openstack-standalone-dryrun:
+        #     vars: *new_img
+        # - tripleo-ci-reproducer-centos-7-host:
+        #     vars: *new_img
+        #     voting: false
+        # - tripleo-ci-reproducer-centos-8-host:
+        #     vars: *new_img
+        # - tripleo-ci-reproducer-centos-9-host:
+        #     vars: *new_img
+        # - tripleo-ci-reproducer-centos-8-openstack-standalone-dryrun:
+        #     vars: *new_img
+        # - tripleo-ci-reproducer-centos-9-openstack-standalone-dryrun:
+        #     vars: *new_img
+        # - tripleo-ci-reproducer-centos-9-openstack-standalone:
+        #     vars: *new_img
 
     gate:
       jobs:
