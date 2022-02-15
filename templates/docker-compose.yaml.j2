@@ -1,6 +1,7 @@
 version: '3.5'
 
 services:
+
   gerrit:
     image: "{{ gerrit_image }}"
     ports:
@@ -13,6 +14,7 @@ services:
         git config -f /var/gerrit/etc/gerrit.config sendemail.enable false && \
         git config -f /var/gerrit/etc/gerrit.config noteDb.changes.autoMigrate true && \
         /entrypoint.sh'
+
   gerritconfig:
     image: "{{ zuul_image }}"
     environment:
@@ -22,6 +24,7 @@ services:
     volumes:
       - "./playbooks/:/usr/src/:z"
       - "./projects/:/var/projects/:z"
+      - "./certs:/var/certs:z"
     env_file: secrets.env
     command: |
       /bin/sh -c '\
@@ -41,8 +44,15 @@ services:
             -e package_mirror={{ package_mirror }} \
             {% endif %}
             /usr/src/setup-gerrit.yaml'
+
   zk:
     image: "{{ zk_image }}"
+    command: |
+      /bin/sh -c 'chown -R zookeeper:zookeeper /var/certs && zkServer.sh start-foreground'
+    volumes:
+      - "./zoo.cfg:/conf/zoo.cfg:z"
+      - "./certs:/var/certs:z"
+
   mysql:
     image: "{{ mariadb_image }}"
     environment:
@@ -50,6 +60,7 @@ services:
       MYSQL_DATABASE: zuul
       MYSQL_USER: zuul
       MYSQL_PASSWORD: secret
+
   scheduler:
     depends_on:
       - gerritconfig
@@ -63,20 +74,22 @@ services:
           bash inject-ssh-keys.sh && \
           bash wait-gerrit.sh && \
           bash add-gerrit-host-keys.sh && \
-          zuul-scheduler -d'
+          zuul-scheduler -df'
     image: "{{ zuul_scheduler_image }}"
     volumes:
       - "./etc_zuul/:/etc/zuul/:z"
       - "./playbooks/:/usr/src/:z"
       - /var/lib/zuul
       - "./projects:/var/projects/:z"
+      - "./certs:/var/certs:z"
     env_file: secrets.env
+
   web:
     command: |
         sh -c '\
           cd /usr/src/ && \
           bash wait-mysql.sh && \
-          zuul-web -d'
+          zuul-web -df'
     depends_on:
       - scheduler
       - mysql
@@ -86,11 +99,13 @@ services:
     volumes:
       - "./etc_zuul/:/etc/zuul/:z"
       - "./playbooks/:/usr/src/:z"
+      - "./certs:/var/certs:z"
+
   executor:
     privileged: true
     environment:
       no_proxy: "${no_proxy},gerrit"
-    command: "sh -c 'cd /usr/src/; bash inject-ssh-keys.sh && bash wait-gerrit.sh && bash add-gerrit-host-keys.sh && zuul-executor -d'"
+    command: "sh -c 'cd /usr/src/; bash inject-ssh-keys.sh && bash wait-gerrit.sh && bash add-gerrit-host-keys.sh && zuul-executor -df'"
     depends_on:
       - scheduler
     image: "{{ zuul_executor_image }}"
@@ -103,17 +118,19 @@ services:
       - "./playbooks/:/usr/src/:z"
       - "{{ logs_path }}:/srv/static/logs:z"
       - "./projects:/projects/:z"
+      - "./certs:/var/certs:z"
     env_file: secrets.env
 
   fingergw:
     environment:
       no_proxy: "${no_proxy}"
-    command: "zuul-fingergw -d"
+    command: "zuul-fingergw -df"
     depends_on:
       - executor
     image: "{{ zuul_fingergw_image }}"
     volumes:
       - "./etc_zuul/:/etc/zuul/:z"
+      - "./certs:/var/certs:z"
       - /var/lib/zuul
     ports:
       - "79:79"
@@ -128,11 +145,13 @@ services:
       - "./etc_nodepool/:/etc/nodepool/:z"
       - "~/.config/openstack/:/etc/openstack/:z"
       - "./etc/pki/:/etc/pki/:z"
+      - "./certs:/var/certs:z"
     ports:
       - "8022:8022"
       - "8005:8005"
     environment:
       - REQUESTS_CA_BUNDLE=/etc/pki/tls/certs/ca-bundle.crt
+
   logs:
     image: "{{ logs_image }}"
     ports:
@@ -150,7 +169,7 @@ services:
             bash inject-ssh-keys.sh && \
             bash wait-gerrit.sh && \
             bash add-gerrit-host-keys.sh && \
-            zuul-merger -d'
+            zuul-merger -df'
     depends_on:
       - scheduler
     image: "{{ zuul_merger_image }}"
@@ -159,5 +178,6 @@ services:
       - "./etc_zuul/:/etc/zuul/:z"
       - "{{ logs_path }}:/srv/static/logs:z"
       - "./playbooks:/usr/src:z"
+      - "./certs:/var/certs:z"
 
 {% endfor %}
