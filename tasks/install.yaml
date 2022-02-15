@@ -21,6 +21,7 @@
     - etc_nodepool
     - etc_zuul
     - zuul
+    - certs
 
 - name: Create log directory
   file:
@@ -45,6 +46,7 @@
     - fingergw-logging.yaml
     - web-logging.yaml
     - merger-logging.yaml
+    - zoo.cfg
 
 - name: Generate secrets.env
   vars:
@@ -81,6 +83,16 @@
   copy:
     src: /etc/pki/tls/certs/ca-bundle.crt
     dest: "{{ install_path }}/etc/pki/tls/certs/ca-bundle.crt"
+
+- name: Prepare certs ZK generation script
+  template:
+    src: "zk-ca.sh.j2"
+    dest: "{{ install_path }}/etc_zuul/zk-ca.sh"
+  mode: 0770
+
+- name: Generate ZK certificates
+  command: "{{ install_path }}/etc_zuul/zk-ca.sh {{ install_path }}/certs zk"
+  changed_when: true
 
 - name: Create reproducer control script
   template:
