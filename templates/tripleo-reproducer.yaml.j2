@@ -76,9 +76,20 @@ spec:
           name: playbooks
         - mountPath: /var/projects/
           name: projects
+        - mountPath: /var/certs
+          name: certs
 
     - name: zk
-      image: zookeeper:3.4.14
+      image: zookeeper:3.7.0
+      command:
+        - /bin/sh
+        - -c
+        - chown -R zookeeper:zookeeper /var/certs && zkServer.sh start-foreground
+      volumeMounts:
+        - mountPath: /var/certs
+          name: certs
+        - mountPath: /conf/zoo.cfg
+          name: zoo_conf
 
     - name: mysql
       image: "mariadb:10.3.14-bionic"
@@ -107,7 +118,7 @@ spec:
           bash inject-ssh-keys.sh &&
           bash wait-gerrit.sh &&
           bash add-gerrit-host-keys.sh &&
-          zuul-scheduler -d
+          zuul-scheduler -df
       volumeMounts:
         - mountPath: /etc/zuul
           name: etc-zuul
@@ -117,6 +128,8 @@ spec:
           name: projects
         - mountPath: /var/lib/zuul
           name: var-lib-zuul
+        - mountPath: /var/certs
+          name: certs
 
     - name: web
       image: rdoci/zuul-web:stable
@@ -125,7 +138,7 @@ spec:
         - -c
         - cd /usr/src/ &&
           bash wait-mysql.sh &&
-          zuul-web -d
+          zuul-web -df
       ports:
         - containerPort: 9000
           hostPort: 9000
@@ -134,6 +147,8 @@ spec:
           name: etc-zuul
         - mountPath: /usr/src/
           name: playbooks
+        - mountPath: /var/certs
+          name: certs
 
     - name: executor
       image: rdoci/zuul-executor:stable
@@ -152,7 +167,7 @@ spec:
           bash inject-ssh-keys.sh &&
           bash wait-gerrit.sh &&
           bash add-gerrit-host-keys.sh &&
-          zuul-executor -d
+          zuul-executor -df
       volumeMounts:
         - mountPath: /etc/zuul
           name: etc-zuul
@@ -162,6 +177,8 @@ spec:
           name: projects
         - mountPath: /srv/static/logs
           name: logs-dir
+        - mountPath: /var/certs
+          name: certs
 
     - name: fingergw
       image: rdoci/zuul-fingergw:stable
@@ -170,12 +187,14 @@ spec:
           value: "${no_proxy},gerrit"
       command:
         - zuul-fingergw
-        - -d
+        - -df
       volumeMounts:
         - mountPath: /etc/zuul
           name: etc-zuul
         - mountPath: /var/lib/zuul
           name: var-lib-zuul
+        - mountPath: /var/certs
+          name: certs
 
     - name: launcher
       image: rdoci/nodepool-launcher:stable
@@ -202,6 +221,8 @@ spec:
           name: openstack-config
         - mountPath: /etc/pki
           name: etc-pki
+        - mountPath: /var/certs
+          name: certs
 
     - name: logs
       image: httpd:2.4.39-alpine
@@ -230,7 +251,7 @@ spec:
           bash inject-ssh-keys.sh &&
           bash wait-gerrit.sh &&
           bash add-gerrit-host-keys.sh &&
-          zuul-merger -d
+          zuul-merger -df
       volumeMounts:
         - mountPath: /etc/zuul
           name: etc-zuul
@@ -238,6 +259,8 @@ spec:
           name: logs-dir
         - mountPath: /usr/src/
           name: playbooks
+        - mountPath: /var/certs
+          name: certs
 {% endfor %}
 
   volumes:
@@ -273,6 +296,15 @@ spec:
       hostPath:
         path: {{ install_path }}/httpd.conf
         type: File
+    - name: certs
+      hostPath:
+        path: {{ install_path }}/certs/
+        type: Directory
+    - name: zoo_conf
+      hostPath:
+        path: {{ install_path }}/zoo.cfg
+        type: File
+
 
     - name: var-lib-zuul
       persistentVolumeClaim:
