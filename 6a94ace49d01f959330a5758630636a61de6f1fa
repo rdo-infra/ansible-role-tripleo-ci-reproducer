@@ -22,6 +22,23 @@
       },
       "revId": "6a94ace49d01f959330a5758630636a61de6f1fa",
       "serverId": "270e2033-b340-4cff-9539-693957ebf0e7"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77679dbf_807252db",
+        "filename": "README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 411
+      },
+      "writtenOn": "2022-02-17T14:41:55Z",
+      "side": 0,
+      "message": "you should preserve this mappings",
+      "revId": "6a94ace49d01f959330a5758630636a61de6f1fa",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7"
     }
   ]
 }
