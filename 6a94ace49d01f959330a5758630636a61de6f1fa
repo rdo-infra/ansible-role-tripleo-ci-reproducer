@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e94af883_11510feb",
+        "filename": "README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 753
+      },
+      "writtenOn": "2022-02-21T19:29:32Z",
+      "side": 0,
+      "message": "Ansible has specific path where it looks for roles. Using include_role is a workaround for not having to copy the role to standard folders. IMHO this will and already has confused people in the past. For example, have a look at\n\ninclude_role:\n  name: ci-reproducer\n\nin the #example-playbook section below. ci-reproducer is the role name of this git repo but it won\u0027t work unless you copy it to Ansible\u0027s role search paths or change those. To make this README consistent, I added instructions to #install section on how to copy this role to Ansible\u0027s roles path. If you want to use another for this role, a workaround would be to add a symlink in e.g. ~/.ansible/roles/ which points to your real role path.\n\nIIUC this readme is not for powerusers but for non-ansible-powerusers. For those, it is probably easier if we exactly model Ansible\u0027s way of doing things.\n\nYou suggested to add a #development section with instructions / ideas for powerusers, like adding a symlink to ~/.ansible/roles. It should also show people how they could contribute. I am still unsure how to implement this, any suggestions?",
+      "parentUuid": "cafc3642_cb03ce86",
+      "range": {
+        "startLine": 80,
+        "startChar": 6,
+        "endLine": 80,
+        "endChar": 53
+      },
+      "revId": "6a94ace49d01f959330a5758630636a61de6f1fa",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "77679dbf_807252db",
         "filename": "README.md",
         "patchSetId": 2
@@ -37,6 +61,24 @@
       "writtenOn": "2022-02-17T14:41:55Z",
       "side": 0,
       "message": "you should preserve this mappings",
+      "revId": "6a94ace49d01f959330a5758630636a61de6f1fa",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8716963f_3ab96a74",
+        "filename": "README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 753
+      },
+      "writtenOn": "2022-02-21T19:29:32Z",
+      "side": 0,
+      "message": "I am trying to condense the step-by-step guide, adding maybe-non-obvious instructions and removing not-strictly-necessary parts. Both rdo_gerrit_username and rdo_gerrit_username are exclusively used in the README and for no apparent reason. Why do you want to keep them?",
+      "parentUuid": "77679dbf_807252db",
       "revId": "6a94ace49d01f959330a5758630636a61de6f1fa",
       "serverId": "270e2033-b340-4cff-9539-693957ebf0e7"
     }
