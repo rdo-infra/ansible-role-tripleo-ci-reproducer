@@ -81,6 +81,24 @@
       "parentUuid": "77679dbf_807252db",
       "revId": "6a94ace49d01f959330a5758630636a61de6f1fa",
       "serverId": "270e2033-b340-4cff-9539-693957ebf0e7"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9f4062f_a0b48cd7",
+        "filename": "README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 411
+      },
+      "writtenOn": "2022-02-23T13:35:30Z",
+      "side": 0,
+      "message": "I don\u0027t have strong opinion on keeping these. Since those are optional and only illustrate something, perhaps removing it will not affect things a lot.",
+      "parentUuid": "8716963f_3ab96a74",
+      "revId": "6a94ace49d01f959330a5758630636a61de6f1fa",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7"
     }
   ]
 }
