@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a18af9c6_e6465c96",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 753
+      },
+      "writtenOn": "2022-03-07T19:45:17Z",
+      "side": 1,
+      "message": "I had to revert from \"roles:\" to \"include_role:\" in the playbooks\nbecause else Ansible would fail with:\n\n  The field \u0027connection_user\u0027 has an invalid value, which includes an\n  undefined variable. The error was: \u0027ansible_user_id\u0027 is undefined.\n  \u0027ansible_user_id\u0027 is undefined\n\nReason for this is that \"include_role:\" loads a role dynamically\naka at runtime. Ansible will first gather facts and afterwards load\nthe role. At the time Ansible loads the role and evaluates variable\nansible_user, the variable ansible_user_id is defined already.\n\nWhen using \"roles:\" instead Ansible behaves like when using\n\"import_role:\", i.e. the role is loaded before facts are gathered.\nSince ansible_user_id is not defined when the role is loaded, Ansible\nwill fail with the error shown above.\n\nBtw ansible_user is used by Ansible to determine how to log in when\nestablishing a connection to a host. It is a connection variable:\nhttps://docs.ansible.com/ansible/latest/reference_appendices/special_variables.html\n\nDefining ansible_user dynamically like it is currently done in\ndefaults/main.yml is not how it is meant to be used but fixing this\nis more involved and will be committed in a follow-up change.",
+      "revId": "9ed9f0abf1c610ebc26f64866aaa772c62a9824b",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7"
+    }
+  ]
+}
