@@ -45,6 +45,7 @@
     - fingergw-logging.yaml
     - web-logging.yaml
     - merger-logging.yaml
+    - gerrit.config
 
 - name: Generate secrets.env
   vars:
