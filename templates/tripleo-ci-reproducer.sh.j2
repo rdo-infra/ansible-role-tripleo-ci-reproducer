@@ -17,8 +17,11 @@ create_pod () {
 create_containers () {
     podman create \
         --pod $pod_name \
-        --name gerrit --hostname gerrit {{ gerrit_image }} \
-        /bin/sh -c 'git config -f /var/gerrit/etc/gerrit.config gerrit.canonicalWebUrl http://localhost:8080/ &&         git config -f /var/gerrit/etc/gerrit.config gerrit.ui POLYGERRIT &&         git config -f /var/gerrit/etc/gerrit.config sendemail.enable false &&         git config -f /var/gerrit/etc/gerrit.config noteDb.changes.autoMigrate true &&         /var/gerrit/bin/gerrit.sh run'
+        --name gerrit --hostname gerrit \
+        --user=0 \
+        -e CANONICAL_WEB_URL=http://localhost:8080/ \
+        -v {{ install_path }}/etc_gerrit:/var/gerrit/etc
+        {{ gerrit_image }}
 
     podman create \
         --pod $pod_name \

@@ -1,0 +1,40 @@
+[gerrit]
+        basePath = git
+        canonicalWebUrl = http://localhost:8080/
+        serverId = a70bdc51-ca5f-404c-ac8d-d3b06ab1dae8
+        ui = POLYGERRIT
+[database]
+        type = h2
+        database = db/ReviewDB
+[index]
+        type = LUCENE
+[auth]
+        type = DEVELOPMENT_BECOME_ANY_ACCOUNT
+[sendemail]
+        smtpServer = localhost
+        enable = false
+[sshd]
+        listenAddress = *:29418
+[httpd]
+        listenUrl = http://*:8080/
+        filterClass = com.googlesource.gerrit.plugins.ootb.FirstTimeRedirect
+        firstTimeRedirectUrl = /login/%23%2F?account_id=1000000
+[cache]
+        directory = cache
+[plugins]
+        allowRemoteAdmin = true
+[container]
+        javaOptions = "-Dflogger.backend_factory=com.google.common.flogger.backend.log4j.Log4jBackendFactory#getInstance"
+        javaOptions = "-Dflogger.logging_context=com.google.gerrit.server.logging.LoggingContext#getInstance"
+        user = root
+        javaHome = /usr/lib/jvm/java-11-openjdk-11.0.13.0.8-3.el8_5.x86_64
+        javaOptions = -Djava.security.egd=file:/dev/./urandom
+        javaOptions = --add-opens java.base/java.net=ALL-UNNAMED
+        javaOptions = --add-opens java.base/java.lang.invoke=ALL-UNNAMED
+        javaOptions = -Djava.security.egd=file:/dev/./urandom
+        javaOptions = --add-opens java.base/java.net=ALL-UNNAMED
+        javaOptions = --add-opens java.base/java.lang.invoke=ALL-UNNAMED
+[receive]
+        enableSignedPush = false
+[noteDb "changes"]
+        autoMigrate = true
