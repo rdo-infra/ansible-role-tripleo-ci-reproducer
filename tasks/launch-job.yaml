@@ -4,6 +4,14 @@
     state: directory
   register: testproject
 
+- name: Pause job
+  pause:
+    minutes: 600
+
+- name: Pause job
+  fail:
+    msg: "Just so"
+
 - name: Clone testproject project  # noqa 401
   git:
     repo: ssh://admin@localhost:29418/test1
