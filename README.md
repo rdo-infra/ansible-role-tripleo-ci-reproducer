@@ -357,17 +357,28 @@ The job definition should look like:
     name: tripleo-ci-centos-8-containers-multinode-test
     parent: tripleo-ci-centos-8-containers-multinode
     vars:
+      environment_type: multinode-psi
+      featureset_override:
+        undercloud_undercloud_nameservers:
+         - 10.11.5.19
+         - 10.10.160.2
+         - 10.5.30.160
+         - 8.8.8.7
+         - 8.8.8.8
+       undercloud_undercloud_ntp_servers:
+         - 10.5.26.10
+         - clock.redhat.com
+       undercloud_undercloud_debug: true
+       # For the overcloud deploy command.
+       ntp_server: '10.5.26.10,clock.redhat.com,clock2.redhat.com'
       mirror_fqdn: afs-mirror.sf.hosted.upshift.rdu2.redhat.com
       custom_nameserver:
-        - 10.5.30.160
-        - 10.11.5.19
-      undercloud_undercloud_nameservers:
-        - 10.5.30.160
+         - 10.11.5.19
+         - 10.10.160.2
+         - 10.5.30.160
+         - 8.8.8.7
+         - 8.8.8.8
       external_net: provider_net_shared_3
-      ntp_server: '10.5.26.10,clock.redhat.com,clock2.redhat.com'
-      undercloud_undercloud_ntp_servers:
-        - 10.5.26.10
-        - clock.redhat.com
 ```
 
 In this case you can use any mirror which is available from PSI cloud, the local
