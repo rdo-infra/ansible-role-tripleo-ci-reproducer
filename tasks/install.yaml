@@ -101,6 +101,23 @@
     - setup_nodepool|bool
     - job.setup_nodepool|default(setup_nodepool)|bool
 
+- name: Scan SSH keys from subnodes for libvirt provider settings
+  when: nodepool_provider == "libvirt"
+  shell: |
+    set -e
+    for key in {{ hostvars[item].ansible_host }}; do
+      if ! grep -q $key /etc/ssh/ssh_known_hosts ; then
+        ssh-keyscan -t ed25519 $key > /tmp/{{ item }}_key
+      fi
+    done
+  changed_when: true
+  with_inventory_hostnames:
+    - subnodes
+  register: output
+  retries: 5
+  delay: 5
+  until: output.rc == 0
+
 - name: Generate nodepool main configuration
   template:
     src: "nodepool-{{ nodepool_provider }}.yaml.j2"
