@@ -5,7 +5,7 @@
   register: reproducer_path
 
 - name: Stop zuul and friends
-  docker_compose:
+  community.docker.docker_compose:
     project_src: "{{ install_path }}"
     state: absent
     remove_volumes: true
