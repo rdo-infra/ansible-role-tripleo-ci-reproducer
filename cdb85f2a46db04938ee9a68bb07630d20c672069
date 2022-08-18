@@ -52,6 +52,24 @@
       "serverId": "270e2033-b340-4cff-9539-693957ebf0e7"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "03f7adb8_1b80346a",
+        "filename": "README.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 374,
+      "author": {
+        "id": 482
+      },
+      "writtenOn": "2022-08-18T12:55:19Z",
+      "side": 1,
+      "message": "I don\u0027t use allowed overrides anymore so this should be fine.",
+      "parentUuid": "d05710c9_ebb9c552",
+      "revId": "cdb85f2a46db04938ee9a68bb07630d20c672069",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "86362bb1_2bc4f910",
@@ -65,6 +83,30 @@
       "writtenOn": "2022-08-02T11:58:28Z",
       "side": 1,
       "message": "What\u0027s is a purpose of custom_nameserver ? The list of those nameservers is the same as undercloud_undercloud_nameservers",
+      "range": {
+        "startLine": 375,
+        "startChar": 6,
+        "endLine": 375,
+        "endChar": 23
+      },
+      "revId": "cdb85f2a46db04938ee9a68bb07630d20c672069",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "90e2f3ac_b19991af",
+        "filename": "README.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 375,
+      "author": {
+        "id": 482
+      },
+      "writtenOn": "2022-08-18T12:55:19Z",
+      "side": 1,
+      "message": "Didn\u0027t need it in my last test. It just was around. I\u0027ve removed it in the last patchset.",
+      "parentUuid": "86362bb1_2bc4f910",
       "range": {
         "startLine": 375,
         "startChar": 6,
