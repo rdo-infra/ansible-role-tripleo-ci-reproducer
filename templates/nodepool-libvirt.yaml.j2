@@ -25,7 +25,7 @@ providers:
                 - centos-8
                 - centos-8-stream
                 - centos-9-stream
-            host-key: "{{ lookup('pipe', 'ssh-keyscan -t ed25519 ' + hostvars[subnode].ansible_host ).split(" ", 1)[1] }}"
+            host-key: {{ lookup('file', '/tmp/' ~ subnode ~ '_key').split(" ", 1)[1] }}
             username: zuul
             python-path: auto
 {% endfor %}
