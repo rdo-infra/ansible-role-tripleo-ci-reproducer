@@ -78,6 +78,6 @@
           fi
 
     - name: Create branches
-      command: ssh -i /var/ssh/id_rsa -p 29418 admin@gerrit gerrit create-branch {{ project }} {{ item }} master
+      command: ssh -i /var/ssh/{{ user_pri_key }} -p 29418 admin@gerrit gerrit create-branch {{ project }} {{ item }} master
       changed_when: true
       with_items: "{{ branches }}"
