@@ -17,6 +17,7 @@ services:
     image: "{{ zuul_image }}"
     environment:
       no_proxy: "${no_proxy},gerrit"
+      privkey: "{{ user_pri_key }}"
     depends_on:
       - gerrit
     volumes:
