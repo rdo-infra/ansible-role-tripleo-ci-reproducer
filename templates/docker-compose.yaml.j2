@@ -17,6 +17,7 @@ services:
     image: "{{ zuul_image }}"
     environment:
       no_proxy: "${no_proxy},gerrit"
+      privkey: "{{ user_pri_key }}"
     depends_on:
       - gerrit
     volumes:
@@ -39,7 +40,8 @@ services:
             {% endif %}
             {% if package_mirror is defined %}
             -e package_mirror={{ package_mirror }} \
-            {% endif %}
+            {% endif %} \
+            -e privkey={{ user_pri_key }} \
             /usr/src/setup-gerrit.yaml'
   zk:
     image: "{{ zk_image }}"
