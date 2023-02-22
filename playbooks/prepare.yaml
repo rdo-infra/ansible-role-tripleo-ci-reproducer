@@ -75,6 +75,10 @@
       with_inventory_hostnames:
         - subnodes
       become: true
+      register: output
+      retries: 5
+      delay: 5
+      until: output.rc == 0
 
     - when: update_subnodes|bool
       block:
