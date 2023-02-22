@@ -17,6 +17,8 @@ services:
     image: "{{ zuul_image }}"
     environment:
       no_proxy: "${no_proxy},gerrit"
+      privkey: "{{ user_pri_key }}"
+      pubkey: "{{ user_pub_key }}"
     depends_on:
       - gerrit
     volumes:
@@ -40,6 +42,8 @@ services:
             {% if package_mirror is defined %}
             -e package_mirror={{ package_mirror }} \
             {% endif %}
+            -e user_pri_key={{ user_pri_key }} \
+            -e user_pub_key={{ user_pub_key }} \
             /usr/src/setup-gerrit.yaml'
   zk:
     image: "{{ zk_image }}"
@@ -57,6 +61,8 @@ services:
       - mysql
     environment:
       no_proxy: "${no_proxy},gerrit"
+      privkey: "{{ user_pri_key }}"
+      pubkey: "{{ user_pub_key }}"
     command: |
         sh -c '\
           cd /usr/src/ && \
@@ -90,6 +96,8 @@ services:
     privileged: true
     environment:
       no_proxy: "${no_proxy},gerrit"
+      privkey: "{{ user_pri_key }}"
+      pubkey: "{{ user_pub_key }}"
     command: "sh -c 'cd /usr/src/; bash inject-ssh-keys.sh && bash wait-gerrit.sh && bash add-gerrit-host-keys.sh && zuul-executor -d'"
     depends_on:
       - scheduler
@@ -145,6 +153,8 @@ services:
   merger{{ i }}:
     environment:
       no_proxy: "${no_proxy},gerrit"
+      privkey: "{{ user_pri_key }}"
+      pubkey: "{{ user_pub_key }}"
     command: |
         sh -c ' cd /usr/src/; \
             bash inject-ssh-keys.sh && \
