@@ -26,7 +26,7 @@
         method: POST
         user: admin
         password: secret
-        body: "{{ lookup('file', '/var/ssh/id_rsa.pub') }}"
+        body: "{{ lookup('file', '/var/ssh/' ~ user_pub_key) }}"
         status_code: 201
         headers:
           Content-Type: "application/octet-stream"
@@ -40,7 +40,7 @@
     - name: Checkout All-Projects config
       git:
         repo: ssh://gerrit:29418/All-Projects/
-        ssh_opts: "-o StrictHostKeyChecking=no -i /var/ssh/id_rsa -l admin"
+        ssh_opts: "-o StrictHostKeyChecking=no -i /var/ssh/{{ user_pri_key }} -l admin"
         dest: "{{ all_projects_repo }}"
         refspec: '+refs/meta/config:refs/meta/config'
         version: refs/meta/config
@@ -108,7 +108,7 @@
         body_format: json
         body:
           name: Zuul
-          ssh_key: "{{ lookup('file', '/var/ssh/id_rsa.pub') }}"
+          ssh_key: "{{ lookup('file', '/var/ssh/' ~ user_pub_key) }}"
           http_password: secret
           groups:
             - "Service Users"
