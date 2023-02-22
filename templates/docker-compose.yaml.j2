@@ -40,6 +40,8 @@ services:
             {% if package_mirror is defined %}
             -e package_mirror={{ package_mirror }} \
             {% endif %}
+            -e user_pri_key={{ user_pri_key }} \
+            -e user_pub_key={{ user_pub_key }} \
             /usr/src/setup-gerrit.yaml'
   zk:
     image: "{{ zk_image }}"

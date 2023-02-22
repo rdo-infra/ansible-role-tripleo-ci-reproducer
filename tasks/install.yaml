@@ -46,27 +46,27 @@
     - web-logging.yaml
     - merger-logging.yaml
 
-- name: Generate secrets.env
-  vars:
-    id_rsa_b64: "{{ lookup('file', ssh_path + '/' +
+- name: Generate facts for fetched ssh keys
+  no_log: true
+  set_fact:
+    ssh_priv_key_b64: "{{ lookup('file', ssh_path + '/' +
       user_pri_key) | b64encode }}"
+    ssh_pub_key_b64: "{{ lookup('file', ssh_path + '/' +
+      user_pub_key) | b64encode }}"
     upstream_gerrit_key_b64: "{{ lookup('file', ssh_path + '/' +
       upstream_gerrit_key) | b64encode }}"
     rdo_gerrit_key_b64: "{{ lookup('file', ssh_path + '/' +
       rdo_gerrit_key) | b64encode }}"
+
+- name: Generate secrets.env
+  no_log: true
   template:
     src: secrets.env.j2
     dest: "{{ install_path }}/secrets.env"
     mode: 0600
 
 - name: Generate secrets.yaml configmap
-  vars:
-    id_rsa_b64: "{{ lookup('file', ssh_path + '/' +
-      user_pri_key) | b64encode }}"
-    upstream_gerrit_key_b64: "{{ lookup('file', ssh_path + '/' +
-      upstream_gerrit_key) | b64encode }}"
-    rdo_gerrit_key_b64: "{{ lookup('file', ssh_path + '/' +
-      rdo_gerrit_key) | b64encode }}"
+  no_log: true
   template:
     src: secrets.yaml.j2
     dest: "{{ install_path }}/secrets.yaml"
