@@ -26,6 +26,8 @@ create_containers () {
         --add-host gerrit:127.0.0.1 \
         -v {{ install_path }}/playbooks/:/usr/src/:z \
         -v {{ install_path }}/projects/:/var/projects/:z \
+        --env privkey={{ user_pri_key }} \
+        --env pubkey={{ user_pub_key }} \
         --env-file={{ install_path }}/secrets.env  \
         {{ zuul_image }} \
         /bin/sh -c 'bash /usr/src/inject-ssh-keys.sh && pip install ansible && ansible-playbook -vv \
@@ -41,6 +43,8 @@ create_containers () {
         {% if package_mirror is defined %}
         -e package_mirror={{ package_mirror }} \
         {% endif %}
+        -e privkey={{ user_pri_key }} \
+        -e pubkey={{ user_pub_key }} \
         /usr/src/setup-gerrit.yaml'
 
     podman create \
@@ -58,6 +62,8 @@ create_containers () {
         -v {{ install_path }}/playbooks/:/usr/src/:z \
         -v {{ install_path }}/projects/:/var/projects/:z \
         -v {{ install_path }}/zuul:/var/lib/zuul:z \
+        --env privkey={{ user_pri_key }} \
+        --env pubkey={{ user_pub_key }} \
         --env-file={{ install_path }}/secrets.env \
         --add-host gerrit:127.0.0.1 \
         --add-host scheduler:127.0.0.1 \
@@ -86,6 +92,8 @@ create_containers () {
         --add-host scheduler:127.0.0.1 \
         --add-host gerrit:127.0.0.1 \
         --add-host zk:127.0.0.1 \
+        --env privkey={{ user_pri_key }} \
+        --env pubkey={{ user_pub_key }} \
         --env-file={{ install_path }}/secrets.env \
         -v {{ install_path }}/etc_zuul/:/etc/zuul/:z  \
         -v {{ install_path }}/playbooks/:/usr/src/:z \
@@ -127,6 +135,8 @@ create_containers () {
         -v {{ install_path }}/etc_zuul/:/etc/zuul/:z  \
         -v {{ install_path }}/playbooks/:/usr/src/:z \
         -v {{ install_path }}/logs:/srv/static/logs:z \
+        --env privkey={{ user_pri_key }} \
+        --env pubkey={{ user_pub_key }} \
         --env-file={{ install_path }}/secrets.env \
         {{ zuul_merger_image }} \
         sh -c ' cd /usr/src/;  bash inject-ssh-keys.sh && bash wait-gerrit.sh && bash add-gerrit-host-keys.sh && zuul-merger -d'
