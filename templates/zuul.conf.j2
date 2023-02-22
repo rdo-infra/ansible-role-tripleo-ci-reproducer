@@ -40,7 +40,7 @@ baseurl=https://github.com
 name=gerrit
 driver=gerrit
 server=gerrit
-sshkey=/var/ssh/id_rsa
+sshkey=/var/ssh/{{ user_pri_key }}
 user=zuul
 password=secret
 baseurl=http://gerrit:8080
@@ -56,7 +56,7 @@ listen_address=0.0.0.0
 log_config=/etc/zuul/web-logging.yaml
 
 [executor]
-private_key_file=/var/ssh/id_rsa
+private_key_file=/var/ssh/{{ user_pri_key }}
 default_username=zuul
 trusted_rw_paths=/srv/static/logs
 log_config=/etc/zuul/executor-logging.yaml
