@@ -49,6 +49,10 @@ spec:
       env:
         - name: no_proxy
           value: "${no_proxy},gerrit"
+        - name: privkey
+          value: {{ user_pri_key }}
+        - name: pubkey
+          value: {{ user_pub_key }}
       envFrom:
         - configMapRef:
             name: secrets
@@ -70,6 +74,8 @@ spec:
           {% if package_mirror is defined -%}
           -e package_mirror={{ package_mirror }}
           {%- endif %}
+          -e privkey={{ user_pri_key }} \
+          -e pubkey={{ user_pub_key }} \
           /usr/src/setup-gerrit.yaml
       volumeMounts:
         - mountPath: /usr/src/
@@ -97,6 +103,10 @@ spec:
       env:
         - name: no_proxy
           value: "${no_proxy},gerrit"
+        - name: privkey
+          value: {{ user_pri_key }}
+        - name: pubkey
+          value: {{ user_pub_key }}
       envFrom:
         - configMapRef:
             name: secrets
@@ -142,6 +152,10 @@ spec:
       env:
         - name: no_proxy
           value: "${no_proxy},gerrit"
+        - name: privkey
+          value: {{ user_pri_key }}
+        - name: pubkey
+          value: {{ user_pub_key }}
       envFrom:
         - configMapRef:
             name: secrets
