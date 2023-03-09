@@ -56,7 +56,6 @@
           +HEAD:refs/meta/config
       args:
         chdir: "{{ all_projects_repo }}"
-        warn: false
       changed_when: true
 
     - name: Create zuul-config project
