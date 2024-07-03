@@ -158,29 +158,10 @@
     check:
       jobs:
         - tox-linters
-        - tripleo-ci-reproducer-centos-9-libvirt-standalone-dryrun-vexxhost
-        - tripleo-ci-reproducer-centos-9-openstack-standalone-dryrun
-        - tripleo-ci-reproducer-centos-7-host:
-            voting: false
-        - tripleo-ci-reproducer-centos-8-host
-        - tripleo-ci-reproducer-centos-9-host
-        - tripleo-ci-reproducer-centos-8-openstack-standalone-dryrun
-        - tripleo-ci-reproducer-centos-9-openstack-standalone-dryrun
-        - tripleo-ci-reproducer-centos-9-openstack-standalone
 
     gate:
       jobs:
         - tox-linters
-        - tripleo-ci-reproducer-centos-8-host
-        - tripleo-ci-reproducer-centos-9-host
-
-    openstack-periodic-daily:
-      jobs:
-        - periodic-tripleo-ci-reproducer-centos-8-libvirt-standalone-dryrun-vexxhost
-        - periodic-tripleo-ci-reproducer-centos-8-openstack-standalone
-        - periodic-tripleo-ci-reproducer-centos-8-openstack-standalone-dryrun
-        - periodic-tripleo-ci-reproducer-centos-9-openstack-standalone-dryrun
-        - periodic-tripleo-ci-reproducer-centos-9-openstack-standalone
 
     periodic:
       jobs:
